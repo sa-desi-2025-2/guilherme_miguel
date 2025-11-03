@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/roteiro.css">
+    <title>CriaçãoPage</title>
+    style.css
+</head>
+<body>
+    <!-- Cabeçalho com gradiente -->
+    <header class="header">
+        <div class="badge">✨ Viagens Personalizadas com IA</div>
+        <h1>Criar Novo Roteiro</h1>
+        <p>Preencha os detalhes e deixe a IA criar um roteiro personalizado para você</p>
+    </header>
+
+    <!-- Formulário -->
+    <main class="form-container">
+        <form id="roteiroForm">
+            <h2>Detalhes da Viagem</h2>
+            <p>Quanto mais informações você fornecer, mais personalizado será seu roteiro</p>
+
+            <label for="destino">Destino</label>
+            <input type="text" id="destino" placeholder="Ex: Paris, França" required>
+
+            <div class="date-group">
+                <div>
+                    <label for="inicio">Data de Início</label>
+                    <input type="date" id="inicio" required>
+                </div>
+                <div>
+                    <label for="fim">Data de Fim</label>
+                    <input type="date" id="fim" required>
+                </div>
+            </div>
+
+            <label for="hobbies">Hobbies e Interesses</label>
+            <input type="text" id="hobbies" placeholder="Ex: fotografia, história, arte">
+
+            <label for="gastronomia">Preferências Gastronômicas</label>
+            <textarea id="gastronomia" placeholder="Ex: comida local, vegetariano, frutos do mar"></textarea>
+
+            <label for="orcamento">Orçamento Aproximado (R$)</label>
+            <input type="number" id="orcamento" placeholder="Ex: 5000">
+
+            <label for="tipo">Tipo de Viajante</label>
+            <input type="text" id="tipo" placeholder="Ex: mochileiro, luxo, família, casal">
+
+            <button type="submit" class="btn-primary">➤ Gerar Roteiro Personalizado</button>
+        </form>
+    </main>
+
+    <script src="../js/roteiro.js"></script>
+</body>
+</html>
+
