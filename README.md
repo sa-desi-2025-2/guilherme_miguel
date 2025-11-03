@@ -7,3 +7,4 @@ OtimizeTour: Sistema de planejamento de viagens inteligente que revoluciona a cr
 - ter composer instalado na pasta C\:xampp\php\php.exe
 - executar ``composer install``
 - executar ``php artisan serve``
+``php artisan key:generate``
