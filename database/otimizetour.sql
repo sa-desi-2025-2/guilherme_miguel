@@ -18,9 +18,23 @@ CREATE TABLE Roteiros (
     destino VARCHAR(100) NOT NULL,
     dataInicio DATE NOT NULL,
     dataFim DATE NOT NULL,
-    custoTotal DECIMAL(10, 2) NOT NULL,
     usuario_id INT,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+);
+
+CREATE TABLE CustoViagem (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    custoTotalReais DECIMAL(2,1) NOT NULL,
+    custoTotalConvertido DECIMAL(2,1) NOT NULL,
+    roteiro_id INT,
+    FOREIGN KEY (roteiro_id) REFERENCES Roteiros(id)
+);
+
+CREATE TABLE Clima(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    climaAtual VARCHAR(30),
+    roteiro_id INT,
+    FOREIGN KEY (roteiro_id) REFERENCES Roteiros(id)
 );
 
 CREATE TABLE PontosInteresse (
