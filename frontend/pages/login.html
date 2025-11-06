@@ -6,9 +6,8 @@
   <link rel="stylesheet" href="../css/login.css">
   <title>Tela de Login</title>
   <style>
-    /* Apenas para teste, você deve usar seu arquivo login.css */
     .field-signup {
-      display: none; /* Esconde os campos de Criar Conta por padrão */
+      display: none; 
     }
   </style>
 </head>
@@ -92,35 +91,54 @@ document.addEventListener('DOMContentLoaded', () => {
 
 //------------------------------------------------------------------------------
 
-// ✅ Faz a requisição apenas ao enviar o formulário
 document.getElementById("form").addEventListener("submit", async (event) => {
-      event.preventDefault(); // Evita recarregar a página
+  event.preventDefault();
 
-      const nome = document.getElementById("nome").value;
-      const email = document.getElementById("email").value;
-      const senha = document.getElementById("senha").value;
+  const tabLoginAtiva = document.getElementById("tab-login").classList.contains("active");
+  const nome = document.getElementById("nome").value;
+  const email = document.getElementById("email").value;
+  const senha = document.getElementById("senha").value;
+  const mensagem = document.getElementById("mensagem");
 
-      try {
-        const response = await fetch("http://127.0.0.1:8000/api/usuarios", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            nome: nome,
-            email: email,
-            senha: senha,
-          }),
-        });
+  try {
+    if (tabLoginAtiva) {
+      // 🔹 LOGIN
+      const response = await fetch("http://localhost:8081/usuarios/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, senha }),
+      });
 
+      if (response.ok) {
         const data = await response.json();
-        console.log("✅ Resposta do servidor:", data);
-        document.getElementById("mensagem").innerText = "Usuário criado com sucesso!";
-      } catch (error) {
-        console.error("❌ Erro na requisição:", error);
-        document.getElementById("mensagem").innerText = "Erro ao conectar com o servidor.";
+        mensagem.innerText = `Bem-vindo, ${data.nome}!`;
+      } else {
+        mensagem.innerText = "Usuário ou senha incorretos.";
       }
-    });
+    } else {
+      // 🔹 CADASTRO
+      const response = await fetch("http://localhost:8081/usuarios", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nome,
+          email,
+          senhaHash: senha, // precisa coincidir com o campo esperado no backend
+        }),
+      });
+
+      if (response.ok) {
+        mensagem.innerText = "Usuário criado com sucesso!";
+      } else {
+        const errorText = await response.text();
+        mensagem.innerText = `Erro ao criar usuário: ${errorText}`;
+      }
+    }
+  } catch (error) {
+    console.error("❌ Erro na requisição:", error);
+    mensagem.innerText = "Erro ao conectar com o servidor.";
+  }
+});
 
 
 </script>
