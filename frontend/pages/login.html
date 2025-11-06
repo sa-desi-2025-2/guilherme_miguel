@@ -92,49 +92,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
 //------------------------------------------------------------------------------
 
-const apiUrl = "http://127.0.0.1:8000/api/usuarios"
+// ✅ Faz a requisição apenas ao enviar o formulário
+document.getElementById("form").addEventListener("submit", async (event) => {
+      event.preventDefault(); // Evita recarregar a página
 
-document.getElementById("form").addEventListener("submit", async (e) => {
-    e.preventDefault();
+      const nome = document.getElementById("nome").value;
+      const email = document.getElementById("email").value;
+      const senha = document.getElementById("senha").value;
 
-    const tabAtiva = document.querySelector(".tab.active").id;
+      try {
+        const response = await fetch("http://127.0.0.1:8000/api/usuarios", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            nome: nome,
+            email: email,
+            senha: senha,
+          }),
+        });
 
-    if (tabAtiva === "tab-signup") {
-        // Cadastro
-        const nome = document.getElementById("nome").value.trim();
-        const email = document.getElementById("email").value.trim();
-        const senha = document.getElementById("senha").value;
-        const confirmaSenha = document.getElementById("confirma-senha").value;
+        const data = await response.json();
+        console.log("✅ Resposta do servidor:", data);
+        document.getElementById("mensagem").innerText = "Usuário criado com sucesso!";
+      } catch (error) {
+        console.error("❌ Erro na requisição:", error);
+        document.getElementById("mensagem").innerText = "Erro ao conectar com o servidor.";
+      }
+    });
 
-        if (senha !== confirmaSenha) {
-            document.getElementById("mensagem").textContent = "As senhas não coincidem!";
-            return;
-        }
-
-        try {
-            const response = await fetch(apiUrl, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ nome, email, senha })
-            });
-
-            if (response.ok) {
-                document.getElementById("mensagem").textContent = "Usuário cadastrado com sucesso!";
-                document.getElementById("form").reset();
-                showTab("login"); // Volta para login
-            } else {
-                const erro = await response.json();
-                document.getElementById("mensagem").textContent = "Erro ao cadastrar: " + JSON.stringify(erro);
-            }
-        } catch (err) {
-            document.getElementById("mensagem").textContent = "Erro de conexão: " + err.message;
-        }
-
-    } else {
-        // Aqui você pode implementar o login
-        document.getElementById("mensagem").textContent = "Login ainda não implementado.";
-    }
-});
 
 </script>
 </html>
