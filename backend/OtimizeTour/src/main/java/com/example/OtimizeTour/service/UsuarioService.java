@@ -5,6 +5,8 @@ import com.example.OtimizeTour.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.MessageDigest;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +32,7 @@ public class UsuarioService {
       
 
     public UsuarioModel salvar(UsuarioModel usuario) {
+        usuario.setSenhaHash(gerarHashSHA512(usuario.getSenhaHash()));
         return usuarioRepository.save(usuario);
     }
 
@@ -38,7 +41,9 @@ public class UsuarioService {
                 .map(usuario -> {
                     usuario.setNome(usuarioAtualizado.getNome());
                     usuario.setEmail(usuarioAtualizado.getEmail());
-                    usuario.setSenhaHash(usuarioAtualizado.getSenhaHash());
+                    if (usuarioAtualizado.getSenhaHash() != null && !usuarioAtualizado.getSenhaHash().isEmpty()) {
+                        usuario.setSenhaHash(gerarHashSHA512(usuarioAtualizado.getSenhaHash()));
+                    }
                     return usuarioRepository.save(usuario);
                 })
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado com ID: " + id));
@@ -49,6 +54,20 @@ public class UsuarioService {
             usuarioRepository.deleteById(id);
         } else {
             throw new RuntimeException("Usuário não encontrado com ID: " + id);
+        }
+    }
+
+    private String gerarHashSHA512(String senha) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-512");
+            byte[] hashBytes = md.digest(senha.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hashBytes) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Erro ao gerar hash SHA-512", e);
         }
     }
 }
