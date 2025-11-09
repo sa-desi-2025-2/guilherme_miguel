@@ -1,3 +1,167 @@
-*{
-    background-color: antiquewhite;
-}
+        /* ======= VARIÁVEIS ======= */
+        :root {
+            --bs-body-font-family: 'Poppins', sans-serif;
+            --bs-primary: hsl(205, 87%, 35%);
+            --bs-secondary: hsl(168, 76%, 42%);
+            --bs-accent: hsl(25, 95%, 53%);
+            --bs-light: hsl(210, 40%, 96%);
+            --bs-muted-color: hsl(215, 16%, 47%);
+            --gradient-ocean: linear-gradient(135deg, var(--bs-primary), var(--bs-secondary));
+            --gradient-hero: linear-gradient(to bottom right, var(--bs-primary), var(--bs-secondary), hsla(25, 95%, 53%, 0.3));
+            --shadow-elegant: 0 10px 30px -10px hsla(205, 87%, 35%, 0.3);
+            --shadow-glow: 0 0 40px hsla(168, 76%, 42%, 0.2);
+            --bs-border-radius: 1rem; /* 16px */
+        }
+
+        body {
+            background-color: var(--bs-white);
+            color: var(--bs-gray-900);
+        }
+
+        /* Classes de utilidade customizadas */
+        .bg-gradient-ocean {
+            background: var(--gradient-ocean) !important;
+        }
+
+        .text-gradient-ocean {
+            background: var(--gradient-ocean);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* ======= HERO ======= */
+        .hero {
+            position: relative;
+            overflow: hidden;
+            padding-top: 6rem;
+            padding-bottom: 6rem;
+            text-align: center;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: var(--gradient-hero);
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .badge-custom {
+            background-color: hsla(205, 87%, 35%, 0.1) !important;
+            color: var(--bs-primary) !important;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 800;
+            line-height: 1.2;
+        }
+
+        /* Botões */
+        .btn-primary-custom {
+            background: var(--gradient-ocean);
+            color: white;
+            padding: 0.75rem 2.5rem;
+            font-size: 1.1rem;
+            box-shadow: var(--shadow-elegant);
+            border: none;
+        }
+
+        .btn-primary-custom:hover {
+            opacity: 0.9;
+            color: white; /* Para manter a cor branca no hover */
+        }
+
+        .btn-outline-custom {
+            border: 2px solid var(--bs-primary);
+            color: var(--bs-primary);
+            padding: 0.75rem 2.5rem;
+            font-size: 1.1rem;
+        }
+
+        .btn-outline-custom:hover {
+            background-color: var(--bs-primary);
+            color: white;
+        }
+
+        /* ======= FEATURES (Cards) ======= */
+        .features {
+            background-color: hsl(210, 40%, 98%);
+            padding-top: 5rem;
+            padding-bottom: 5rem;
+        }
+
+        .card-custom {
+            border: 2px solid var(--bs-light);
+            transition: 0.3s ease;
+            box-shadow: none;
+            border-radius: var(--bs-border-radius);
+            text-align: center; /* Centraliza o conteúdo dos cards */
+        }
+
+        .card-custom:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-elegant);
+        }
+
+        .card-icon-custom {
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-ocean);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            margin: 0 auto 0.75rem; /* Centraliza o ícone */
+        }
+
+        /* ======= BENEFITS ======= */
+        .benefits {
+            padding-top: 5rem;
+            padding-bottom: 5rem;
+        }
+
+        .benefit-icon-custom {
+            width: 40px;
+            height: 40px;
+            background: hsla(168, 76%, 42%, 0.1);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--bs-secondary);
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .benefits-image {
+            width: 100%;
+            min-height: 300px;
+            background: var(--gradient-hero);
+            border-radius: 1rem;
+            box-shadow: var(--shadow-glow);
+            aspect-ratio: 1 / 1;
+        }
+
+        /* ======= CTA ======= */
+        .cta {
+            background: var(--gradient-ocean);
+            color: white;
+            text-align: center;
+            padding: 5rem 1rem;
+        }
+
+        .cta h2 {
+            font-size: clamp(2rem, 4vw, 2.5rem);
+        }
