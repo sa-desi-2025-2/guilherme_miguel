@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Roteiro Personalizado - Brasil (Bootstrap)</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/mapapag.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
 </head>
+
 <body>
     <header class="top-bar border-bottom shadow-sm">
         <div class="container-fluid d-flex justify-content-between align-items-center py-2 px-md-5">
@@ -15,10 +18,14 @@
                 <i class="fas fa-arrow-left me-1"></i> Voltar ao Dashboard
             </a>
             <div class="actions d-flex gap-2">
-                <button class="btn btn-outline-secondary btn-sm d-flex align-items-center"><i class="fas fa-share-alt me-1"></i> Compartilhar</button>
-                <button class="btn btn-outline-secondary btn-sm d-flex align-items-center"><i class="fas fa-file-export me-1"></i> Exportar</button>
-                <button class="btn btn-outline-secondary btn-sm d-flex align-items-center"><i class="fas fa-edit me-1"></i> Editar</button>
-                <button class="btn btn-danger btn-sm primary-btn d-flex align-items-center"><i class="fas fa-times me-1"></i> Excluir</button>
+                <button class="btn btn-outline-secondary btn-sm d-flex align-items-center"><i
+                        class="fas fa-share-alt me-1"></i> Compartilhar</button>
+                <button class="btn btn-outline-secondary btn-sm d-flex align-items-center"><i
+                        class="fas fa-file-export me-1"></i> Exportar</button>
+                <button class="btn btn-outline-secondary btn-sm d-flex align-items-center"><i
+                        class="fas fa-edit me-1"></i> Editar</button>
+                <button class="btn btn-danger btn-sm primary-btn d-flex align-items-center"><i
+                        class="fas fa-times me-1"></i> Excluir</button>
             </div>
         </div>
     </header>
@@ -32,7 +39,7 @@
 
         <section class="summary-cards p-3 p-md-4 rounded-3 shadow mb-4">
             <div class="row row-cols-1 row-cols-md-3 g-3">
-                
+
                 <div class="col">
                     <div class="card-item d-flex align-items-center gap-3">
                         <i class="fas fa-calendar-alt p-3 rounded-circle icon-calendar"></i>
@@ -66,17 +73,12 @@
         </section>
 
         <section class="main-content-grid row g-4">
-            
+
             <div class="col-lg-7">
                 <div class="card map-card h-100 shadow-sm">
                     <div class="card-body">
                         <h2 class="card-title h5 fw-bold">Mapa do Roteiro</h2>
-                        <div class="map-placeholder border rounded position-relative d-flex justify-content-center align-items-center bg-light">
-                             <i class="fas fa-map-marked-alt fa-3x text-muted"></i>
-                            <div class="map-controls position-absolute top-0 start-0 m-2 d-flex flex-column gap-1">
-                                <button class="map-zoom btn btn-light btn-sm fw-bold">+</button>
-                                <button class="map-zoom btn btn-light btn-sm fw-bold">-</button>
-                            </div>
+                        <div id="map">
                         </div>
                         <p class="points-of-interest-label text-muted mt-3">Pontos de Interesse: (Lista de pontos)</p>
                     </div>
@@ -117,14 +119,16 @@
                         <div class="forecast">
                             <p class="forecast-header text-muted mb-2">Próximos dias</p>
                             <ul class="list-unstyled">
-                                <li class="day-forecast d-flex justify-content-between align-items-center py-2 border-bottom">
+                                <li
+                                    class="day-forecast d-flex justify-content-between align-items-center py-2 border-bottom">
                                     <span>dom, 9</span>
                                     <div class="temp-day d-flex align-items-center gap-2 fw-bold">
                                         <i class="fas fa-sun forecast-icon text-warning"></i>
                                         <span>21°C</span>
                                     </div>
                                 </li>
-                                <li class="day-forecast d-flex justify-content-between align-items-center py-2 border-bottom">
+                                <li
+                                    class="day-forecast d-flex justify-content-between align-items-center py-2 border-bottom">
                                     <span>seg, 10</span>
                                     <div class="temp-day d-flex align-items-center gap-2 fw-bold">
                                         <i class="fas fa-cloud forecast-icon text-info"></i>
@@ -145,7 +149,10 @@
             </div>
         </section>
     </main>
-    
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="../js/apis/leafLets.js"></script>
 </body>
+
 </html>
