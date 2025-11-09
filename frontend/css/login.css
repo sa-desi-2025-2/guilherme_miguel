@@ -1,136 +1,110 @@
- /* === Fundo === */
- body {
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: "Poppins", sans-serif;
-    background: linear-gradient(135deg, #0076ff, #2ccf87);
-  }
+  /* Variáveis de cor e gradientes */
+        :root {
+            --primary-blue: #0b84f3;
+            --secondary-green: #00c6a7;
+            --gradient-background: linear-gradient(158deg, rgba(0, 100, 194, 1) 0%, rgba(56, 190, 147, 1) 50%, rgba(255, 240, 207, 1) 100%);
+            --gradient-logo: linear-gradient(135deg, var(--primary-blue), var(--secondary-green));
+            --gradient-button: linear-gradient(135deg, var(--primary-blue), var(--secondary-green));
+        }
 
-  /* === Card central === */
-  .login-container {
-    display: block;
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    width: 360px;
-    padding: 40px 32px;
-    text-align: center;
-    position: relative;
-  }
+        /* Estilos de corpo para centralização */
+        body {
+            height: 100vh;
+            background: var(--gradient-background);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+        }
 
-  .login-container input {
-    display: block; 
-}
+        /* Container geral */
+        .container-custom {
+            width: 100%;
+            max-width: 420px;
+        }
 
-  /* === Botão voltar === */
-  .voltar {
-    position: absolute;
-    top: 16px;
-    left: 16px;
-    color: #0076ff;
-    font-size: 13px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
+        /* Botão Voltar (Estilizado como um utilitário do Bootstrap) */
+        .back-btn {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-weight: 500;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .back-btn:hover {
+            opacity: 0.8;
+        }
 
-  .voltar span {
-    font-size: 14px;
-  }
+        /* Cartão (Usando classes do Bootstrap: card, p-4, shadow-lg) */
+        .card-custom {
+            border-radius: 16px;
+        }
 
-  /* === Ícone avião === */
-  .icon {
-    background: linear-gradient(135deg, #0076ff, #2ccf87);
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 16px;
-    color: white;
-    font-size: 22px;
-  }
+        /* Logo (Estilo customizado para o gradiente e tamanho) */
+        .logo-custom {
+            width: 64px;
+            height: 64px;
+            background: var(--gradient-logo);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: #fff;
+            margin: 0 auto 0.75rem;
+        }
 
-  /* === Títulos === */
-  h2 {
-    margin: 0;
-    font-size: 20px;
-    color: #222;
-  }
+        /* Tabs (Usando nav-pills e classes flex) */
+        .tabs {
+            background: #f3f4f6; /* bg-light */
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .tab-btn {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s;
+            color: #495057; /* Texto escuro padrão */
+        }
+        .tab-btn.active {
+            background: #fff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            color: #212529; /* Texto mais escuro para o ativo */
+        }
+        
+        /* Input focus color */
+        .form-control:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 0.25rem rgba(11, 132, 243, 0.25);
+        }
 
-  p {
-    color: #888;
-    font-size: 13px;
-    margin: 6px 0 24px;
-  }
-
-  /* === Abas (Entrar / Criar Conta) === */
-  .tabs {
-    display: flex;
-    background: #eef3f7;
-    border-radius: 8px;
-    margin-bottom: 24px;
-    overflow: hidden;
-  }
-
-  .tab {
-    flex: 1;
-    padding: 10px 0;
-    font-size: 14px;
-    cursor: pointer;
-    color: #666;
-    transition: 0.3s;
-  }
-
-  .tab.active {
-    background: #fff;
-    color: #222;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-
-  /* === Inputs === */
-  label {
-    display: block;
-    text-align: left;
-    font-size: 13px;
-    color: #444;
-    margin-bottom: 4px;
-  }
-
-  input {
-    width: 100%;
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    outline: none;
-    font-size: 14px;
-    margin-bottom: 16px;
-    transition: border-color 0.2s;
-  }
-
-  input:focus {
-    border-color: #0076ff;
-  }
-
-  /* === Botão principal === */
-  .btn {
-    width: 100%;
-    background: linear-gradient(90deg, #0076ff, #2ccf87);
-    color: white;
-    border: none;
-    padding: 10px 0;
-    font-size: 15px;
-    font-weight: 500;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: opacity 0.3s;
-  }
-
-  .btn:hover {
-    opacity: 0.9;
-  }
+        /* Botão Principal */
+        .submit-btn {
+            width: 100%;
+            background: var(--gradient-button);
+            color: #fff;
+            font-weight: 600;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .submit-btn:hover {
+            opacity: 0.9;
+            color: #fff; /* Garante que a cor do texto permaneça branca */
+        }
+        
+        /* Formulários */
+        .form-custom {
+            display: none;
+        }
+        .form-custom.active {
+            display: block;
+        }
