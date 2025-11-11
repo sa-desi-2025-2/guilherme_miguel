@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login - Planejador de Viagens</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/login.css">
@@ -30,23 +30,41 @@
                 <button class="tab-btn" data-tab="signup">Criar Conta</button>
             </div>
 
+            <div id="mensagem" class="text-center text-danger mb-3"></div>
+
+            <!-- Formulário de Login -->
             <form id="login" class="form-custom active text-start">
                 <div class="mb-3">
                     <label for="email" class="form-label">E-mail</label>
                     <input type="email" id="email" class="form-control" placeholder="seu@email.com" required>
                 </div>
                 <div class="mb-4">
-                    <label for="password" class="form-label">Senha</label>
-                    <input type="password" id="password" class="form-control" placeholder="••••••••" required>
+                    <label for="senha" class="form-label">Senha</label>
+                    <input type="password" id="senha" class="form-control" placeholder="••••••••" required>
                 </div>
 
+                <div class="social-login mt-3 text-center">
+                    <p class="text-muted mb-2">Ou entre com</p>
+                    <button id="login-google" class="btn btn-light border me-2">
+                      <i class="bi bi-google"></i> Google
+                    </button>
+                    <button id="login-github" class="btn btn-light border me-2">
+                      <i class="bi bi-github"></i> GitHub
+                    </button>
+                    <button id="login-microsoft" class="btn btn-light border">
+                      <i class="bi bi-microsoft"></i> Microsoft
+                    </button>
+                </div>
+                
                 <button type="submit" class="submit-btn mb-2">Entrar</button>
+                
             </form>
 
+            <!-- Formulário de Cadastro -->
             <form id="signup" class="form-custom text-start">
                 <div class="mb-3">
-                    <label for="name" class="form-label">Nome</label>
-                    <input type="text" id="name" class="form-control" placeholder="Seu nome" required>
+                    <label for="nome" class="form-label">Nome</label>
+                    <input type="text" id="nome" class="form-control" placeholder="Seu nome" required>
                 </div>
                 <div class="mb-3">
                     <label for="signup-email" class="form-label">E-mail</label>
@@ -55,17 +73,33 @@
                 <div class="mb-2">
                     <label for="signup-password" class="form-label">Senha</label>
                     <input type="password" id="signup-password" class="form-control" placeholder="••••••••" minlength="8" required>
-                    <div class="form-text text-muted small mt-1">
-                        Mínimo 8 caracteres, incluindo maiúscula, minúscula, número e símbolo.
-                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="confirm-password" class="form-label">Confirmar Senha</label>
+                    <input type="password" id="confirm-password" class="form-control" placeholder="••••••••" minlength="8" required>
                 </div>
 
-                <button type="submit" class="submit-btn mt-3">Criar Conta</button>
+                <div class="social-login mt-3 text-center">
+                    <p class="text-muted mb-2">Ou entre com</p>
+                    <button id="login-google" class="btn btn-light border me-2">
+                      <i class="bi bi-google"></i> Google
+                    </button>
+                    <button id="login-github" class="btn btn-light border me-2">
+                      <i class="bi bi-github"></i> GitHub
+                    </button>
+                    <button id="login-microsoft" class="btn btn-light border">
+                      <i class="bi bi-microsoft"></i> Microsoft
+                    </button>
+                </div>
+
+                <button type="submit" class="submit-btn mt-2">Criar Conta</button>
             </form>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.auth0.com/js/auth0-spa-js/2.1/auth0-spa-js.production.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="../js/login.js"></script>
+
 </body>
 </html>
