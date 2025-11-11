@@ -113,6 +113,9 @@ No terminal abra a pasta `Backend/`:
 ```bash
 cd Backend
 ```
+```bash
+cd OtimizeTour
+```
 
 Instale as dependencias nescessarias:
 ```bash
