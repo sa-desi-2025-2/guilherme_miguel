@@ -13,47 +13,67 @@ tabs.forEach(tab => {
   });
 });
 
-// ===============================
-// LOGIN NORMAL (via backend local)
-// ===============================
+//------------------------------------- Funções auxiliares -------------------------------------
+
+// Gera um hash SHA-256 da senha em Base64
+async function gerarHash(senha) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(senha);
+  const hashBuffer = await crypto.subtle.digest("SHA-5", data);
+  return btoa(String.fromCharCode(...new Uint8Array(hashBuffer))); // Base64
+}
+
+//------------------------------------- Login NORMAL -------------------------------------
+
 document.getElementById("login").addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  const email = document.getElementById("email").value;
-  const senha = document.getElementById("senha").value;
+  const email = document.getElementById("email").value.trim();
+  const senha = document.getElementById("senha").value.trim();
 
   mensagem.innerText = "Verificando...";
 
   try {
-    const response = await fetch(`${API_URL}/usuarios/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, senha }),
-    });
+    const response = await fetch(`${API_URL}/usuarios`);
+    if (!response.ok) throw new Error("Erro ao buscar usuários.");
 
-    if (response.ok) {
-      const data = await response.json();
+    const usuarios = await response.json();
+    const usuario = usuarios.find((u) => u.email === email);
+
+    if (!usuario) {
+      mensagem.classList.remove("text-success");
+      mensagem.classList.add("text-danger");
+      mensagem.innerText = "Usuário não encontrado.";
+      return;
+    }
+
+    // 🔐 Gera hash da senha digitada e compara com o armazenado
+    const hashDigitado = await gerarHash(senha);
+
+    if (hashDigitado === usuario.senhaHash) {
       mensagem.classList.remove("text-danger");
       mensagem.classList.add("text-success");
-      mensagem.innerText = `Bem-vindo, ${data.nome}!`;
-      // Redirecionar após login se quiser:
-      // window.location.href = "../pages/home.html";
+      mensagem.innerText = `Bem-vindo, ${usuario.nome}!`;
+
+      setTimeout(() => {
+        window.location.href = "http://127.0.0.1:5500/frontend/pages/roteiro-page.html";
+      }, 1000);
     } else {
       mensagem.classList.remove("text-success");
       mensagem.classList.add("text-danger");
-      mensagem.innerText = "Usuário ou senha incorretos.";
+      mensagem.innerText = "Senha incorreta.";
     }
+
   } catch (error) {
-    console.error("Erro na requisição:", error);
+    console.error("Erro:", error);
     mensagem.classList.remove("text-success");
     mensagem.classList.add("text-danger");
     mensagem.innerText = "Erro ao conectar com o servidor.";
   }
 });
 
-// ===============================
-// CADASTRO NORMAL (via backend local)
-// ===============================
+//------------------------------------- Cadastro NORMAL -------------------------------------
+
 document.getElementById("signup").addEventListener("submit", async (event) => {
   event.preventDefault();
 
@@ -72,10 +92,13 @@ document.getElementById("signup").addEventListener("submit", async (event) => {
   mensagem.innerText = "Criando usuário...";
 
   try {
+    // 🔐 Gera hash da senha antes de enviar
+    const senhaHash = await gerarHash(senha);
+
     const response = await fetch(`${API_URL}/usuarios`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nome, email, senhaHash: senha }),
+      body: JSON.stringify({ nome, email, senhaHash }),
     });
 
     if (response.ok) {
@@ -97,17 +120,15 @@ document.getElementById("signup").addEventListener("submit", async (event) => {
   }
 });
 
-// ===============================
-// LOGIN SOCIAL (via Auth0)
-// ===============================
+//------------------------------------- Login SOCIAL (Auth0) -------------------------------------
+
 (async function iniciarAuth0() {
   const API_DOMAIN = "dev-qkd234rcx7cfybfs.us.auth0.com";
   const CLIENT_ID = "GwZrceMoqNue4YSR5oVihfMgXqLwrEhw";
   const REDIRECT_URI = "http://127.0.0.1:5500/frontend/pages/login-page.html";
 
-  // Espera carregar a biblioteca do Auth0
   if (!window.auth0 || !window.auth0.createAuth0Client) {
-    console.error("Auth0 não carregado corretamente.");
+    console.error("⚠️ Biblioteca Auth0 não carregada.");
     return;
   }
 
@@ -117,7 +138,6 @@ document.getElementById("signup").addEventListener("submit", async (event) => {
     authorizationParams: { redirect_uri: REDIRECT_URI },
   });
 
-  // Botões de login social
   document.getElementById("login-google").addEventListener("click", async () => {
     await auth0.loginWithRedirect({
       authorizationParams: { connection: "google-oauth2" },
@@ -126,37 +146,45 @@ document.getElementById("signup").addEventListener("submit", async (event) => {
 
   document.getElementById("login-github").addEventListener("click", async () => {
     await auth0.loginWithRedirect({
-      authorizationParams: { connection: "github" },
+      authorizationParams: { connection: "GitHub" },
     });
   });
 
-  document.getElementById("login-microsoft").addEventListener("click", async () => {
+  document.getElementById("login-facebook").addEventListener("click", async () => {
     await auth0.loginWithRedirect({
-      authorizationParams: { connection: "windowslive" },
+      authorizationParams: { connection: "Facebook" },
     });
   });
 
-  // Verifica retorno de autenticação social
-  window.addEventListener("load", async () => {
-    try {
-      const query = window.location.search;
-      if (query.includes("code=") && query.includes("state=")) {
-        await auth0.handleRedirectCallback();
-        window.history.replaceState({}, document.title, REDIRECT_URI);
-      }
+  const query = window.location.search;
 
-      const isAuthenticated = await auth0.isAuthenticated();
-      if (isAuthenticated) {
-        const user = await auth0.getUser();
-        mensagem.classList.remove("text-danger");
-        mensagem.classList.add("text-success");
-        mensagem.innerText = `Bem-vindo, ${user.name || user.email}!`;
-      }
+  if (query.includes("code=") && query.includes("state=")) {
+    console.log("🔁 Callback detectado — processando Auth0...");
+    try {
+      await auth0.handleRedirectCallback();
+      console.log("✅ Callback tratado com sucesso!");
+      window.history.replaceState({}, document.title, REDIRECT_URI);
     } catch (err) {
-      console.error("Erro Auth0:", err);
-      mensagem.classList.remove("text-success");
-      mensagem.classList.add("text-danger");
-      mensagem.innerText = "Erro ao autenticar com Auth0.";
+      console.error("❌ Erro ao tratar callback:", err);
+      mensagem.innerText = "Erro no retorno do login.";
+      return;
     }
-  });
+  }
+
+  const isAuthenticated = await auth0.isAuthenticated();
+  console.log("👤 isAuthenticated:", isAuthenticated);
+
+  if (isAuthenticated) {
+    const user = await auth0.getUser();
+    console.log("✅ Usuário logado:", user);
+
+    mensagem.classList.remove("text-danger");
+    mensagem.classList.add("text-success");
+    mensagem.innerText = `Bem-vindo, ${user.name || user.email}!`;
+
+    window.location.replace("http://127.0.0.1:5500/frontend/pages/roteiro-page.html");
+    return;
+  } else {
+    console.log("Usuário ainda não autenticado.");
+  }
 })();
