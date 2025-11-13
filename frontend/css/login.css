@@ -108,3 +108,51 @@
         .form-custom.active {
             display: block;
         }
+
+/* Botões sociais */
+.social-btn {
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    font-weight: 500;
+    transition: all 0.25s ease;
+}
+
+.social-btn i {
+    font-size: 18px;
+}
+
+/* Hover elegante */
+.social-btn:hover {
+    transform: translateY(-2px);
+    background: #f7f7f7;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* Estilo individual dos provedores */
+#login-github {
+    border-color: #333;
+    color: #333;
+}
+#login-github:hover {
+    background: #333;
+    color: #fff;
+}
+
+#login-facebook {
+    border-color: #1877f2;
+    color: #1877f2;
+}
+#login-facebook:hover {
+    background: #1877f2;
+    color: #fff;
+}
+
+#login-google {
+    border-color: #dadce0;
+}
+#login-google:hover {
+    background: #f1f1f1;
+}
+
