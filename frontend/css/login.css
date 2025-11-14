@@ -1,4 +1,3 @@
-  /* Variáveis de cor e gradientes */
         :root {
             --primary-blue: #0b84f3;
             --secondary-green: #00c6a7;
@@ -7,7 +6,6 @@
             --gradient-button: linear-gradient(135deg, var(--primary-blue), var(--secondary-green));
         }
 
-        /* Estilos de corpo para centralização */
         body {
             height: 100vh;
             background: var(--gradient-background);
@@ -18,13 +16,11 @@
             margin: 0;
         }
 
-        /* Container geral */
         .container-custom {
             width: 100%;
             max-width: 420px;
         }
 
-        /* Botão Voltar (Estilizado como um utilitário do Bootstrap) */
         .back-btn {
             background: transparent;
             border: none;
@@ -33,16 +29,15 @@
             cursor: pointer;
             transition: opacity 0.2s;
         }
+
         .back-btn:hover {
             opacity: 0.8;
         }
 
-        /* Cartão (Usando classes do Bootstrap: card, p-4, shadow-lg) */
         .card-custom {
             border-radius: 16px;
         }
 
-        /* Logo (Estilo customizado para o gradiente e tamanho) */
         .logo-custom {
             width: 64px;
             height: 64px;
@@ -56,12 +51,12 @@
             margin: 0 auto 0.75rem;
         }
 
-        /* Tabs (Usando nav-pills e classes flex) */
         .tabs {
-            background: #f3f4f6; /* bg-light */
+            background: #f3f4f6;
             border-radius: 10px;
             overflow: hidden;
         }
+
         .tab-btn {
             flex: 1;
             border: none;
@@ -70,21 +65,20 @@
             font-weight: 500;
             cursor: pointer;
             transition: background 0.3s;
-            color: #495057; /* Texto escuro padrão */
+            color: #495057;
         }
+
         .tab-btn.active {
             background: #fff;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-            color: #212529; /* Texto mais escuro para o ativo */
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            color: #212529;
         }
-        
-        /* Input focus color */
+
         .form-control:focus {
             border-color: var(--primary-blue);
             box-shadow: 0 0 0 0.25rem rgba(11, 132, 243, 0.25);
         }
 
-        /* Botão Principal */
         .submit-btn {
             width: 100%;
             background: var(--gradient-button);
@@ -96,63 +90,67 @@
             cursor: pointer;
             transition: opacity 0.2s;
         }
+
         .submit-btn:hover {
             opacity: 0.9;
-            color: #fff; /* Garante que a cor do texto permaneça branca */
+            color: #fff;
         }
-        
-        /* Formulários */
+
         .form-custom {
             display: none;
         }
+
         .form-custom.active {
             display: block;
         }
 
-/* Botões sociais */
-.social-btn {
-    background: #fff;
-    border-radius: 10px;
-    border: 1px solid #ddd;
-    padding: 10px;
-    font-weight: 500;
-    transition: all 0.25s ease;
-}
+        .social-btn {
+            background: #fff;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            font-weight: 500;
+            transition: all 0.25s ease;
+        }
 
-.social-btn i {
-    font-size: 18px;
-}
+        .social-btn i {
+            font-size: 18px;
+        }
 
-/* Hover elegante */
-.social-btn:hover {
-    transform: translateY(-2px);
-    background: #f7f7f7;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
+        .social-btn:hover {
+            transform: translateY(-2px);
+            background: #f7f7f7;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
 
-/* Estilo individual dos provedores */
-#login-github {
-    border-color: #333;
-    color: #333;
-}
-#login-github:hover {
-    background: #333;
-    color: #fff;
-}
+        #login-github {
+            width: 20%;
+            border-color: #333;
+            color: #333;
+        }
 
-#login-facebook {
-    border-color: #1877f2;
-    color: #1877f2;
-}
-#login-facebook:hover {
-    background: #1877f2;
-    color: #fff;
-}
+        #login-github:hover {
+            background: #333;
+            color: #fff;
+        }
 
-#login-google {
-    border-color: #dadce0;
-}
-#login-google:hover {
-    background: #f1f1f1;
-}
+        #login-facebook {
+            width: 20%;
+            border-color: #1877f2;
+            color: #1877f2;
+        }
 
+        #login-facebook:hover {
+            background: #1877f2;
+            color: #fff;
+        }
+
+        #login-google {
+            width: 20%;
+            border-color: #dd5d5d;
+        }
+
+        #login-google:hover {
+            background: #dd5d5d;
+            color: #fff;
+        }

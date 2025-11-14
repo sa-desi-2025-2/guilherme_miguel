@@ -13,14 +13,14 @@ tabs.forEach(tab => {
   });
 });
 
-//------------------------------------- Funções auxiliares -------------------------------------
-
-// Gera um hash SHA-256 da senha em Base64
+//------------------------------------- Função de Hash -------------------------------------
 async function gerarHash(senha) {
   const encoder = new TextEncoder();
   const data = encoder.encode(senha);
-  const hashBuffer = await crypto.subtle.digest("SHA-5", data);
-  return btoa(String.fromCharCode(...new Uint8Array(hashBuffer))); // Base64
+  const hashBuffer = await crypto.subtle.digest("SHA-512", data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+  return hashHex;
 }
 
 //------------------------------------- Login NORMAL -------------------------------------
@@ -47,7 +47,6 @@ document.getElementById("login").addEventListener("submit", async (event) => {
       return;
     }
 
-    // 🔐 Gera hash da senha digitada e compara com o armazenado
     const hashDigitado = await gerarHash(senha);
 
     if (hashDigitado === usuario.senhaHash) {
@@ -62,6 +61,7 @@ document.getElementById("login").addEventListener("submit", async (event) => {
       mensagem.classList.remove("text-success");
       mensagem.classList.add("text-danger");
       mensagem.innerText = "Senha incorreta.";
+      console.log(hashDigitado, "  /  ", usuario.senhaHash);
     }
 
   } catch (error) {
@@ -92,7 +92,6 @@ document.getElementById("signup").addEventListener("submit", async (event) => {
   mensagem.innerText = "Criando usuário...";
 
   try {
-    // 🔐 Gera hash da senha antes de enviar
     const senhaHash = await gerarHash(senha);
 
     const response = await fetch(`${API_URL}/usuarios`, {
@@ -128,7 +127,7 @@ document.getElementById("signup").addEventListener("submit", async (event) => {
   const REDIRECT_URI = "http://127.0.0.1:5500/frontend/pages/login-page.html";
 
   if (!window.auth0 || !window.auth0.createAuth0Client) {
-    console.error("⚠️ Biblioteca Auth0 não carregada.");
+    console.error(" Biblioteca Auth0 não carregada.");
     return;
   }
 
@@ -159,13 +158,13 @@ document.getElementById("signup").addEventListener("submit", async (event) => {
   const query = window.location.search;
 
   if (query.includes("code=") && query.includes("state=")) {
-    console.log("🔁 Callback detectado — processando Auth0...");
+    console.log(" Callback detectado — processando Auth0...");
     try {
       await auth0.handleRedirectCallback();
-      console.log("✅ Callback tratado com sucesso!");
+      console.log(" Callback tratado com sucesso!");
       window.history.replaceState({}, document.title, REDIRECT_URI);
     } catch (err) {
-      console.error("❌ Erro ao tratar callback:", err);
+      console.error(" Erro ao tratar callback:", err);
       mensagem.innerText = "Erro no retorno do login.";
       return;
     }
@@ -176,7 +175,7 @@ document.getElementById("signup").addEventListener("submit", async (event) => {
 
   if (isAuthenticated) {
     const user = await auth0.getUser();
-    console.log("✅ Usuário logado:", user);
+    console.log(" Usuário logado:", user);
 
     mensagem.classList.remove("text-danger");
     mensagem.classList.add("text-success");
