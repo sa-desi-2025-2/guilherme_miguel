@@ -6,51 +6,47 @@ import jakarta.persistence.*;
 @Table(name = "usuarios")
 public class UsuarioModel {
 
-          @Id
-          @GeneratedValue(strategy = GenerationType.IDENTITY)
-          private Integer id;
-          private String nome;
-          private String email;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-          @Column(name = "senhaHash", nullable = false)
-          private String senhaHash;
+    private String nome;
+    private String email;
 
-          public UsuarioModel() {
-          }
+    @Column(nullable = false)
+    private String senhaHash;
 
-          //Gets
+    public UsuarioModel() {}
 
-          public Integer getId() {
-                    return id;
-          }
+    public Integer getId() {
+        return id;
+    }
 
-          public String getNome() {
-                    return nome;
-          }
+    public String getNome() {
+        return nome;
+    }
 
-          public String getEmail() {
-                    return email;
-          }
+    public String getEmail() {
+        return email;
+    }
 
-          public String getSenhaHash() {
-                    return senhaHash;
-          }
+    public String getSenhaHash() {
+        return senhaHash;
+    }
 
-          //Sets
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-          public void setId(Integer id) {
-                    this.id = id;
-          }
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
-          public void setNome(String nome) {
-                    this.nome = nome;
-          }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-          public void setEmail(String email) {
-                    this.email = email;
-          }
-
-          public void setSenhaHash(String senhaHash) {
-                    this.senhaHash = senhaHash;
-          }
+    public void setSenhaHash(String senhaHash) {
+        this.senhaHash = senhaHash;
+    }
 }
