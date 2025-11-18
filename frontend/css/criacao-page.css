@@ -1,0 +1,61 @@
+body {
+          background: linear-gradient(158deg, rgba(0, 100, 194, 1) 0%, rgba(56, 190, 147, 1) 50%, rgba(255, 240, 207, 1) 100%);
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          font-family: "Inter", sans-serif;
+          color: #ffffff;
+}
+
+.top-section {
+          text-align: center;
+          margin-bottom: 20px;
+}
+
+.top-section .badge-top {
+          background-color: #e6f2ff;
+          color: #1b85f7;
+          font-weight: 600;
+          border-radius: 20px;
+          padding: 8px 14px;
+          font-size: 0.9rem;
+          display: inline-block;
+}
+
+.top-section h1 {
+          font-weight: 700;
+          margin-top: 15px;
+}
+
+.top-section p {
+          font-weight: 500;
+          color: #ffffff;
+          margin-bottom: 0;
+}
+
+.card {
+          border: none;
+          border-radius: 15px;
+          box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+          width: 100%;
+          max-width: 600px;
+}
+
+.form-label {
+          font-weight: 600;
+}
+
+.btn-custom {
+          background: linear-gradient(to right, rgba(0, 100, 194, 1) 0%, rgba(56, 190, 147, 1));
+          color: white;
+          font-weight: 600;
+          border: none;
+          border-radius: 8px;
+          transition: opacity 0.3s ease;
+}
+
+.btn-custom:hover {
+          opacity: 0.9;
+}

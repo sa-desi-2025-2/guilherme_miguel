@@ -154,3 +154,33 @@
             background: #dd5d5d;
             color: #fff;
         }
+
+        /* -------- TOAST CUSTOM -------- */
+.custom-toast {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background: #ffffff;
+    color: #000;
+    padding: 12px 18px;
+    border-radius: 8px;
+    border-left: 5px solid #28a745;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    opacity: 0;
+    transform: translateX(-140%);
+    transition: transform 0.45s ease, opacity 0.45s ease;
+    z-index: 9999;
+    font-size: 14px;
+    max-width: 260px;
+}
+
+.custom-toast.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.custom-toast.error {
+    border-left-color: #dc3545;
+}
+
+/* SEU CSS AQUI (restante permanece igual) */

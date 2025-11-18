@@ -53,14 +53,6 @@ if (logoutBtn) {
   });
 }
 
-
-const gerarBtn = document.querySelector(".btn-primary");
-if (gerarBtn) {
-  gerarBtn.addEventListener("click", () => {
-    alert("Função para gerar roteiro personalizado será implementada aqui!");
-  });
-}
-
 const deleteBtn = document.querySelector(".btn-delete");
 if (deleteBtn) {
   deleteBtn.addEventListener("click", () => {
