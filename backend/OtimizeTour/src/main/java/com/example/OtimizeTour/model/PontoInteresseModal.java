@@ -3,6 +3,7 @@ package com.example.OtimizeTour.model;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "pontosinteresse")
 public class PontoInteresseModal {
 
     @Id

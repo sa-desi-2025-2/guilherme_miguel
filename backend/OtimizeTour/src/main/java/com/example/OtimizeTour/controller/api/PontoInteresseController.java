@@ -7,8 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/pontos")
-@CrossOrigin(origins = "*")
+@RequestMapping("/pontosInteresse")
 public class PontoInteresseController {
 
     private final PontoInteresseService service;
