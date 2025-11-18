@@ -1,6 +1,6 @@
 package com.example.OtimizeTour.controller.api;
 
-import com.example.OtimizeTour.model.CategoriaModal;
+import com.example.OtimizeTour.model.CategoriaModel;
 import com.example.OtimizeTour.service.CategoriaService;
 
 
@@ -19,17 +19,17 @@ public class CategoriaController {
     }
 
     @PostMapping
-    public CategoriaModal criarCategoria(@RequestBody CategoriaModal categoria) {
+    public CategoriaModel criarCategoria(@RequestBody CategoriaModel categoria) {
         return service.cadastrarCategoria(categoria);
     }
 
     @GetMapping
-    public List<CategoriaModal> listar() {
+    public List<CategoriaModel> listar() {
         return service.listarCategorias();
     }
 
     @GetMapping("/{id}")
-    public CategoriaModal buscar(@PathVariable Integer id) {
+    public CategoriaModel buscar(@PathVariable Integer id) {
         return service.buscarPorId(id);
     }
 

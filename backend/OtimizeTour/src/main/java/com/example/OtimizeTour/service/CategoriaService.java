@@ -1,5 +1,5 @@
 package com.example.OtimizeTour.service;
-import com.example.OtimizeTour.model.CategoriaModal;
+import com.example.OtimizeTour.model.CategoriaModel;
 import com.example.OtimizeTour.repository.CategoriaRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,15 +15,15 @@ public class CategoriaService {
     }
 
     // parecido com o "cadastrarCategoria()" do UML
-    public CategoriaModal cadastrarCategoria(CategoriaModal categoria) {
+    public CategoriaModel cadastrarCategoria(CategoriaModel categoria) {
         return repository.save(categoria);
     }
 
-    public List<CategoriaModal> listarCategorias() {
+    public List<CategoriaModel> listarCategorias() {
         return repository.findAll();
     }
 
-    public CategoriaModal buscarPorId(Integer id) {
+    public CategoriaModel buscarPorId(Integer id) {
         return repository.findById(id).orElse(null);
     }
 

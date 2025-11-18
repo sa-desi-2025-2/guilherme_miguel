@@ -1,7 +1,8 @@
 package com.example.OtimizeTour.service;
-import com.example.OtimizeTour.model.PontoInteresseModal;
-import com.example.OtimizeTour.repository.PontoInteresseRepository;
 
+import com.example.OtimizeTour.model.CategoriaModel;
+import com.example.OtimizeTour.model.PontoInteresseModel;
+import com.example.OtimizeTour.repository.PontoInteresseRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,28 +11,37 @@ import java.util.List;
 public class PontoInteresseService {
 
     private final PontoInteresseRepository repository;
+    private final CategoriaService categoriaService;
 
-    public PontoInteresseService(PontoInteresseRepository repository) {
+    public PontoInteresseService(PontoInteresseRepository repository, CategoriaService categoriaService) {
         this.repository = repository;
+        this.categoriaService = categoriaService;
     }
 
-    public List<PontoInteresseModal> listar() {
+    public List<PontoInteresseModel> listar() {
         return repository.findAll();
     }
 
-    public PontoInteresseModal buscarPorId(Integer id) {
+    public PontoInteresseModel buscarPorId(Integer id) {
         return repository.findById(id).orElse(null);
     }
 
-    public PontoInteresseModal salvar(PontoInteresseModal ponto) {
+    public PontoInteresseModel salvar(PontoInteresseModel ponto) {
         return repository.save(ponto);
     }
 
-    public PontoInteresseModal atualizar(Integer id, PontoInteresseModal novoPonto) {
+    public PontoInteresseModel salvarComCategoria(PontoInteresseModel ponto, Integer categoriaId) {
+        CategoriaModel categoria = categoriaService.buscarPorId(categoriaId);
+        ponto.setCategoria(categoria);
+        return repository.save(ponto);
+    }
+
+    public PontoInteresseModel atualizar(Integer id, PontoInteresseModel novoPonto) {
         return repository.findById(id).map(p -> {
             p.setNome(novoPonto.getNome());
             p.setDescricao(novoPonto.getDescricao());
             p.setAvaliacaoMedia(novoPonto.getAvaliacaoMedia());
+            p.setCategoria(novoPonto.getCategoria());
             return repository.save(p);
         }).orElse(null);
     }
@@ -43,7 +53,7 @@ public class PontoInteresseService {
         }).orElse(false);
     }
 
-    public PontoInteresseModal avaliar(Integer id, float avaliacao) {
+    public PontoInteresseModel avaliar(Integer id, float avaliacao) {
         return repository.findById(id).map(p -> {
             p.avaliar(avaliacao);
             return repository.save(p);

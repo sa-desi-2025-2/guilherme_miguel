@@ -1,7 +1,7 @@
 package com.example.OtimizeTour.controller.api;
-import com.example.OtimizeTour.model.PontoInteresseModal;
-import com.example.OtimizeTour.service.PontoInteresseService;
 
+import com.example.OtimizeTour.model.PontoInteresseModel;
+import com.example.OtimizeTour.service.PontoInteresseService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,22 +17,29 @@ public class PontoInteresseController {
     }
 
     @GetMapping
-    public List<PontoInteresseModal> listar() {
+    public List<PontoInteresseModel> listar() {
         return service.listar();
     }
 
     @GetMapping("/{id}")
-    public PontoInteresseModal buscar(@PathVariable Integer id) {
+    public PontoInteresseModel buscar(@PathVariable Integer id) {
         return service.buscarPorId(id);
     }
 
     @PostMapping
-    public PontoInteresseModal criar(@RequestBody PontoInteresseModal ponto) {
+    public PontoInteresseModel criar(@RequestBody PontoInteresseModel ponto) {
         return service.salvar(ponto);
     }
 
+    @PostMapping("/categoria/{categoriaId}")
+    public PontoInteresseModel criarComCategoria(
+            @PathVariable Integer categoriaId,
+            @RequestBody PontoInteresseModel ponto) {
+        return service.salvarComCategoria(ponto, categoriaId);
+    }
+
     @PutMapping("/{id}")
-    public PontoInteresseModal atualizar(@PathVariable Integer id, @RequestBody PontoInteresseModal ponto) {
+    public PontoInteresseModel atualizar(@PathVariable Integer id, @RequestBody PontoInteresseModel ponto) {
         return service.atualizar(id, ponto);
     }
 
@@ -42,7 +49,7 @@ public class PontoInteresseController {
     }
 
     @PostMapping("/{id}/avaliar")
-    public PontoInteresseModal avaliar(@PathVariable Integer id, @RequestParam float valor) {
+    public PontoInteresseModel avaliar(@PathVariable Integer id, @RequestParam float valor) {
         return service.avaliar(id, valor);
     }
 }
