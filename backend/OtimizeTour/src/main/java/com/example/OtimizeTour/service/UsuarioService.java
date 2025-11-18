@@ -5,8 +5,8 @@ import com.example.OtimizeTour.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.security.NoSuchAlgorithmException;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,14 +25,14 @@ public class UsuarioService {
     }
 
     public Optional<UsuarioModel> buscarPorEmail(String email) {
-          return usuarioRepository.findAll().stream()
-                  .filter(usuario -> usuario.getEmail().equalsIgnoreCase(email))
-                  .findFirst();
-      }
-      
+        return usuarioRepository.findAll().stream()
+                .filter(u -> u.getEmail().equalsIgnoreCase(email))
+                .findFirst();
+    }
 
     public UsuarioModel salvar(UsuarioModel usuario) {
-        usuario.setSenhaHash(gerarHashSHA512(usuario.getSenhaHash()));
+        String senhaPura = usuario.getSenhaHash();
+        usuario.setSenhaHash(gerarHashSHA512(senhaPura));
         return usuarioRepository.save(usuario);
     }
 
@@ -41,23 +41,26 @@ public class UsuarioService {
                 .map(usuario -> {
                     usuario.setNome(usuarioAtualizado.getNome());
                     usuario.setEmail(usuarioAtualizado.getEmail());
+
                     if (usuarioAtualizado.getSenhaHash() != null && !usuarioAtualizado.getSenhaHash().isEmpty()) {
                         usuario.setSenhaHash(gerarHashSHA512(usuarioAtualizado.getSenhaHash()));
                     }
+
                     return usuarioRepository.save(usuario);
                 })
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado com ID: " + id));
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
     }
 
     public void deletar(Integer id) {
         if (usuarioRepository.existsById(id)) {
             usuarioRepository.deleteById(id);
         } else {
-            throw new RuntimeException("Usuário não encontrado com ID: " + id);
+            throw new RuntimeException("Usuário não encontrado");
         }
     }
 
-    private String gerarHashSHA512(String senha) {
+    // Tornado público para ser usado no login
+    public String gerarHashSHA512(String senha) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-512");
             byte[] hashBytes = md.digest(senha.getBytes());
@@ -66,6 +69,7 @@ public class UsuarioService {
                 sb.append(String.format("%02x", b));
             }
             return sb.toString();
+
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("Erro ao gerar hash SHA-512", e);
         }

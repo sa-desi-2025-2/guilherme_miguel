@@ -1,7 +1,9 @@
 package com.example.OtimizeTour.controller.api;
 
+import com.example.OtimizeTour.dto.LoginDTO;
 import com.example.OtimizeTour.model.UsuarioModel;
 import com.example.OtimizeTour.service.UsuarioService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,48 +18,58 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
-    //Listar todos os usuários
     @GetMapping
     public ResponseEntity<List<UsuarioModel>> listarTodos() {
-        List<UsuarioModel> usuarios = usuarioService.listarTodos();
-        return ResponseEntity.ok(usuarios);
+        return ResponseEntity.ok(usuarioService.listarTodos());
     }
 
-    //Buscar Usuario por ID
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioModel> buscarPorId(@PathVariable Integer id) {
-        Optional<UsuarioModel> usuario = usuarioService.buscarPorId(id);
-        return usuario.map(ResponseEntity::ok)
-                      .orElse(ResponseEntity.notFound().build());
+        return usuarioService.buscarPorId(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    //Buscar Usuario por e-mail
     @GetMapping("/email/{email}")
     public ResponseEntity<UsuarioModel> buscarPorEmail(@PathVariable String email) {
-        Optional<UsuarioModel> usuario = usuarioService.buscarPorEmail(email);
-        return usuario.map(ResponseEntity::ok)
-                      .orElse(ResponseEntity.notFound().build());
+        return usuarioService.buscarPorEmail(email)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    //Criar novo usuário
     @PostMapping
     public ResponseEntity<UsuarioModel> criar(@RequestBody UsuarioModel usuario) {
-          UsuarioModel novoUsuario = usuarioService.salvar(usuario);
-        return ResponseEntity.ok(novoUsuario);
+        return ResponseEntity.ok(usuarioService.salvar(usuario));
     }
 
-    //Atualizar usuário existente
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
+
+        Optional<UsuarioModel> usuarioOpt = usuarioService.buscarPorEmail(loginDTO.getEmail());
+        if (usuarioOpt.isEmpty()) {
+            return ResponseEntity.status(401).body("Usuário não encontrado.");
+        }
+
+        UsuarioModel usuario = usuarioOpt.get();
+
+        String hashDigitado = usuarioService.gerarHashSHA512(loginDTO.getSenha());
+
+        if (!hashDigitado.equals(usuario.getSenhaHash())) {
+            return ResponseEntity.status(401).body("Senha incorreta.");
+        }
+
+        return ResponseEntity.ok(usuario);
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<UsuarioModel> atualizar(@PathVariable Integer id, @RequestBody UsuarioModel usuarioAtualizado) {
         try {
-            UsuarioModel usuario = usuarioService.atualizar(id, usuarioAtualizado);
-            return ResponseEntity.ok(usuario);
+            return ResponseEntity.ok(usuarioService.atualizar(id, usuarioAtualizado));
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
     }
 
-    //Deletar usuário
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletar(@PathVariable Integer id) {
         try {
