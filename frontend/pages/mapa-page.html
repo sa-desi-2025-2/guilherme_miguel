@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Roteiro Personalizado - Brasil (Bootstrap)</title>
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../css/mapapag.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -12,147 +13,57 @@
 </head>
 
 <body>
+
     <header class="top-bar border-bottom shadow-sm">
         <div class="container-fluid d-flex justify-content-between align-items-center py-2 px-md-5">
             <a href="../pages/roteiro-page.html" class="back-link text-secondary text-decoration-none">
                 <i class="fas fa-arrow-left me-1"></i> Voltar ao Dashboard
             </a>
-            <div class="actions d-flex gap-2">
-                <button class="btn btn-outline-secondary btn-sm d-flex align-items-center"><i
-                        class="fas fa-share-alt me-1"></i> Compartilhar</button>
-                <button class="btn btn-outline-secondary btn-sm d-flex align-items-center"><i
-                        class="fas fa-file-export me-1"></i> Exportar</button>
-                <button class="btn btn-outline-secondary btn-sm d-flex align-items-center"><i
-                        class="fas fa-edit me-1"></i> Editar</button>
-                <button class="btn btn-danger btn-sm primary-btn d-flex align-items-center"><i
-                        class="fas fa-times me-1"></i> Excluir</button>
-            </div>
         </div>
     </header>
 
     <main class="container py-4 px-md-5">
+
         <section class="header-content mb-4">
-            <h1 class="h3 d-inline-block me-2">Roteiro Personalizado - Brasil</h1>
+            <h1 class="h3 d-inline-block me-2">Roteiro Personalizado</h1>
             <span class="ia-tag badge text-bg-info fw-bold">IA Gerado</span>
-            <p class="location text-muted mt-1"><i class="fas fa-map-marker-alt me-1"></i> Brasil</p>
-        </section>
-
-        <section class="summary-cards p-3 p-md-4 rounded-3 shadow mb-4">
-            <div class="row row-cols-1 row-cols-md-3 g-3">
-
-                <div class="col">
-                    <div class="card-item d-flex align-items-center gap-3">
-                        <i class="fas fa-calendar-alt p-3 rounded-circle icon-calendar"></i>
-                        <div class="info d-flex flex-column">
-                            <span class="label text-muted">Período</span>
-                            <span class="value fs-5 fw-bold">10/11/2025 - 04/11/2025</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col">
-                    <div class="card-item d-flex align-items-center gap-3">
-                        <i class="fas fa-dollar-sign p-3 rounded-circle icon-money"></i>
-                        <div class="info d-flex flex-column">
-                            <span class="label text-muted">Custo Total</span>
-                            <span class="value fs-5 fw-bold">BRL 150.00</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col">
-                    <div class="card-item d-flex align-items-center gap-3">
-                        <i class="fas fa-hourglass-half p-3 rounded-circle icon-duration"></i>
-                        <div class="info d-flex flex-column">
-                            <span class="label text-muted">Duração</span>
-                            <span class="value fs-5 fw-bold duration-negative">5 dias</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </section>
 
         <section class="main-content-grid row g-4">
 
+            <!-- MAPA -->
             <div class="col-lg-7">
                 <div class="card map-card h-100 shadow-sm">
                     <div class="card-body">
                         <h2 class="card-title h5 fw-bold">Mapa do Roteiro</h2>
-                        <div id="map">
-                        </div>
-                        <p class="points-of-interest-label text-muted mt-3">Pontos de Interesse: (Lista de pontos)</p>
+                        <div id="map"></div>
                     </div>
                 </div>
             </div>
 
+            <!-- CLIMA -->
             <div class="col-lg-5">
                 <div class="card weather-card h-100 shadow-sm">
                     <div class="card-body">
-                        <h2 class="card-title h5 fw-bold">Previsão do Tempo</h2>
+                        <h2 class="card-title h5 fw-bold mb-3">Previsão do Tempo</h2>
 
-                        <div class="current-weather p-3 rounded mb-3">
-                            <div class="temp-main d-flex justify-content-between align-items-center mb-2">
-                                <span class="temp display-4 fw-medium">28°C</span>
-                                <i class="fas fa-cloud fa-2x"></i>
-                            </div>
-                            <p class="location-now text-muted mb-0">Agora em Brasil</p>
-                            <p class="condition fs-4 fw-bold mb-3">Nublado</p>
+                        <!-- Destino -->
+                        <div id="destino-info" class="mb-4"></div>
 
-                            <div class="weather-details d-flex justify-content-between pt-3 border-top">
-                                <div class="detail-item humidity d-flex align-items-center gap-2">
-                                    <i class="fas fa-tint p-2 rounded-circle"></i>
-                                    <div class="detail-info d-flex flex-column align-items-start">
-                                        <span class="value fw-bold">56%</span>
-                                        <span class="label text-muted">Umidade</span>
-                                    </div>
-                                </div>
-                                <div class="detail-item wind d-flex align-items-center gap-2">
-                                    <i class="fas fa-wind p-2 rounded-circle"></i>
-                                    <div class="detail-info d-flex flex-column align-items-start">
-                                        <span class="value fw-bold">9 KM/h</span>
-                                        <span class="label text-muted">Vento</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Clima -->
+                        <div id="clima-info"></div>
 
-                        <div class="forecast">
-                            <p class="forecast-header text-muted mb-2">Próximos dias</p>
-                            <ul class="list-unstyled">
-                                <li
-                                    class="day-forecast d-flex justify-content-between align-items-center py-2 border-bottom">
-                                    <span>dom, 9</span>
-                                    <div class="temp-day d-flex align-items-center gap-2 fw-bold">
-                                        <i class="fas fa-sun forecast-icon text-warning"></i>
-                                        <span>21°C</span>
-                                    </div>
-                                </li>
-                                <li
-                                    class="day-forecast d-flex justify-content-between align-items-center py-2 border-bottom">
-                                    <span>seg, 10</span>
-                                    <div class="temp-day d-flex align-items-center gap-2 fw-bold">
-                                        <i class="fas fa-cloud forecast-icon text-info"></i>
-                                        <span>31°C</span>
-                                    </div>
-                                </li>
-                                <li class="day-forecast d-flex justify-content-between align-items-center py-2">
-                                    <span>ter, 11</span>
-                                    <div class="temp-day d-flex align-items-center gap-2 fw-bold">
-                                        <i class="fas fa-sun forecast-icon text-warning"></i>
-                                        <span>32°C</span>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
                     </div>
                 </div>
             </div>
+
         </section>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="../js/apis/leafLets.js"></script>
-</body>
+    <script type="module" src="../js/mapapag.js"></script>
 
+</body>
 </html>
