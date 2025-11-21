@@ -70,7 +70,7 @@ document.getElementById("login").addEventListener("submit", async (event) => {
     showSuccess(`Bem-vindo, ${usuarioLogado.nome || usuarioLogado.email}!`);
 
     setTimeout(() => {
-      window.location.href = "http://127.0.0.1:5500/frontend/pages/roteiro-page.html";
+      window.location.href = "../pages/roteiro-page.html";
     }, 1500);
 
   } catch (error) {
@@ -118,7 +118,7 @@ document.getElementById("signup").addEventListener("submit", async (event) => {
 (async function iniciarAuth0() {
   const API_DOMAIN = "dev-qkd234rcx7cfybfs.us.auth0.com";
   const CLIENT_ID = "GwZrceMoqNue4YSR5oVihfMgXqLwrEhw";
-  const REDIRECT_URI = "http://127.0.0.1:5500/frontend/pages/login-page.html";
+  const REDIRECT_URI = "../pages/login-page.html";
 
   if (!window.auth0?.createAuth0Client) {
     console.error("Auth0 não carregado.");
@@ -171,7 +171,7 @@ document.getElementById("signup").addEventListener("submit", async (event) => {
     showSuccess(`Bem-vindo, ${user.name || user.email}!`);
 
     setTimeout(() => {
-      window.location.replace("http://127.0.0.1:5500/frontend/pages/roteiro-page.html");
+      window.location.replace("../pages/roteiro-page.html");
     }, 1500);
 
     return;
