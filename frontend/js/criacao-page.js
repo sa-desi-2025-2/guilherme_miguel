@@ -1,4 +1,4 @@
-// criacaoForm.js
+//-------- Carrega lista de países no select com Select2 -------- 
 import { getWeather } from "../js/apis/Weather.js";
 import { listarPaises } from "../js/apis/Country.js";
 
@@ -7,17 +7,14 @@ async function carregarPaises() {
 
   const paises = await listarPaises();
 
-  // Organizar alfabeticamente
   paises.sort((a, b) => a.nome.localeCompare(b.nome));
 
-  // Mapeia para o formato Select2
   const data = paises.map(p => ({
     id: p.iso2,
     text: p.nome,
     bandeira: p.bandeira
   }));
 
-  // Função para renderizar bandeiras nas opções
   function formatPais(pais) {
     if (!pais.id) return pais.text;
 
@@ -29,7 +26,6 @@ async function carregarPaises() {
     `);
   }
 
-  // Função para renderizar seleção (quando escolhido)
   function formatPaisSelected(pais) {
     if (!pais.id) return pais.text;
 
@@ -41,7 +37,6 @@ async function carregarPaises() {
     `);
   }
 
-  // Inicializa o Select2
   select.select2({
     data: data,
     templateResult: formatPais,
@@ -51,10 +46,9 @@ async function carregarPaises() {
   });
 }
 
-// Carregar ao abrir
 carregarPaises();
 
-
+// ---------------Manipulação do formulário----------------
 
 const form = document.querySelector("form");
 
@@ -66,6 +60,9 @@ form.addEventListener("submit", async (e) => {
     const fim = document.querySelector("#fim").value;
     const orcamento = document.querySelector("#orcamento").value;
     const pais = document.querySelector("#pais").value;
+    const hobbies = document.querySelector("#hobbies").value.trim();
+    const gastronomia = document.querySelector("#gastronomia").value.trim();
+    const tipo = document.querySelector("#tipo").value.trim();
 
     if (!destino || !inicio || !fim) {
         alert("Preencha destino e datas!");
@@ -87,11 +84,12 @@ form.addEventListener("submit", async (e) => {
     localStorage.setItem("roteiro_clima", JSON.stringify(weatherData));
     localStorage.setItem("roteiro_orcamento", orcamento);
     localStorage.setItem("roteiro_pais", pais);
+    localStorage.setItem("roteiro_hobbies", hobbies);
+    localStorage.setItem("roteiro_gastronomia", gastronomia);
+    localStorage.setItem("roteiro_tipo", tipo);
 
     // Vai para a página do mapa
     window.location.href = "../pages/mapa-page.html";
 });
-
-
 
 
