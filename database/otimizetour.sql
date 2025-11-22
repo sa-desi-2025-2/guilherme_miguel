@@ -15,6 +15,7 @@ CREATE TABLE Categorias (
 
 CREATE TABLE Roteiros (
     id INT PRIMARY KEY AUTO_INCREMENT,
+    pais VARCHAR(5) NOT NULL,
     destino VARCHAR(100) NOT NULL,
     dataInicio DATE NOT NULL,
     dataFim DATE NOT NULL,
