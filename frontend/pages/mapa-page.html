@@ -1,9 +1,3 @@
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -38,9 +32,9 @@
 
     <main class="container py-4 px-md-5">
         <section class="header-content mb-4">
-            <h1 class="h3 d-inline-block me-2">Roteiro Personalizado - Brasil</h1>
+            <h1 class="h3 d-inline-block me-2" id="titulo-mapa"></h1>
             <span class="ia-tag badge text-bg-info fw-bold">IA Gerado</span>
-            <p class="location text-muted mt-1"><i class="fas fa-map-marker-alt me-1"></i> Brasil</p>
+            <p class="location text-muted mt-1" id="pais-localidade"><i class="fas fa-map-marker-alt me-1"></i> Brasil</p>
         </section>
 
         <section class="summary-cards p-3 p-md-4 rounded-3 shadow mb-4">
@@ -51,7 +45,7 @@
                         <i class="fas fa-calendar-alt p-3 rounded-circle icon-calendar"></i>
                         <div class="info d-flex flex-column">
                             <span class="label text-muted">Período</span>
-                            <span class="value fs-5 fw-bold">10/11/2025 - 04/11/2025</span>
+                            <span class="value fs-5 fw-bold" id="data-viagem">10/11/2025 - 04/11/2025</span>
                         </div>
                     </div>
                 </div>
@@ -61,7 +55,17 @@
                         <i class="fas fa-dollar-sign p-3 rounded-circle icon-money"></i>
                         <div class="info d-flex flex-column">
                             <span class="label text-muted">Custo Total</span>
-                            <span class="value fs-5 fw-bold">BRL 150.00</span>
+                            <span class="value fs-5 fw-bold" id="orcamento-viagem"></span>
+                        </div>
+                    </div>
+                </div>
+
+                  <div class="col">
+                    <div class="card-item d-flex align-items-center gap-3">
+                        <i class="fas fa-dollar-sign p-3 rounded-circle icon-money"></i>
+                        <div class="info d-flex flex-column">
+                            <span class="label text-muted">Conversão para Moeda local</span>
+                            <span class="value fs-5 fw-bold" id="orcamento-convertido"></span>
                         </div>
                     </div>
                 </div>
@@ -91,7 +95,7 @@
                 </div>
             </div>
 
-<div class="col-lg-5">
+            <div class="col-lg-5">
                 <div class="card weather-card h-100 shadow-sm">
                     <div class="card-body">
                         <h2 class="card-title h5 fw-bold mb-3">Previsão do Tempo</h2>
@@ -111,7 +115,7 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="../js/apis/leafLets.js"></script>
     <script type="module" src="../js/mapapag.js"></script>
-    
+
 </body>
 
 </html>

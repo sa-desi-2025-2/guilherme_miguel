@@ -8,13 +8,21 @@ const clima = JSON.parse(localStorage.getItem("roteiro_clima"));
 
 const destinoEl = document.getElementById("destino-info");
 const climaEl = document.getElementById("clima-info");
+const tituloMapaEl = document.getElementById("titulo-mapa");
+const dataViagemEl = document.getElementById("data-viagem");
+const paisLocalidadeEl = document.getElementById("pais-localidade");
+const orcamentoEl = document.getElementById("orcamento-viagem");
+const orcamento = localStorage.getItem("roteiro_orcamento");
 
-// Exibir destino e datas
-destinoEl.innerHTML = `
-    <h2>${destino}</h2>
-    <p><b>Início:</b> ${inicio}</p>
-    <p><b>Fim:</b> ${fim}</p>
-`;
+
+orcamentoEl.textContent = `BRL ${orcamento}`;
+
+destinoEl.textContent = destino;
+paisLocalidadeEl.innerHTML = `<i class="fas fa-map-marker-alt me-1"></i> ${clima.location.country}`;
+
+
+dataViagemEl.textContent = `${inicio} / ${fim}`;
+tituloMapaEl.textContent = `Roteiro ${destino}`;
 
 // Exibir clima
 climaEl.innerHTML = `
