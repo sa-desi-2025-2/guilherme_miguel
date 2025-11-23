@@ -27,22 +27,33 @@ public class PontoInteresseService {
     }
 
     public PontoInteresseModel salvar(PontoInteresseModel ponto) {
+        validarCoordenadas(ponto);
         return repository.save(ponto);
     }
 
     public PontoInteresseModel salvarComCategoria(PontoInteresseModel ponto, Integer categoriaId) {
         CategoriaModel categoria = categoriaService.buscarPorId(categoriaId);
         ponto.setCategoria(categoria);
+        validarCoordenadas(ponto);
         return repository.save(ponto);
     }
 
     public PontoInteresseModel atualizar(Integer id, PontoInteresseModel novoPonto) {
         return repository.findById(id).map(p -> {
+
             p.setNome(novoPonto.getNome());
             p.setDescricao(novoPonto.getDescricao());
             p.setAvaliacaoMedia(novoPonto.getAvaliacaoMedia());
             p.setCategoria(novoPonto.getCategoria());
+
+            // 🔥 Adicionado agora:
+            p.setLatitude(novoPonto.getLatitude());
+            p.setLongitude(novoPonto.getLongitude());
+
+            validarCoordenadas(p);
+
             return repository.save(p);
+
         }).orElse(null);
     }
 
@@ -58,5 +69,19 @@ public class PontoInteresseService {
             p.avaliar(avaliacao);
             return repository.save(p);
         }).orElse(null);
+    }
+
+    // ---------------------------
+    // 🔍 Validação de Coordenadas
+    // ---------------------------
+    private void validarCoordenadas(PontoInteresseModel ponto) {
+
+        if (ponto.getLatitude() < -90 || ponto.getLatitude() > 90) {
+            throw new IllegalArgumentException("Latitude inválida: deve estar entre -90 e 90.");
+        }
+
+        if (ponto.getLongitude() < -180 || ponto.getLongitude() > 180) {
+            throw new IllegalArgumentException("Longitude inválida: deve estar entre -180 e 180.");
+        }
     }
 }

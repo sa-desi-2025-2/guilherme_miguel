@@ -1,6 +1,9 @@
-//-------- Carrega lista de países no select com Select2 -------- 
+import { buscarUsuarioPorEmail } from "../js/conexao/usuario.js";
+import { salvarRoteiroBackend } from "../js/conexao/roteiro.js";
 import { getWeather } from "../js/apis/Weather.js";
 import { listarPaises } from "../js/apis/Country.js";
+
+//-------- Carrega lista de países no select com Select2 -------- 
 
 async function carregarPaises() {
   const select = $("#pais");
@@ -26,27 +29,17 @@ async function carregarPaises() {
     `);
   }
 
-  function formatPaisSelected(pais) {
-    if (!pais.id) return pais.text;
-
-    const img = `<img src="${pais.bandeira}" width="20" style="margin-right: 8px; border-radius: 3px;">`;
-    return $(`
-      <span style="display:flex; align-items:center;">
-        ${img} ${pais.text}
-      </span>
-    `);
-  }
-
   select.select2({
     data: data,
     templateResult: formatPais,
-    templateSelection: formatPaisSelected,
+    templateSelection: formatPais,
     placeholder: "Selecione um país",
     allowClear: true
   });
 }
 
 carregarPaises();
+
 
 // ---------------Manipulação do formulário----------------
 
@@ -88,8 +81,45 @@ form.addEventListener("submit", async (e) => {
     localStorage.setItem("roteiro_gastronomia", gastronomia);
     localStorage.setItem("roteiro_tipo", tipo);
 
-    // Vai para a página do mapa
-    window.location.href = "../pages/mapa-page.html";
+    // ➕ PEGAR USUÁRIO LOGADO
+    const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+
+    if (!usuarioLogado) {
+        alert("Nenhum usuário logado.");
+        return;
+    }
+
+    // ➕ BUSCAR ID DO USUÁRIO NO BACKEND
+    const usuarioBackend = await buscarUsuarioPorEmail(usuarioLogado.email);
+
+    if (!usuarioBackend) {
+        alert("Usuário não encontrado no sistema.");
+        return;
+    }
+
+    // ➕ CRIA OBJETO DO ROTEIRO PARA O BACKEND
+    const roteiroBackend = {
+        pais: pais,
+        destino: destino,
+        dataInicio: inicio,
+        dataFim: fim,
+        custoTotal: parseFloat(orcamento) || 0,
+        usuario: { id: usuarioBackend.id }
+    };
+
+    // ➕ SALVAR NO BACKEND
+    const salvo = await salvarRoteiroBackend(roteiroBackend);
+
+    if (!salvo) {
+        alert("Erro ao salvar roteiro.");
+        return;
+    }
+
+    console.log("Roteiro salvo no backend:", salvo);
+
+    // ==========================
+    //   REDIRECIONAMENTO CERTO
+    // ==========================
+    const id = salvo.id;
+    window.location.href = `/frontend/pages/mapa-page.html?id=${id}`;
 });
-
-

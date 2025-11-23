@@ -36,10 +36,11 @@ public class RoteiroController {
         RoteiroModel antigo = service.buscarPorId(id);
 
         if (antigo == null) return null;
-
+        antigo.setPais(novoRoteiro.getPais());
         antigo.setDestino(novoRoteiro.getDestino());
         antigo.setDataInicio(novoRoteiro.getDataInicio());
         antigo.setDataFim(novoRoteiro.getDataFim());
+        antigo.setCustoTotal(novoRoteiro.getCustoTotal());
         antigo.setUsuario(novoRoteiro.getUsuario());
 
         return service.salvar(antigo);

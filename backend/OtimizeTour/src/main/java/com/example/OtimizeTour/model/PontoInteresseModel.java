@@ -13,6 +13,8 @@ public class PontoInteresseModel {
 
     private String nome;
     private String descricao;
+    private double latitude;
+    private double longitude;
     private float avaliacaoMedia;
 
     @ManyToOne
@@ -21,9 +23,11 @@ public class PontoInteresseModel {
 
     public PontoInteresseModel() {}
 
-    public PontoInteresseModel(String nome, String descricao, float avaliacaoMedia) {
+    public PontoInteresseModel(String nome, String descricao, double latitude, double longitude, float avaliacaoMedia) {
         this.nome = nome;
         this.descricao = descricao;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.avaliacaoMedia = avaliacaoMedia;
     }
 
@@ -49,6 +53,22 @@ public class PontoInteresseModel {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     public float getAvaliacaoMedia() {
