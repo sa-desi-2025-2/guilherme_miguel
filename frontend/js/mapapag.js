@@ -177,18 +177,33 @@ async function main() {
       climaEl.innerHTML = `
         <h4>Clima</h4>
         <div>${clima.current.temp_c}°C — ${escapeHtml(
-        clima.current.condition?.text
-      )}</div>
+          clima.current.condition?.text
+        )}</div>
       `;
     }
 
+    // ================================================
+    // 1️⃣ VERIFICA SE PONTOS JÁ EXISTEM NO BANCO
+    // ================================================
+    showStatus("Buscando pontos no banco...");
+    const pontosExistentes = await buscarPontosDoBackend(Number(roteiroId));
+
+    if (pontosExistentes.length > 0) {
+      console.log("Pontos já existem — NÃO chamando Gemini.");
+      clearStatus();
+      renderizarRoteiroBanco(pontosExistentes);
+      return; // <<< ENCERRA A EXECUÇÃO (IMPORTANTE)
+    }
+
+    // ================================================
+    // 2️⃣ NENHUM PONTO EXISTE → CHAMAR GEMINI
+    // ================================================
     showStatus("Buscando locais turísticos...");
     const locais = await buscarLocaisCidade(
       roteiroBD.destino,
       roteiroBD.pais,
       50
     );
-    console.log("Locais turísticos:", locais);
 
     if (!locais?.length) {
       clearStatus();
@@ -212,6 +227,9 @@ async function main() {
     const roteiroIA = await gerarRoteiroGemini(dadosGemini, locais);
     console.log("Roteiro IA:", roteiroIA);
 
+    // ================================================
+    // 3️⃣ SALVAR OS PONTOS NO BANCO
+    // ================================================
     showStatus("Salvando atividades no banco...");
 
     const atividades = [];
@@ -234,8 +252,7 @@ async function main() {
         latitude: atv.lat,
         longitude: atv.lon,
         categoria: null,
-
-        roteiro: { id: Number(roteiroId) }, // <<<<<< O JEITO QUE O SPRING ACEITA
+        roteiro: { id: Number(roteiroId) },
       };
 
       try {
@@ -245,13 +262,15 @@ async function main() {
       }
     }
 
+    // ================================================
+    // 4️⃣ BUSCAR E RENDERIZAR
+    // ================================================
     showStatus("Buscando pontos salvos...");
     const pontosSalvos = await buscarPontosDoBackend(Number(roteiroId));
 
     clearStatus();
     renderizarRoteiroBanco(pontosSalvos);
 
-    console.log("Fluxo finalizado com sucesso.");
   } catch (err) {
     clearStatus();
     console.error("Erro geral:", err);
