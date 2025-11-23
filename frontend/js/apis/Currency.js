@@ -7,7 +7,7 @@
  * @returns {Promise<number | null>} valor convertido ou null em caso de erro
  */
 export async function converterMoeda(valor, de = "BRL", para = "USD") {
-    const API_KEY = "cMdEMz5jcYmqWlzt0V6io6KqdLv3ZJaX"; // Chave de exemplo do seu texto
+    const API_KEY = "Qm8v1fI5a2qnpVrBflojOC4MAIbCNVy9"; // Chave de exemplo do seu texto
 
     const valorNumerico = Number(valor);
     if (isNaN(valorNumerico) || valorNumerico <= 0) return null;

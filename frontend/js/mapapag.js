@@ -152,7 +152,8 @@ async function main(){
 
     // Atualiza orçamento convertido com o valor final
     atualizarOrcamentoConvertido(roteiroBD.custoTotal ?? 0, roteiroBD.pais);
-
+    
+    
     // Salvar pontos no banco
     showStatus("Salvando atividades no banco...");
     const atividades = [];
@@ -322,3 +323,21 @@ async function atualizarOrcamentoConvertido(custoBRL, paisISO) {
     }
 }
 
+
+document.addEventListener("DOMContentLoaded", async () => {  // <-- async aqui
+
+    // busca o roteiro do backend
+    const carregarBanco = await carregarRoteiroBackend();
+
+    const duracaoD = document.getElementById("duracao-dias");
+    if(!duracaoD) return;
+
+    // usa as datas do roteiro
+    const inicio = new Date(carregarBanco.dataInicio);
+    const fim = new Date(carregarBanco.dataFim);
+
+    const diffMs = fim - inicio;
+    const duracaoDias = Math.ceil(diffMs / (1000*60*60*24)) + 1;
+
+    duracaoD.textContent = `${duracaoDias} dia${duracaoDias > 1 ? "s" : ""}`;
+});
