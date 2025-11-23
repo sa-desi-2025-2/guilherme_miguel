@@ -15,6 +15,7 @@ CREATE TABLE Categorias (
 
 CREATE TABLE Roteiros (
     id INT PRIMARY KEY AUTO_INCREMENT,
+    pais VARCHAR(5) NOT NULL,
     destino VARCHAR(100) NOT NULL,
     dataInicio DATE NOT NULL,
     dataFim DATE NOT NULL,
@@ -28,6 +29,8 @@ CREATE TABLE PontosInteresse (
     nome VARCHAR(100) NOT NULL,
     descricao TEXT,
     avaliacaoMedia DECIMAL(2, 1),
+    latitude DECIMAL(10, 8),
+    longitude DECIMAL(11, 8),
     categoria_id INT,
     FOREIGN KEY (categoria_id) REFERENCES Categorias(id)
 );
