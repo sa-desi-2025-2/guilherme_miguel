@@ -1,25 +1,57 @@
-const GEMINI_API_KEY = "AIzaSyDw9GC3kw5HDsKBYXv07XhlpJpG3T_futY";
+const GEMINI_API_KEY = "AIzaSyAsjSZa4Clm_F0cCJjQw28_yfEddtycqEw";
 
 export async function gerarRoteiroGemini(dadosRoteiro, listaLocais) {
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
-    const prompt = `
-Você é um gerador de roteiros de viagem profissional.
+ const prompt = `
+Você é um planejador profissional de viagens altamente especializado.
 
-USAR SOMENTE OS LOCAIS DA LISTA ABAIXO:
-${JSON.stringify(listaLocais)}
+Você receberá:
+1. Dados do viajante (hobbies, gastronomia e tipo de viagem)
+2. O destino (cidade, país, datas)
+3. Uma lista REAL de locais (50 pontos turísticos)
+4. Você deve criar um roteiro PERSONALIZADO somente com esses locais.
 
-NÃO invente novos lugares.
+=============== DADOS DO VIAJANTE ===============
+HOBBIES: ${dadosRoteiro.hobbies || "não informado"}
+GASTRONOMIA: ${dadosRoteiro.gastronomia || "não informado"}
+TIPO DE VIAGEM: ${dadosRoteiro.tipo || "não informado"}
 
-Crie um roteiro usando APENAS a lista acima.
+=============== DESTINO ===============
+Cidade: ${dadosRoteiro.destino}
+País: ${dadosRoteiro.pais}
+Data de início: ${dadosRoteiro.dataInicio}
+Data de fim: ${dadosRoteiro.dataFim}
 
-Formato obrigatório:
+=============== LOCAIS DISPONÍVEIS ===============
+USE EXCLUSIVAMENTE OS LOCAIS ABAIXO:
+${JSON.stringify(listaLocais, null, 2)}
+
+=============== REGRAS CRÍTICAS ===============
+1. NÃO invente lugares.  
+2. NÃO altere nome, coordenadas nem categorias dos locais.  
+3. PRIORIZE LOCAIS DE ACORDO COM OS INTERESSES DO VIAJANTE:
+   - Se o viajante gosta de PRAIA → priorize praias, mirantes costeiros, parques à beira-mar.
+   - Se gosta de NATUREZA → priorize parques, reservas naturais, viewpoints.
+   - Se gosta de GASTRONOMIA → priorize locais com "amenity=restaurant", mercados, feiras.
+   - Se gosta de CULTURA → priorize museus, teatros, centros culturais.
+   - Se gosta de VIDA NOTURNA → priorize bares, baladas, áreas movimentadas.
+   - Se é viagem ROMÂNTICA → priorize vistas, parques, experiências tranquilas.
+   - Se é viagem em FAMÍLIA → zoológicos, parques temáticos, museus infantis.
+   - Se é viagem de AVENTURA → trilhas, viewpoints, natureza, caminhada.
+
+4. Escolha de 2 a 4 atividades por dia.
+5. Preencha TODAS as datas corretamente entre o início e o fim.
+6. Responda SOMENTE com JSON VÁLIDO.
+7. Cada atividade obrigatoriamente deve usar UM dos locais reais da lista.
+
+=============== FORMATO FINAL OBRIGATÓRIO ===============
 
 {
   "pais": "${dadosRoteiro.pais}",
-  "cidade": "${dadosRoteiro.cidade}",
-  "data_inicio": "${dadosRoteiro.inicio}",
-  "data_fim": "${dadosRoteiro.fim}",
+  "cidade": "${dadosRoteiro.destino}",
+  "data_inicio": "${dadosRoteiro.dataInicio}",
+  "data_fim": "${dadosRoteiro.dataFim}",
   "resumo_viagem": "",
   "clima_resumo": "",
   "dias": [
@@ -40,13 +72,9 @@ Formato obrigatório:
   ]
 }
 
-REGRAS IMPORTANTES:
-- Escolha somente locais reais da lista.
-- NÃO modifique nome, descrição ou coordenadas.
-- Combine os locais conforme o estilo do viajante.
-- 2 a 4 atividades por dia.
-- O roteiro deve caber dentro das datas informadas.
-- Responder SOMENTE com JSON VÁLIDO.
+=============== IMPORTANTE ===============
+Sua prioridade nº1 é garantir que as atividades combinam com o perfil do viajante.
+A prioridade nº2 é escolher apenas locais da lista REAL enviada acima.
 `;
 
     const body = {

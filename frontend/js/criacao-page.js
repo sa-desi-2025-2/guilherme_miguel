@@ -1,7 +1,11 @@
+// criacao-page.js (ATUALIZADO)
+// Ele chama o OpenTripMap (buscarLocaisCidade) para obter 50 lugares antes de continuar com o fluxo.
+
 import { buscarUsuarioPorEmail } from "../js/conexao/usuario.js";
 import { salvarRoteiroBackend } from "../js/conexao/roteiro.js";
 import { getWeather } from "../js/apis/Weather.js";
 import { listarPaises } from "../js/apis/Country.js";
+import { buscarLocaisCidade } from "./apis/PlacesOSM.js"; // <-- import adicionado
 
 //-------- Carrega lista de países no select com Select2 -------- 
 
@@ -62,6 +66,25 @@ form.addEventListener("submit", async (e) => {
         return;
     }
 
+    // 1) Buscar lista de 50 locais usando OpenTripMap
+    let locais = [];
+    try {
+      // busca 50 locais (limit = 50)
+      locais = await buscarLocaisCidade(destino, pais, 50);
+    } catch (err) {
+      console.error("Erro ao buscar locais:", err);
+      locais = [];
+    }
+
+    if (!Array.isArray(locais) || locais.length === 0) {
+      alert("Nenhum local encontrado pela OpenTripMap para essa localidade.");
+      return;
+    }
+
+    // Salva a lista no localStorage (pode ser usada depois)
+    localStorage.setItem("roteiro_locais_otm", JSON.stringify(locais));
+
+    // Renderiza uma lista resumida na página (apenas para conferência)
     // Buscar clima com WeatherAPI
     const weatherData = await getWeather(destino, pais);
 

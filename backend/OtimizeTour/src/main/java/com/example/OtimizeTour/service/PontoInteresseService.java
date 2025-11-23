@@ -1,8 +1,12 @@
 package com.example.OtimizeTour.service;
 
 import com.example.OtimizeTour.model.CategoriaModel;
+import com.example.OtimizeTour.model.RoteiroModel;
 import com.example.OtimizeTour.model.PontoInteresseModel;
 import com.example.OtimizeTour.repository.PontoInteresseRepository;
+import com.example.OtimizeTour.service.CategoriaService;
+import com.example.OtimizeTour.service.RoteiroService;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,15 +16,22 @@ public class PontoInteresseService {
 
     private final PontoInteresseRepository repository;
     private final CategoriaService categoriaService;
+    private final RoteiroService roteiroService;
 
-    public PontoInteresseService(PontoInteresseRepository repository, CategoriaService categoriaService) {
+    public PontoInteresseService(PontoInteresseRepository repository, CategoriaService categoriaService, RoteiroService roteiroService) {
         this.repository = repository;
         this.categoriaService = categoriaService;
+        this.roteiroService = roteiroService;
     }
 
     public List<PontoInteresseModel> listar() {
         return repository.findAll();
     }
+
+    public List<PontoInteresseModel> listarPorRoteiro(Integer roteiroId) {
+        return repository.findByRoteiroId(roteiroId);
+    }
+
 
     public PontoInteresseModel buscarPorId(Integer id) {
         return repository.findById(id).orElse(null);
@@ -31,9 +42,11 @@ public class PontoInteresseService {
         return repository.save(ponto);
     }
 
-    public PontoInteresseModel salvarComCategoria(PontoInteresseModel ponto, Integer categoriaId) {
+    public PontoInteresseModel salvarComCategoria(PontoInteresseModel ponto, Integer categoriaId, Integer roteiroId) {
         CategoriaModel categoria = categoriaService.buscarPorId(categoriaId);
+        RoteiroModel roteiro = roteiroService.buscarPorId(roteiroId);
         ponto.setCategoria(categoria);
+        ponto.setRoteiro(roteiro);
         validarCoordenadas(ponto);
         return repository.save(ponto);
     }
@@ -45,6 +58,7 @@ public class PontoInteresseService {
             p.setDescricao(novoPonto.getDescricao());
             p.setAvaliacaoMedia(novoPonto.getAvaliacaoMedia());
             p.setCategoria(novoPonto.getCategoria());
+            p.setRoteiro(novoPonto.getRoteiro());
 
             // 🔥 Adicionado agora:
             p.setLatitude(novoPonto.getLatitude());

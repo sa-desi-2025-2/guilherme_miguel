@@ -1,5 +1,6 @@
 package com.example.OtimizeTour.model;
 import com.example.OtimizeTour.model.CategoriaModel;
+import com.example.OtimizeTour.model.RoteiroModel;
 
 import jakarta.persistence.*;
 
@@ -12,7 +13,10 @@ public class PontoInteresseModel {
     private Integer id;
 
     private String nome;
+
+    @Column(columnDefinition = "TEXT")
     private String descricao;
+    
     private double latitude;
     private double longitude;
     private float avaliacaoMedia;
@@ -20,6 +24,10 @@ public class PontoInteresseModel {
     @ManyToOne
     @JoinColumn(name = "categoria_id")
     private CategoriaModel categoria;
+
+    @ManyToOne
+    @JoinColumn(name = "roteiro_id")
+    private RoteiroModel roteiro;
 
     public PontoInteresseModel() {}
 
@@ -90,4 +98,12 @@ public class PontoInteresseModel {
     public void avaliar(float avaliacao) {
         this.avaliacaoMedia = avaliacao;
     }
+
+    public RoteiroModel getRoteiro() {
+        return roteiro;
+    }
+    public void setRoteiro(RoteiroModel roteiro) {
+        this.roteiro = roteiro;
+    }
+    
 }

@@ -34,8 +34,9 @@ public class PontoInteresseController {
     @PostMapping("/categoria/{categoriaId}")
     public PontoInteresseModel criarComCategoria(
             @PathVariable Integer categoriaId,
+            @RequestParam Integer roteiroId,
             @RequestBody PontoInteresseModel ponto) {
-        return service.salvarComCategoria(ponto, categoriaId);
+        return service.salvarComCategoria(ponto, categoriaId, roteiroId);
     }
 
     @PutMapping("/{id}")
@@ -51,5 +52,10 @@ public class PontoInteresseController {
     @PostMapping("/{id}/avaliar")
     public PontoInteresseModel avaliar(@PathVariable Integer id, @RequestParam float valor) {
         return service.avaliar(id, valor);
+    }
+
+    @GetMapping("/roteiro/{roteiroId}")
+    public List<PontoInteresseModel> listarPorRoteiro(@PathVariable Integer roteiroId) {
+        return service.listarPorRoteiro(roteiroId);
     }
 }
