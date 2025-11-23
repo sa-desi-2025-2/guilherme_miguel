@@ -3,6 +3,8 @@ import { gerarRoteiroGemini } from "../js/apis/Gemini.js";
 import { buscarLocaisCidade } from "../js/apis/PlacesOSM.js";
 import { initMap, plotarPontos } from "../js/apis/leafLets.js";
 import { getWeather, calcularDiasViagem } from "../js/apis/Weather.js";
+import { converterMoeda, getMoedaPorPais } from "../js/apis/Currency.js";
+
 
 const API_BASE = "http://localhost:8081";
 
@@ -104,15 +106,17 @@ async function main(){
     const roteiroBD = await carregarRoteiroBackend();
     console.log("Roteiro carregado:", roteiroBD);
 
-    // UI
+    // UI básico
     destinoEl.textContent = roteiroBD.destino;
     dataViagemEl.textContent = `${roteiroBD.dataInicio} / ${roteiroBD.dataFim}`;
     tituloMapaEl.textContent = `Roteiro ${roteiroBD.destino}`;
     orcamentoEl.textContent = `BRL ${roteiroBD.custoTotal ?? "—"}`;
     paisLocalidadeEl.innerHTML = `<i class="fas fa-map-marker-alt"></i> ${roteiroBD.pais}`;
 
+    // Atualiza orçamento convertido
+    atualizarOrcamentoConvertido(roteiroBD.custoTotal ?? 0, roteiroBD.pais);
+
     // ===== CLIMA =====
-// ===== CLIMA =====
     const clima = await getWeather(roteiroBD.destino, roteiroBD.pais, roteiroBD.dataInicio, roteiroBD.dataFim);
     renderClima(clima, roteiroBD.destino, roteiroBD.dataInicio, roteiroBD.dataFim);
     localStorage.setItem("roteiro_clima", JSON.stringify(clima));
@@ -120,19 +124,18 @@ async function main(){
     // Inicializa mapa
     initMap(-23.55052, -46.633308, 13);
 
-    // Verifica se já existem pontos no banco
+    // Buscar pontos no banco
     showStatus("Buscando pontos no banco...");
     const pontosExistentes = await buscarPontosDoBackend(Number(roteiroId));
 
     if(pontosExistentes.length>0){
-      console.log("Pontos já existem — NÃO chamando Gemini.");
       clearStatus();
       renderizarRoteiroBanco(pontosExistentes);
       plotarPontos(pontosExistentes);
       return;
     }
 
-    // Nenhum ponto existe → chamar Gemini
+    // Nenhum ponto existente → chamar IA
     showStatus("Buscando locais turísticos...");
     const locais = await buscarLocaisCidade(roteiroBD.destino, roteiroBD.pais, 50);
     if(!locais?.length){ clearStatus(); alert("Nenhum local turístico encontrado."); return; }
@@ -146,6 +149,9 @@ async function main(){
     const dadosGemini = { pais: roteiroBD.pais, destino: roteiroBD.destino, inicio: roteiroBD.dataInicio, fim: roteiroBD.dataFim, hobbies, gastronomia, tipoViagem, orcamento:Number(orcamentoLocal), clima };
     const roteiroIA = await gerarRoteiroGemini(dadosGemini, locais);
     console.log("Roteiro IA:", roteiroIA);
+
+    // Atualiza orçamento convertido com o valor final
+    atualizarOrcamentoConvertido(roteiroBD.custoTotal ?? 0, roteiroBD.pais);
 
     // Salvar pontos no banco
     showStatus("Salvando atividades no banco...");
@@ -174,11 +180,6 @@ async function main(){
 }
 
 
-// frontend/pages/mapa-page.js
-// frontend/pages/mapa-page.js
-
-// Mapeamento de códigos de clima (WMO) para ícones e descrição (usando Bootstrap Icons)
-// frontend/pages/mapa-page.js
 
 // Mapeamento de códigos de clima (WMO) para ícones e descrição (usando Bootstrap Icons)
 function getWeatherIconAndDescription(code) {
@@ -308,3 +309,16 @@ function renderClima(clima, destino, dataInicio, dataFim){
     html += `</div>`;
     climaEl.innerHTML = html;
 }
+
+
+async function atualizarOrcamentoConvertido(custoBRL, paisISO) {
+    const moedaDestino = getMoedaPorPais(paisISO);
+    const valorConvertido = await converterMoeda(custoBRL, "BRL", moedaDestino);
+    const el = document.getElementById("orcamento-convertido");
+    if(valorConvertido != null){
+        el.textContent = `${valorConvertido.toFixed(2)} ${moedaDestino}`;
+    } else {
+        el.textContent = "—";
+    }
+}
+
