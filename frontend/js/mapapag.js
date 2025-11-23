@@ -341,3 +341,35 @@ document.addEventListener("DOMContentLoaded", async () => {  // <-- async aqui
 
     duracaoD.textContent = `${duracaoDias} dia${duracaoDias > 1 ? "s" : ""}`;
 });
+
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const btnExcluir = document.getElementById("btn-excluir");
+    if (!btnExcluir) return;
+
+    btnExcluir.addEventListener("click", async () => {
+        
+        const confirmar = confirm("Tem certeza que deseja excluir este roteiro? Todos os pontos de interesse associados também serão apagados.");
+        if (!confirmar) return;
+
+        try {
+            const res = await fetch(`http://localhost:8081/roteiros/${roteiroId}`, {
+                method: "DELETE"
+            });
+
+            if (!res.ok) {
+                alert("Erro ao excluir o roteiro.");
+                return;
+            }
+
+            alert("Roteiro excluído com sucesso!");
+            window.location.href = "../pages/roteiro-page.html"; // Redireciona para dashboard
+
+        } catch (e) {
+            console.error("Erro ao excluir:", e);
+            alert("Erro interno ao excluir o roteiro.");
+        }
+    });
+
+});

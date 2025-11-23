@@ -1,7 +1,9 @@
 package com.example.OtimizeTour.model;
 
+import java.util.List;
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 @Entity
 @Table(name = "roteiros")
@@ -23,6 +25,9 @@ public class RoteiroModel {
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private UsuarioModel usuario;
+
+    @OneToMany(mappedBy = "roteiro", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PontoInteresseModel> pontos = new ArrayList<>();
 
     public RoteiroModel() {}
 
