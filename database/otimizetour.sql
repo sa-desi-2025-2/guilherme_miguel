@@ -32,16 +32,21 @@ CREATE TABLE PontosInteresse (
     latitude DECIMAL(10, 8),
     longitude DECIMAL(11, 8),
     categoria_id INT,
-    FOREIGN KEY (categoria_id) REFERENCES Categorias(id)
+    roteiro_id INT,
+    FOREIGN KEY (categoria_id) REFERENCES Categorias(id),
+    FOREIGN KEY (roteiro_id) REFERENCES Roteiros(id)
 );
 
-CREATE TABLE Roteiro_PontosInteresse (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    roteiro_id INT,
-    pontoInteresse_id INT,
-    FOREIGN KEY (roteiro_id) REFERENCES Roteiros(id),
-    FOREIGN KEY (pontoInteresse_id) REFERENCES PontosInteresse(id)
-);
+--
+--CREATE TABLE Roteiro_PontosInteresse (
+--    id INT PRIMARY KEY AUTO_INCREMENT,
+--    roteiro_id INT,
+--    pontoInteresse_id INT,
+--    FOREIGN KEY (roteiro_id) REFERENCES Roteiros(id),
+--    FOREIGN KEY (pontoInteresse_id) REFERENCES PontosInteresse(id)
+--);
+--
+
 
 CREATE TABLE Avaliacoes (
     id INT PRIMARY KEY AUTO_INCREMENT,
