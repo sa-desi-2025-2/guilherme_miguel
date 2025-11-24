@@ -373,3 +373,60 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 });
+
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const btn = document.getElementById("btn-compartilhar");
+    if (!btn) return;
+
+    const modalEl = document.getElementById("modalCompartilhar");
+    const modal = new bootstrap.Modal(modalEl);
+    const inputLink = document.getElementById("linkCompartilhar");
+    const btnCopiar = document.getElementById("btnCopiarLink");
+
+    btn.addEventListener("click", async () => {
+        const roteiro = await carregarRoteiroBackend();
+
+        if (!roteiro.shareToken) {
+            alert("Erro: roteiro sem token!");
+            return;
+        }
+
+        const urlPublica = `${window.location.origin}/frontend/pages/visualizar-page.html?token=${roteiro.shareToken}`;
+
+        // coloca o link no input
+        inputLink.value = urlPublica;
+
+        // abre o modal
+        modal.show();
+    });
+
+    // botão copiar
+    btnCopiar.addEventListener("click", () => {
+        navigator.clipboard.writeText(inputLink.value)
+            .then(() => {
+                btnCopiar.innerHTML = `<i class="fas fa-check"></i>`;
+                setTimeout(() => {
+                    btnCopiar.innerHTML = `<i class="fas fa-copy"></i>`;
+                }, 1500);
+            });
+    });
+});
+
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const btnEditar = document.getElementById("btn-editar");
+
+    // Recupera ID do roteiro salvo no localStorage
+    const roteiroId = localStorage.getItem("roteiro_id");
+
+    if (btnEditar && roteiroId) {
+        btnEditar.addEventListener("click", () => {
+            // Redireciona para página de edição
+            window.location.href = `../pages/editar-roteiro.html?id=${roteiroId}`;
+        });
+    }
+});

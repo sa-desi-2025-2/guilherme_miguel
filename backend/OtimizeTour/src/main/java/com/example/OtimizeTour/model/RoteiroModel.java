@@ -1,6 +1,9 @@
 package com.example.OtimizeTour.model;
 
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -17,16 +20,19 @@ public class RoteiroModel {
     private String destino;
 
     private LocalDate dataInicio;
-
     private LocalDate dataFim;
 
     private float custoTotal;
+
+    @Column(unique = true)
+    private String shareToken;  // <--- NOVO
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private UsuarioModel usuario;
 
     @OneToMany(mappedBy = "roteiro", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<PontoInteresseModel> pontos = new ArrayList<>();
 
     public RoteiroModel() {}
@@ -41,6 +47,9 @@ public class RoteiroModel {
         this.usuario = usuario;
     }
 
+    // getters e setters...
+    public String getShareToken() { return shareToken; }
+    public void setShareToken(String shareToken) { this.shareToken = shareToken; }
 
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
@@ -52,7 +61,7 @@ public class RoteiroModel {
     public void setDestino(String destino) { this.destino = destino; }
 
     public LocalDate getDataInicio() { return dataInicio; }
-    public void setDataInicio(LocalDate dataInicio) { this.dataInicio = dataInicio; }
+    public void setDataInicio(LocalDate dataInicio) { this.dataInicio = dataInicio;}
 
     public LocalDate getDataFim() { return dataFim; }
     public void setDataFim(LocalDate dataFim) { this.dataFim = dataFim; }
@@ -62,4 +71,7 @@ public class RoteiroModel {
 
     public UsuarioModel getUsuario() { return usuario; }
     public void setUsuario(UsuarioModel usuario) { this.usuario = usuario; }
-}
+        
+    public List<PontoInteresseModel> getPontos() { return pontos; }
+    public void setPontos(List<PontoInteresseModel> pontos) { this.pontos = pontos; }
+}   

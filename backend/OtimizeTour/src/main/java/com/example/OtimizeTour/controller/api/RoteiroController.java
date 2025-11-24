@@ -26,6 +26,12 @@ public class RoteiroController {
         return service.buscarPorId(id);
     }
 
+    @GetMapping("/public/{token}")
+    public RoteiroModel buscarPorToken(@PathVariable String token) {
+        return service.buscarPorToken(token);
+    }
+
+
     @PostMapping
     public RoteiroModel salvar(@RequestBody RoteiroModel roteiro) {
         return service.salvar(roteiro);

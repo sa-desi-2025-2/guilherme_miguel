@@ -118,3 +118,98 @@ async function iniciarAuth0Dashboard() {
 }
 
 iniciarAuth0Dashboard();
+
+
+async function carregarRoteirosUsuario() {
+    const usuario = obterUsuarioLocal();
+    if (!usuario || !usuario.email) {
+        console.warn("Nenhum usuário logado");
+        return;
+    }
+
+    const lista = document.getElementById("lista-roteiros");
+    if (!lista) return;
+
+    try {
+        const res = await fetch("http://localhost:8081/roteiros");
+        const roteiros = await res.json();
+
+        // FILTRO CORRETO AGORA:
+        const meusRoteiros = roteiros.filter(r =>
+            r.usuario && r.usuario.email === usuario.email
+        );
+
+        lista.innerHTML = "";
+
+        if (meusRoteiros.length === 0) {
+            lista.innerHTML = `
+                <p class="text-muted">Você ainda não criou nenhum roteiro.</p>
+            `;
+            return;
+        }
+
+        meusRoteiros.forEach(r => {
+            const card = document.createElement("div");
+            card.className = "card p-3 mb-3 shadow-sm";
+
+            card.innerHTML = `
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <h4 class="h6 fw-semibold mb-0 me-3 text-wrap" style="max-width: 80%;">
+                        ${r.destino}
+                    </h4>
+                    <span class="price">R$ ${r.custoTotal || 0}</span>
+                </div>
+
+                <div class="trip-info text-muted small mb-3">
+                    <p class="mb-1"><i class="bi bi-pin-map me-1"></i> ${r.pais}</p>
+                    <p class="mb-0">
+                        <i class="bi bi-calendar me-1"></i> 
+                        ${new Date(r.dataInicio).toLocaleDateString("pt-BR")}
+                        até
+                        ${new Date(r.dataFim).toLocaleDateString("pt-BR")}
+                    </p>
+                </div>
+                
+                <div class="trip-actions d-flex justify-content-between align-items-center">
+                    <button class="btn btn-sm btn-primary btn-primary-custom fw-medium ver-roteiro" data-id="${r.id}">
+                        <i class="bi bi-eye-fill me-1"></i> Ver Roteiro
+                    </button>
+                    <button class="btn-delete" data-id="${r.id}">
+                        <i class="bi bi-trash-fill"></i>
+                    </button>
+                </div>
+            `;
+
+            lista.appendChild(card);
+        });
+
+        // Abrir página do mapa
+        document.querySelectorAll(".ver-roteiro").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const id = btn.getAttribute("data-id");
+                window.location.href = `../pages/mapa-page.html?id=${id}`;
+            });
+        });
+
+        // Excluir roteiro
+        document.querySelectorAll(".btn-delete").forEach(btn => {
+            btn.addEventListener("click", async () => {
+                const id = btn.getAttribute("data-id");
+                const confirmar = confirm("Deseja excluir este roteiro?");
+                if (!confirmar) return;
+
+                await fetch(`http://localhost:8081/roteiros/${id}`, {
+                    method: "DELETE"
+                });
+
+                btn.closest(".card").remove();
+            });
+        });
+
+    } catch (e) {
+        console.error("Erro ao carregar roteiros:", e);
+        lista.innerHTML = `<p class="text-danger">Erro ao carregar roteiros.</p>`;
+    }
+}
+
+document.addEventListener("DOMContentLoaded", carregarRoteirosUsuario);

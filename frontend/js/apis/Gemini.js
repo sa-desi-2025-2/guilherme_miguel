@@ -1,4 +1,4 @@
-const GEMINI_API_KEY = "AIzaSyAsjSZa4Clm_F0cCJjQw28_yfEddtycqEw";
+const GEMINI_API_KEY = "AIzaSyBQt8aYrNoEz0jAalHkQ2L8l_NNNTRzQ0U";
 
 export async function gerarRoteiroGemini(dadosRoteiro, listaLocais) {
     const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;

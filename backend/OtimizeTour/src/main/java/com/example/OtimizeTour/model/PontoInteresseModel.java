@@ -1,6 +1,7 @@
 package com.example.OtimizeTour.model;
 import com.example.OtimizeTour.model.CategoriaModel;
 import com.example.OtimizeTour.model.RoteiroModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
 

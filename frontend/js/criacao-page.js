@@ -1,57 +1,58 @@
-// criacao-page.js (ATUALIZADO)
-// Ele chama o OpenTripMap (buscarLocaisCidade) para obter 50 lugares antes de continuar com o fluxo.
+// criacao-page.js (VERSÃO CORRIGIDA E OTIMIZADA)
 
 import { buscarUsuarioPorEmail } from "../js/conexao/usuario.js";
 import { salvarRoteiroBackend } from "../js/conexao/roteiro.js";
 import { getWeather } from "../js/apis/Weather.js";
 import { listarPaises } from "../js/apis/Country.js";
-import { buscarLocaisCidade } from "./apis/PlacesOSM.js"; // <-- import adicionado
+import { buscarLocaisCidade } from "./apis/PlacesOSM.js";
 
-//-------- Carrega lista de países no select com Select2 -------- 
+
+// ================================
+// 1) Carregar lista de países com Select2
+// ================================
 
 async function carregarPaises() {
-  const select = $("#pais");
+    const select = $("#pais");
 
-  const paises = await listarPaises();
+    const paises = await listarPaises();
+    paises.sort((a, b) => a.nome.localeCompare(b.nome));
 
-  paises.sort((a, b) => a.nome.localeCompare(b.nome));
+    const data = paises.map(p => ({
+        id: p.iso2,
+        text: p.nome,
+        bandeira: p.bandeira
+    }));
 
-  const data = paises.map(p => ({
-    id: p.iso2,
-    text: p.nome,
-    bandeira: p.bandeira
-  }));
+    function formatPais(pais) {
+        if (!pais.id) return pais.text;
 
-  function formatPais(pais) {
-    if (!pais.id) return pais.text;
+        const img = `<img src="${pais.bandeira}" width="20" style="margin-right: 8px; border-radius: 3px;">`;
 
-    const img = `<img src="${pais.bandeira}" width="20" style="margin-right: 8px; border-radius: 3px;">`;
-    return $(`
-      <span style="display:flex; align-items:center;">
-        ${img} ${pais.text}
-      </span>
-    `);
-  }
+        return $(`<span style="display:flex; align-items:center;">${img} ${pais.text}</span>`);
+    }
 
-  select.select2({
-    data: data,
-    templateResult: formatPais,
-    templateSelection: formatPais,
-    placeholder: "Selecione um país",
-    allowClear: true
-  });
+    select.select2({
+        data,
+        templateResult: formatPais,
+        templateSelection: formatPais,
+        placeholder: "Selecione um país",
+        allowClear: true
+    });
 }
 
 carregarPaises();
 
 
-// ---------------Manipulação do formulário----------------
+// ================================
+// 2) Submissão do formulário
+// ================================
 
 const form = document.querySelector("form");
 
 form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
+    // --- Campos do formulário ---
     const destino = document.querySelector("#destino").value.trim();
     const inicio = document.querySelector("#inicio").value;
     const fim = document.querySelector("#fim").value;
@@ -66,45 +67,73 @@ form.addEventListener("submit", async (e) => {
         return;
     }
 
-    // 1) Buscar lista de 50 locais usando OpenTripMap
+    // ================================
+    // 3) Buscar locais com PlacesOSM/OpenTripMap
+    // ================================
     let locais = [];
     try {
-      // busca 50 locais (limit = 50)
-      locais = await buscarLocaisCidade(destino, pais, 50);
+        locais = await buscarLocaisCidade(destino, pais, 50);
     } catch (err) {
-      console.error("Erro ao buscar locais:", err);
-      locais = [];
+        console.error("Erro ao buscar locais:", err);
     }
 
     if (!Array.isArray(locais) || locais.length === 0) {
-      alert("Nenhum local encontrado pela OpenTripMap para essa localidade.");
-      return;
-    }
-
-    // Salva a lista no localStorage (pode ser usada depois)
-    localStorage.setItem("roteiro_locais_otm", JSON.stringify(locais));
-
-    // Renderiza uma lista resumida na página (apenas para conferência)
-    // Buscar clima com WeatherAPI
-    const weatherData = await getWeather(destino, pais);
-
-    if (!weatherData) {
-        alert("Erro ao buscar clima do destino.");
+        alert("Nenhum local encontrado para este destino (OpenTripMap).");
         return;
     }
 
-    // Salva no localStorage
+    // Guardar no localStorage
+    localStorage.setItem("roteiro_locais_otm", JSON.stringify(locais));
+
+
+    // ================================
+    // 4) Extrair coordenadas do primeiro local encontrado
+    // ================================
+    const primeiroLocal = locais[0];
+
+    const lat = primeiroLocal?.lat;
+    const lon = primeiroLocal?.lon;
+
+    if (!lat || !lon) {
+        console.error("Locais retornados:", locais);
+        alert("Não foi possível obter coordenadas da cidade.");
+        return;
+    }
+
+    console.log("Coordenadas detectadas:", lat, lon);
+
+
+    // ================================
+    // 5) Clima usando Weather.js (Open-Meteo)
+    // ================================
+    let weatherData;
+    try {
+        weatherData = await getWeather(lat, lon, inicio, fim);
+    } catch (err) {
+        console.error("Erro ao buscar clima:", err);
+        alert("Falha ao obter clima do destino.");
+        return;
+    }
+
+    localStorage.setItem("roteiro_clima", JSON.stringify(weatherData));
+
+
+    // ================================
+    // 6) Salvar informações básicas no localStorage
+    // ================================
     localStorage.setItem("roteiro_destino", destino);
     localStorage.setItem("roteiro_inicio", inicio);
     localStorage.setItem("roteiro_fim", fim);
-    localStorage.setItem("roteiro_clima", JSON.stringify(weatherData));
     localStorage.setItem("roteiro_orcamento", orcamento);
     localStorage.setItem("roteiro_pais", pais);
     localStorage.setItem("roteiro_hobbies", hobbies);
     localStorage.setItem("roteiro_gastronomia", gastronomia);
     localStorage.setItem("roteiro_tipo", tipo);
 
-    // ➕ PEGAR USUÁRIO LOGADO
+
+    // ================================
+    // 7) Verificar usuário logado
+    // ================================
     const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
 
     if (!usuarioLogado) {
@@ -112,37 +141,38 @@ form.addEventListener("submit", async (e) => {
         return;
     }
 
-    // ➕ BUSCAR ID DO USUÁRIO NO BACKEND
     const usuarioBackend = await buscarUsuarioPorEmail(usuarioLogado.email);
 
     if (!usuarioBackend) {
-        alert("Usuário não encontrado no sistema.");
+        alert("Usuário não encontrado no backend.");
         return;
     }
 
-    // ➕ CRIA OBJETO DO ROTEIRO PARA O BACKEND
+
+    // ================================
+    // 8) Criar objeto do roteiro e salvar no backend
+    // ================================
     const roteiroBackend = {
         pais: pais,
         destino: destino,
         dataInicio: inicio,
         dataFim: fim,
-        custoTotal: parseFloat(orcamento) || 0,
+        custoTotal: Number(orcamento) || 0,
         usuario: { id: usuarioBackend.id }
     };
 
-    // ➕ SALVAR NO BACKEND
     const salvo = await salvarRoteiroBackend(roteiroBackend);
 
     if (!salvo) {
-        alert("Erro ao salvar roteiro.");
+        alert("Erro ao salvar roteiro no backend.");
         return;
     }
 
-    console.log("Roteiro salvo no backend:", salvo);
+    console.log("Roteiro salvo:", salvo);
 
-    // ==========================
-    //   REDIRECIONAMENTO CERTO
-    // ==========================
-    const id = salvo.id;
-    window.location.href = `/frontend/pages/mapa-page.html?id=${id}`;
+
+    // ================================
+    // 9) Redirecionar para a página do mapa
+    // ================================
+    window.location.href = `/frontend/pages/mapa-page.html?id=${salvo.id}`;
 });
