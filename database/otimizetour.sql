@@ -25,6 +25,21 @@ CREATE TABLE Roteiros (
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
 
+CREATE TABLE CustoViagem (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    custoTotalReais DECIMAL(2,1) NOT NULL,
+    custoTotalConvertido DECIMAL(2,1) NOT NULL,
+    roteiro_id INT,
+    FOREIGN KEY (roteiro_id) REFERENCES Roteiros(id)
+);
+
+CREATE TABLE Clima(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    climaAtual VARCHAR(30),
+    roteiro_id INT,
+    FOREIGN KEY (roteiro_id) REFERENCES Roteiros(id)
+);
+
 CREATE TABLE PontosInteresse (
     id INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(100) NOT NULL,
