@@ -127,6 +127,106 @@ document.addEventListener("DOMContentLoaded", main);
 
 async function main(){
   
+  const loadingPhrases = [
+    "A IA está analisando seus dados de viagem...",
+    "Buscando locais turísticos no destino...",
+    "Consultando a previsão do tempo para as suas datas...",
+    "Gerando a sequência ideal de atividades (Gemini)...",
+    "Salvando os pontos de interesse no seu roteiro...",
+    "Quase pronto! Iniciando o mapa interativo...",
+];
+let currentPhraseIndex = 0;
+let phraseInterval;
+let iconInterval;
+
+// Função para atualizar a frase
+function updateLoadingText() {
+    const textElement = document.getElementById("current-loading-text");
+    if (textElement) {
+        textElement.style.opacity = 0; // Inicia a transição de saída
+
+        setTimeout(() => {
+            currentPhraseIndex = (currentPhraseIndex + 1) % loadingPhrases.length;
+            textElement.textContent = loadingPhrases[currentPhraseIndex];
+            textElement.style.opacity = 1; // Transição de entrada
+        }, 500); // Meio segundo para o fade
+}
+}
+
+// Função para animar os ícones
+function animateIcons() {
+    const icons = [
+        document.getElementById('loading-icon-1'),
+        document.getElementById('loading-icon-2'),
+        document.getElementById('loading-icon-3'),
+        document.getElementById('loading-icon-4'),
+    ];
+    let currentIconIndex = 0;
+
+    function showNextIcon() {
+        // Esconde todos
+        icons.forEach(icon => {
+            if (icon) {
+                icon.style.opacity = 0;
+                icon.style.transform = 'translateX(-100%)';
+            }
+        });
+
+        // Mostra o próximo
+        const nextIcon = icons[currentIconIndex];
+        if (nextIcon) {
+            nextIcon.style.opacity = 1;
+            nextIcon.style.transform = 'translateX(0)';
+        }
+        
+        currentIconIndex = (currentIconIndex + 1) % icons.length;
+    }
+
+    // Chama a animação imediatamente
+    showNextIcon();
+    
+    // Configura o intervalo para trocar de ícone
+    iconInterval = setInterval(showNextIcon, 2500); // Troca de ícone a cada 2.5 segundos
+}
+
+
+// Sobrescreve showLoading para iniciar animações
+function showLoading() {
+    // ... (Seu código original de showLoading) ...
+    if(loadingOverlay) loadingOverlay.classList.remove("d-none");
+    if(errorOverlay) errorOverlay.classList.add("d-none");
+    document.body.style.overflow = "hidden";
+    
+    // Inicia o carrossel de texto
+    const textElement = document.getElementById("current-loading-text");
+    if (textElement) {
+        textElement.textContent = loadingPhrases[0];
+    }
+    phraseInterval = setInterval(updateLoadingText, 10000); // Troca a cada 10 segundos
+    
+    // Inicia a animação dos ícones
+    animateIcons();
+}
+
+// Sobrescreve hideLoading para parar animações
+function hideLoading() {
+    // ... (Seu código original de hideLoading) ...
+    if(loadingOverlay) loadingOverlay.classList.add("d-none");
+    document.body.style.overflow = "";
+
+    // Para o carrossel de texto e ícones
+    clearInterval(phraseInterval);
+    clearInterval(iconInterval);
+}
+
+// Sobrescreve showErrorScreen para parar animações
+function showErrorScreen(message) {
+    hideLoading(); // Chamará hideLoading para parar os intervalos
+    if(errorMessageEl) errorMessageEl.textContent = message;
+    if(errorOverlay) errorOverlay.classList.remove("d-none");
+    document.body.style.overflow = "hidden";
+}
+
   // 1. Mostrar loading imediatamente
   showLoading();
   let erroDetalhado = "Ocorreu um erro ao processar seu roteiro. Verifique sua conexão e tente novamente.";

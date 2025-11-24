@@ -150,6 +150,10 @@ body {
 
 /* CSS para Loading e Erro na mapa-page (Adicionar ao seu mapapag.css) */
 
+/* ======================================================== */
+/* --- CORREÇÕES E ESTILOS PARA LOADING E ERRO OVERLAYS --- */
+/* ======================================================== */
+
 /* Estilo comum para as sobreposições na mapa-page */
 #loading-overlay-mapa, #error-overlay-mapa {
     position: fixed;
@@ -157,22 +161,126 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.9); /* Fundo escuro semitransparente */
+    background: rgba(255, 255, 255, 0.95); /* Fundo CLARO (Branco semitransparente) */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     z-index: 1050; /* Z-index alto para cobrir todos os elementos */
+    padding: 20px;
 }
 
-/* Estilo do Spinner de Loading */
-#loading-overlay-mapa .spinner-border {
-    width: 3rem;
-    height: 3rem;
-    border-width: 0.3em;
+/* Texto de Status no Loading - Mudado para ser legível em fundo claro */
+#loading-overlay-mapa p {
+    color: #3974fc; /* Cor azul forte para destaque */
+    font-weight: 700 !important;
 }
 
-/* Estilo da tela de erro */
+
+/* Estilo da tela de erro - Texto mudado para ser legível em fundo claro */
+#error-overlay-mapa .text-white, 
+#error-overlay-mapa .lead,
+#error-overlay-mapa h2 {
+    color: var(--text-dark) !important; /* Cor do texto de erro alterada para escuro */
+}
+
+#error-overlay-mapa .bi-x-octagon-fill {
+    color: var(--error-color) !important; /* Mantém o ícone de erro em vermelho */
+}
+
 #error-overlay-mapa .lead {
     max-width: 500px;
+}
+
+/* Spinner Personalizado (From Uiverse.io by exyreams) - Mantido */
+.spinner-custom {
+    position: relative;
+    width: 80px;
+    height: 16px;
+}
+
+.spinner-custom div {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background-color: rgb(57, 116, 252);
+    border-radius: 50%;
+    animation: spinner-4t3wzl 2s infinite linear;
+}
+
+/* ... (O restante do código do spinner-custom div:nth-child(n) e @keyframes spinner-4t3wzl deve ser mantido) ... */
+.spinner-custom div:nth-child(1) {
+    left: 0;
+    animation-delay: 0.15s;
+    background-color: rgba(57, 116, 252, 0.9);
+}
+
+.spinner-custom div:nth-child(2) {
+    left: 25%;
+    animation-delay: 0.3s;
+    background-color: rgba(57, 116, 252, 0.8);
+}
+
+.spinner-custom div:nth-child(3) {
+    left: 50%;
+    animation-delay: 0.45s;
+    background-color: rgba(57, 116, 252, 0.7);
+}
+
+.spinner-custom div:nth-child(4) {
+    left: 75%;
+    animation-delay: 0.6s;
+    background-color: rgba(57, 116, 252, 0.6);
+}
+
+.spinner-custom div:nth-child(5) {
+    left: 100%;
+    animation-delay: 0.75s;
+    background-color: rgba(57, 116, 252, 0.5);
+}
+
+@keyframes spinner-4t3wzl {
+    0% {
+        transform: rotate(0deg) translateX(-100%);
+    }
+
+    100% {
+        transform: rotate(360deg) translateX(-100%);
+    }
+}
+
+
+/* ======================================================== */
+/* --- ESTILOS ADICIONAIS PARA ANIMAÇÕES DE LOADING --- */
+/* ======================================================== */
+
+/* ESTILOS ADICIONAIS PARA ANIMAÇÕES DE LOADING */
+/* Container do Carrossel de Ícones */
+.icon-carousel-container {
+    height: 3rem; /* Altura suficiente para os ícones */
+    width: 100px; 
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px; /* Espaçamento entre o ícone e o spinner */
+}
+
+/* Estilo Básico dos Ícones de Loading */
+.loading-icon {
+    position: absolute;
+    font-size: 3rem;
+    color: rgb(57, 116, 252); /* Cor azul forte */
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+/* Transição de Texto (Apenas para garantir que o texto não "pule") */
+#current-loading-text {
+    min-height: 1.5rem; 
+    /* Sobrescreve a cor do texto (que está como text-white no HTML) */
+    color: rgb(57, 116, 252) !important; 
+    font-size: 1.1rem;
+    transition: opacity 0.5s ease-in-out;
 }

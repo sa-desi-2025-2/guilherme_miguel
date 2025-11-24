@@ -1,83 +1,83 @@
 body {
-          background: linear-gradient(158deg, rgba(0, 100, 194, 1) 0%, rgba(56, 190, 147, 1) 50%, rgba(255, 240, 207, 1) 100%);
-          min-height: 100vh;
-          font-family: "Inter", sans-serif;
-        }
-        
-        .top-section h1 {
-          font-weight: 700;
-          color: #ffffff;
-        }
-        
-        .top-section p {
-          font-weight: 500;
-          color: #f0f7ff;
-        }
-        
-        .badge-top {
-          background-color: #e5f2ff;
-          color: #0d6efd;
-          font-weight: 600;
-          border-radius: 20px;
-          padding: 8px 14px;
-          font-size: 0.9rem;
-          display: inline-block;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-        }
-        
-        .form-card {
-          background: #ffffff;
-          border-radius: 18px;
-          max-width: 600px;
-          border: none;
-          box-shadow:
-                  0 10px 25px rgba(0, 0, 0, 0.15),
-                  0 0 10px rgba(255, 255, 255, 0.3) inset;
-          transition: transform .2s ease, box-shadow .3s ease;
-        }
-        
-        .form-card:hover {
-          transform: translateY(-3px);
-          box-shadow:
-                  0 15px 30px rgba(0, 0, 0, 0.25),
-                  0 0 12px rgba(255, 255, 255, 0.4) inset;
-        }
-        
-        .form-label {
-          font-weight: 600;
-          color: #333;
-        }
-        
-        .input-custom {
-          border: 2px solid #dfe7f3;
-          padding: 10px;
-          border-radius: 10px;
-          transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        .input-custom:focus {
-          border-color: #1b85f7;
-          box-shadow: 0 0 5px rgba(27, 133, 247, 0.4);
-        }
-        
-        .btn-custom {
-          background: linear-gradient(90deg, #0064c2, #38be93);
-          border: none;
-          color: #fff;
-          font-size: 1.05rem;
-          font-weight: 600;
-          border-radius: 10px;
-        }
-        
-        .btn-custom:hover{
-          color: white;
-        }
+  background: linear-gradient(158deg, rgba(0, 100, 194, 1) 0%, rgba(56, 190, 147, 1) 50%, rgba(255, 240, 207, 1) 100%);
+  min-height: 100vh;
+  font-family: "Inter", sans-serif;
+}
+
+.top-section h1 {
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.top-section p {
+  font-weight: 500;
+  color: #f0f7ff;
+}
+
+.badge-top {
+  background-color: #e5f2ff;
+  color: #0d6efd;
+  font-weight: 600;
+  border-radius: 20px;
+  padding: 8px 14px;
+  font-size: 0.9rem;
+  display: inline-block;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.form-card {
+  background: #ffffff;
+  border-radius: 18px;
+  max-width: 600px;
+  border: none;
+  box-shadow:
+      0 10px 25px rgba(0, 0, 0, 0.15),
+      0 0 10px rgba(255, 255, 255, 0.3) inset;
+  transition: transform .2s ease, box-shadow .3s ease;
+}
+
+.form-card:hover {
+  transform: translateY(-3px);
+  box-shadow:
+      0 15px 30px rgba(0, 0, 0, 0.25),
+      0 0 12px rgba(255, 255, 255, 0.4) inset;
+}
+
+.form-label {
+  font-weight: 600;
+  color: #333;
+}
+
+.input-custom {
+  border: 2px solid #dfe7f3;
+  padding: 10px;
+  border-radius: 10px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input-custom:focus {
+  border-color: #1b85f7;
+  box-shadow: 0 0 5px rgba(27, 133, 247, 0.4);
+}
+
+.btn-custom {
+  background: linear-gradient(90deg, #0064c2, #38be93);
+  border: none;
+  color: #fff;
+  font-size: 1.05rem;
+  font-weight: 600;
+  border-radius: 10px;
+}
+
+.btn-custom:hover{
+  color: white;
+}
 
 /* ---- Ajuste Select2 para parecer um input form-control ---- */
 
 /* Caixa principal */
 .select2-container .select2-selection--single {
-  height: calc(2.5rem + 2px) !important; /* mesma altura do .form-control */
+  height: calc(2.5rem + 2px) !important; 
   border: 2px solid #dfe7f3 !important;
   border-radius: 10px !important;
   padding: 6px 10px !important;
@@ -128,8 +128,9 @@ body {
 }
 
 
-
-/* CSS para Loading e Erro (Adicionar ao seu criacao-page.css) */
+/* ======================================================== */
+/* --- CORREÇÕES E ESTILOS PARA LOADING E ERRO OVERLAYS --- */
+/* ======================================================== */
 
 /* Estilo comum para as sobreposições */
 #loading-overlay, #error-overlay {
@@ -138,22 +139,100 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.9); /* Fundo escuro semitransparente */
+  background: rgba(255, 255, 255, 0.95); /* Fundo CLARO */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  z-index: 1050; /* Z-index alto para cobrir tudo (acima de modals) */
+  z-index: 1050; 
+  padding: 20px;
 }
 
-/* Estilo do Spinner de Loading */
-#loading-overlay .spinner-border {
-  width: 3rem;
-  height: 3rem;
-  border-width: 0.3em;
+/* Texto de Status no Loading - COR UNIFICADA */
+#loading-overlay p {
+  color: #3974fc; 
+  font-weight: 700 !important;
+}
+
+/* Spinner Personalizado (COR UNIFICADA) */
+.spinner-custom {
+  position: relative;
+  width: 80px;
+  height: 16px;
+}
+
+.spinner-custom div {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background-color: #3974fc; /* COR UNIFICADA */
+  border-radius: 50%;
+  animation: spinner-4t3wzl 2s infinite linear;
+}
+
+/* Cores internas do Spinner (COR UNIFICADA) */
+.spinner-custom div:nth-child(1) { left: 0; animation-delay: 0.15s; background-color: rgba(57, 116, 252, 0.9); }
+.spinner-custom div:nth-child(2) { left: 25%; animation-delay: 0.3s; background-color: rgba(57, 116, 252, 0.8); }
+.spinner-custom div:nth-child(3) { left: 50%; animation-delay: 0.45s; background-color: rgba(57, 116, 252, 0.7); }
+.spinner-custom div:nth-child(4) { left: 75%; animation-delay: 0.6s; background-color: rgba(57, 116, 252, 0.6); }
+.spinner-custom div:nth-child(5) { left: 100%; animation-delay: 0.75s; background-color: rgba(57, 116, 252, 0.5); }
+
+@keyframes spinner-4t3wzl {
+  0% { transform: rotate(0deg) translateX(-100%); }
+  100% { transform: rotate(360deg) translateX(-100%); }
 }
 
 /* Estilo da tela de erro */
+#error-overlay .text-white, #error-overlay .lead, #error-overlay h2 {
+  color: #333 !important; 
+}
+
+#error-overlay .bi-x-octagon-fill {
+  color: #dc3545 !important; 
+}
+
 #error-overlay .lead {
   max-width: 400px;
+}
+
+/* ======================================================== */
+/* --- ESTILOS CORRIGIDOS PARA ANIMAÇÕES DE ÍCONES (CRIAÇÃO) --- */
+/* ======================================================== */
+
+/* Container do Carrossel de Ícones (Criação) */
+.icon-carousel-container-cria {
+  height: 3rem; 
+  width: 100px; 
+  position: relative;
+  overflow: hidden; /* ESSENCIAL para o efeito de corte */
+  display: flex;
+  justify-content: center; /* Centraliza horizontalmente */
+  align-items: center;
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
+/* Estilo Básico dos Ícones de Loading (Criação) */
+.loading-icon-cria {
+  position: absolute;
+  font-size: 3rem;
+  color: #3974fc; /* COR UNIFICADA */
+  opacity: 0;
+  
+  /* Transições */
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+  
+  /* Centraliza e posiciona inicialmente FORA (abaixo) */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, 100%); 
+}
+
+/* Transição de Texto (Criação) */
+#current-loading-text {
+  min-height: 1.5rem; 
+  font-size: 1.1rem;
+  transition: opacity 0.5s ease-in-out;
+  margin-top: 10px !important; 
+  color: #3974fc !important; /* COR UNIFICADA */
 }
