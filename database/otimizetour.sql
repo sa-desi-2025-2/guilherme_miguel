@@ -20,6 +20,7 @@ CREATE TABLE Roteiros (
     dataInicio DATE NOT NULL,
     dataFim DATE NOT NULL,
     custoTotal DECIMAL(10, 2) NOT NULL,
+    shareToken VARCHAR(255) UNIQUE,
     usuario_id INT,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
@@ -29,6 +30,7 @@ CREATE TABLE PontosInteresse (
     nome VARCHAR(100) NOT NULL,
     descricao TEXT,
     avaliacaoMedia DECIMAL(2, 1),
+    precoMedio DECIMAL(7, 2),
     latitude DECIMAL(10, 8),
     longitude DECIMAL(11, 8),
     categoria_id INT,
