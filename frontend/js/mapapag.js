@@ -20,6 +20,7 @@ if (!roteiroId || roteiroId === "{}" || isNaN(Number(roteiroId))) {
 console.log("ID do roteiro capturado:", roteiroId);
 
 // =================== HELPERS UI ===================
+// =================== HELPERS UI ===================
 function qs(id) { return document.getElementById(id); }
 function ensureElement(id, defaultTag = "div") {
   let el = qs(id);
@@ -41,10 +42,33 @@ const statusEl = (() => {
     const s = document.createElement("div");
     s.id = id;
     s.style.margin="10px 0";
-    roteiroContainerEl.parentNode.insertBefore(s, roteiroContainerEl);
+    // Adiciona o status antes do container de roteiro
+    roteiroContainerEl.parentNode.insertBefore(s, roteiroContainerEl); 
     return s;
 })();
 
+// --- Controles de Loading e Erro ---
+const loadingOverlay = document.getElementById("loading-overlay-mapa");
+const errorOverlay = document.getElementById("error-overlay-mapa");
+const errorMessageEl = document.getElementById("error-message-mapa");
+
+function showLoading() {
+    if(loadingOverlay) loadingOverlay.classList.remove("d-none");
+    if(errorOverlay) errorOverlay.classList.add("d-none");
+    document.body.style.overflow = "hidden"; // Evita scroll
+}
+
+function hideLoading() {
+    if(loadingOverlay) loadingOverlay.classList.add("d-none");
+    document.body.style.overflow = "";
+}
+
+function showErrorScreen(message) {
+    hideLoading();
+    if(errorMessageEl) errorMessageEl.textContent = message;
+    if(errorOverlay) errorOverlay.classList.remove("d-none");
+    document.body.style.overflow = "hidden";
+}
 // =================== FUNÇÕES DE BACKEND ===================
 async function carregarRoteiroBackend() {
   const res = await fetch(`${API_BASE}/roteiros/${roteiroId}`);
@@ -69,6 +93,7 @@ async function buscarPontosDoBackend(roteiroIdParam) {
 }
 
 // =================== AUXILIARES ===================
+
 function showStatus(msg) { statusEl.textContent = msg; }
 function clearStatus() { statusEl.textContent = ""; }
 function formatCoord(v) { if(v==null) return "?"; return Number(v).toFixed(6); }
@@ -101,29 +126,38 @@ function renderizarRoteiroBanco(pontos){
 document.addEventListener("DOMContentLoaded", main);
 
 async function main(){
+  
+  // 1. Mostrar loading imediatamente
+  showLoading();
+  let erroDetalhado = "Ocorreu um erro ao processar seu roteiro. Verifique sua conexão e tente novamente.";
+
   try{
-    showStatus("Carregando roteiro...");
+    showStatus("Carregando roteiro do servidor...");
     const roteiroBD = await carregarRoteiroBackend();
     console.log("Roteiro carregado:", roteiroBD);
+    erroDetalhado = "Erro ao buscar locais turísticos.";
 
-    // UI básico
+    // UI básico (pode ser feito com o loading ativo)
     destinoEl.textContent = roteiroBD.destino;
     dataViagemEl.textContent = `${roteiroBD.dataInicio} / ${roteiroBD.dataFim}`;
     tituloMapaEl.textContent = `Roteiro ${roteiroBD.destino}`;
     orcamentoEl.textContent = `BRL ${roteiroBD.custoTotal ?? "—"}`;
     paisLocalidadeEl.innerHTML = `<i class="fas fa-map-marker-alt"></i> ${roteiroBD.pais}`;
 
-    // Atualiza orçamento convertido
+    // Atualiza orçamento convertido e duração
     atualizarOrcamentoConvertido(roteiroBD.custoTotal ?? 0, roteiroBD.pais);
+    atualizarDuracao(roteiroBD.dataInicio, roteiroBD.dataFim);
 
+    erroDetalhado = "Erro ao buscar clima do destino.";
     // ===== CLIMA =====
     const clima = await getWeather(roteiroBD.destino, roteiroBD.pais, roteiroBD.dataInicio, roteiroBD.dataFim);
     renderClima(clima, roteiroBD.destino, roteiroBD.dataInicio, roteiroBD.dataFim);
     localStorage.setItem("roteiro_clima", JSON.stringify(clima));
 
-    // Inicializa mapa
+    // Inicializa mapa (no Brasil, pois a localização exata virá depois)
     initMap(-23.55052, -46.633308, 13);
-
+    
+    erroDetalhado = "Erro ao buscar pontos salvos no banco de dados.";
     // Buscar pontos no banco
     showStatus("Buscando pontos no banco...");
     const pontosExistentes = await buscarPontosDoBackend(Number(roteiroId));
@@ -132,14 +166,17 @@ async function main(){
       clearStatus();
       renderizarRoteiroBanco(pontosExistentes);
       plotarPontos(pontosExistentes);
+      hideLoading(); // Fim do carregamento
       return;
     }
 
     // Nenhum ponto existente → chamar IA
+    erroDetalhado = "Nenhum local turístico encontrado. Tente outro destino.";
     showStatus("Buscando locais turísticos...");
     const locais = await buscarLocaisCidade(roteiroBD.destino, roteiroBD.pais, 50);
-    if(!locais?.length){ clearStatus(); alert("Nenhum local turístico encontrado."); return; }
-
+    if(!locais?.length){ clearStatus(); throw new Error(erroDetalhado); }
+    
+    erroDetalhado = "Falha na comunicação com a IA (Gemini).";
     showStatus("Gerando roteiro com IA...");
     const hobbies = localStorage.getItem("roteiro_hobbies") || "";
     const gastronomia = localStorage.getItem("roteiro_gastronomia") || "";
@@ -149,12 +186,9 @@ async function main(){
     const dadosGemini = { pais: roteiroBD.pais, destino: roteiroBD.destino, inicio: roteiroBD.dataInicio, fim: roteiroBD.dataFim, hobbies, gastronomia, tipoViagem, orcamento:Number(orcamentoLocal), clima };
     const roteiroIA = await gerarRoteiroGemini(dadosGemini, locais);
     console.log("Roteiro IA:", roteiroIA);
-
-    // Atualiza orçamento convertido com o valor final
-    atualizarOrcamentoConvertido(roteiroBD.custoTotal ?? 0, roteiroBD.pais);
-    
     
     // Salvar pontos no banco
+    erroDetalhado = "Erro ao salvar as atividades geradas pela IA.";
     showStatus("Salvando atividades no banco...");
     const atividades = [];
     roteiroIA.dias.forEach(d=>{ d.atividades.forEach(a=>{
@@ -163,6 +197,7 @@ async function main(){
 
     for(const atv of atividades){
       const pontoDB = { nome: atv.titulo, descricao: atv.descricao, avaliacaoMedia:null, latitude:atv.lat, longitude:atv.lon, categoria:null, roteiro:{id:Number(roteiroId)} };
+      // Usamos try/catch interno para não interromper se apenas um ponto falhar
       try{ await salvarPontoBackend(pontoDB); }catch(err){ console.error("Falha ao salvar ponto:", pontoDB, err); }
     }
 
@@ -172,14 +207,44 @@ async function main(){
     clearStatus();
     renderizarRoteiroBanco(pontosSalvos);
     plotarPontos(pontosSalvos);
+    
+    hideLoading(); // Fim do carregamento
 
   }catch(err){
-    clearStatus();
-    console.error("Erro geral:", err);
-    alert("Erro ao carregar/gerar o roteiro. Veja o console.");
+    console.error("Erro geral no MAIN:", err);
+    // 2. Esconder loading e mostrar tela de erro com a mensagem detalhada
+    showErrorScreen(erroDetalhado);
   }
 }
 
+
+
+function atualizarDuracao(dataInicioStr, dataFimStr) {
+  const duracaoD = document.getElementById("duracao-dias");
+  if(!duracaoD) return;
+
+  const inicio = new Date(dataInicioStr);
+  const fim = new Date(dataFimStr);
+
+  const diffMs = fim - inicio;
+  // O + 1 é para incluir o dia de chegada
+  const duracaoDias = Math.ceil(diffMs / (1000*60*60*24)) + 1;
+
+  duracaoD.textContent = `${duracaoDias} dia${duracaoDias > 1 ? "s" : ""}`;
+  
+  // Se a duração for inválida (data início depois da data fim), aplica a classe de erro
+  if (duracaoDias <= 0) {
+      duracaoD.classList.add("duration-negative");
+      duracaoD.textContent = "Data Inválida";
+  } else {
+      duracaoD.classList.remove("duration-negative");
+  }
+}
+
+// Substituir o bloco DOMContentLoaded original da duração
+document.addEventListener("DOMContentLoaded", async () => {
+  // A duração agora é calculada dentro do main
+});
 
 
 // Mapeamento de códigos de clima (WMO) para ícones e descrição (usando Bootstrap Icons)

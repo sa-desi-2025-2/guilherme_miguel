@@ -126,3 +126,34 @@ body {
   background: #e9f4ff !important;
   color: #333 !important;
 }
+
+
+
+/* CSS para Loading e Erro (Adicionar ao seu criacao-page.css) */
+
+/* Estilo comum para as sobreposições */
+#loading-overlay, #error-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9); /* Fundo escuro semitransparente */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050; /* Z-index alto para cobrir tudo (acima de modals) */
+}
+
+/* Estilo do Spinner de Loading */
+#loading-overlay .spinner-border {
+  width: 3rem;
+  height: 3rem;
+  border-width: 0.3em;
+}
+
+/* Estilo da tela de erro */
+#error-overlay .lead {
+  max-width: 400px;
+}
