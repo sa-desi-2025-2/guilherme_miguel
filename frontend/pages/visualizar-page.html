@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roteiro Personalizado - Brasil (Bootstrap)</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/mapapag.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+</head>
+
+<body>
+
+    <main class="container py-4 px-md-5">
+        <section class="header-content mb-4">
+            <h1 class="h3 d-inline-block me-2" id="titulo-mapa"></h1>
+            <span class="ia-tag badge text-bg-info fw-bold">IA Gerado</span>
+            <p class="location text-muted mt-1" id="pais-localidade"><i class="fas fa-map-marker-alt me-1"></i> Brasil
+            </p>
+        </section>
+
+        <section class="summary-cards p-3 p-md-4 rounded-3 shadow mb-4">
+            <div class="row row-cols-1 row-cols-md-3 g-3">
+
+                <div class="col">
+                    <div class="card-item d-flex align-items-center gap-3">
+                        <i class="fas fa-calendar-alt p-3 rounded-circle icon-calendar"></i>
+                        <div class="info d-flex flex-column">
+                            <span class="label text-muted">Período</span>
+                            <span class="value fs-5 fw-bold" id="data-viagem">10/11/2025 - 04/11/2025</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="card-item d-flex align-items-center gap-3">
+                        <i class="fas fa-dollar-sign p-3 rounded-circle icon-money"></i>
+                        <div class="info d-flex flex-column">
+                            <span class="label text-muted">Custo Total</span>
+                            <span class="value fs-5 fw-bold" id="orcamento-viagem"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="card-item d-flex align-items-center gap-3">
+                        <i class="fas fa-exchange-alt p-3 rounded-circle icon-conversion"></i>
+                        <div class="info d-flex flex-column">
+                            <span class="label text-muted">Conversão para Moeda local</span>
+                            <span class="value fs-5 fw-bold" id="orcamento-convertido"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="card-item d-flex align-items-center gap-3">
+                        <i class="fas fa-hourglass-half p-3 rounded-circle icon-duration"></i>
+                        <div class="info d-flex flex-column">
+                            <span class="label text-muted">Duração</span>
+                            <span id="duracao-dias" class="value fs-5 fw-bold duration-negative"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="main-content-grid row g-4">
+
+            <div class="col-lg-12">
+                <div class="card map-card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h2 class="card-title h5 fw-bold">Mapa do Roteiro</h2>
+                        <div id="map">
+                        </div>
+                        <p class="points-of-interest-label text-muted mt-3">Pontos de Interesse próximos às atividades:
+                        </p>
+                        <div id="roteiro-container"></div>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script type="module" src="../js/apis/leafLets.js"></script>
+
+    <script src="../js/visualizar-page.js"></script>
+
+
+</body>
+
+</html>

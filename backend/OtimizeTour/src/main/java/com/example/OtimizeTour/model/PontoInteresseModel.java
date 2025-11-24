@@ -1,0 +1,110 @@
+package com.example.OtimizeTour.model;
+import com.example.OtimizeTour.model.CategoriaModel;
+import com.example.OtimizeTour.model.RoteiroModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "pontosinteresse")
+public class PontoInteresseModel {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    private String nome;
+
+    @Column(columnDefinition = "TEXT")
+    private String descricao;
+    
+    private double latitude;
+    private double longitude;
+    private float avaliacaoMedia;
+
+    @ManyToOne
+    @JoinColumn(name = "categoria_id")
+    private CategoriaModel categoria;
+
+    @ManyToOne
+    @JoinColumn(name = "roteiro_id")
+    private RoteiroModel roteiro;
+
+    public PontoInteresseModel() {}
+
+    public PontoInteresseModel(String nome, String descricao, double latitude, double longitude, float avaliacaoMedia) {
+        this.nome = nome;
+        this.descricao = descricao;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.avaliacaoMedia = avaliacaoMedia;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public float getAvaliacaoMedia() {
+        return avaliacaoMedia;
+    }
+
+    public void setAvaliacaoMedia(float avaliacaoMedia) {
+        this.avaliacaoMedia = avaliacaoMedia;
+    }
+
+    public CategoriaModel getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(CategoriaModel categoria) {
+        this.categoria = categoria;
+    }
+
+    public void avaliar(float avaliacao) {
+        this.avaliacaoMedia = avaliacao;
+    }
+
+    public RoteiroModel getRoteiro() {
+        return roteiro;
+    }
+    public void setRoteiro(RoteiroModel roteiro) {
+        this.roteiro = roteiro;
+    }
+    
+}

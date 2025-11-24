@@ -1,93 +1,92 @@
+        /* Cores Customizadas para o visual */
+        :root {
+            --bs-blue-ai: #1e3a8a; /* Cor principal do Logo */
+            --bs-primary: #0b5ed7; /* Cor principal dos botões */
+            --bs-success-custom: #10b981; /* Cor do preço */
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(to bottom right, #ffffff, #f8fbff);
+            min-height: 100vh;
+        }
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
-    margin: 0;
-    padding: 0;
-}
+        /* ===== HEADER (Sticky Navbar) ===== */
+        .header {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid #e5e7eb;
+            z-index: 10;
+        }
 
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #fff;
-    padding: 10px 20px;
-    border-bottom: 1px solid #ddd;
-}
+        .header-content {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
 
-.logo {
-    font-weight: bold;
-    font-size: 18px;
-    color: #007bff;
-}
+        .logo h1 {
+            color: var(--bs-blue-ai);
+        }
 
-.user-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
+        .logo-icon {
+            font-size: 1.6rem;
+        }
 
-.btn-sair {
-    background: #eee;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-}
+        /* Botão Sair */
+        .btn-outline-custom {
+            border: 1px solid #d1d5db;
+            color: #495057;
+        }
+        .btn-outline-custom:hover {
+            background-color: #f3f4f6;
+            border-color: #d1d5db;
+        }
 
-.container {
-    padding: 20px;
-}
+        /* ===== MAIN CONTAINER (Limitando a largura) ===== */
+        .container-custom {
+            max-width: 900px;
+        }
 
-.novo-roteiro {
-    background: #fff;
-    border: 1px dashed #ccc;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-}
+        /* ===== CREATE NEW TRIP (Dashed Box) ===== */
+        .new-trip {
+            border: 2px dashed rgba(37, 99, 235, 0.4);
+            transition: border-color 0.3s;
+        }
+        .new-trip:hover {
+            border-color: rgba(37, 99, 235, 0.7);
+        }
 
-.novo-roteiro h2 {
-    margin: 0 0 10px;
-}
+        /* Botões Primários */
+        .btn-primary-custom {
+            background-color: var(--bs-primary);
+            border-color: var(--bs-primary);
+        }
+        .btn-primary-custom:hover {
+            background-color: #0a53be;
+            border-color: #0a53be;
+        }
 
-.btn-primary {
-    display: block;
-    width: 100%;
-    background: #007bff;
-    color: #fff;
-    border: none;
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 4px;
-    cursor: pointer;
-}
+        /* ===== TRIP CARD ===== */
+        .price {
+            background: var(--bs-success-custom);
+            color: #fff;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 20px;
+            padding: 4px 10px;
+            white-space: nowrap; /* Impede quebra de linha */
+        }
 
-.meus-roteiros h3 {
-    margin-bottom: 10px;
-}
-
-.roteiro-card {
-    background: #fff;
-    border: 1px solid #ddd;
-    padding: 15px;
-    border-radius: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.status {
-    background: #d4edda;
-    color: #155724;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-size: 12px;
-}
-
-.btn-delete {
-    background: #f8d7da;
-    border: none;
-    padding: 8px;
-    border-radius: 4px;
-    cursor: pointer;
-}
+        .trip-actions .btn-delete {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            cursor: pointer;
+            color: #dc3545; /* Cor de perigo do Bootstrap */
+            transition: opacity 0.2s;
+        }
+        .trip-actions .btn-delete:hover {
+            opacity: 0.8;
+        }

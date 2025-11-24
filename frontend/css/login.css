@@ -1,136 +1,186 @@
- /* === Fundo === */
- body {
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: "Poppins", sans-serif;
-    background: linear-gradient(135deg, #0076ff, #2ccf87);
-  }
+        :root {
+            --primary-blue: #0b84f3;
+            --secondary-green: #00c6a7;
+            --gradient-background: linear-gradient(158deg, rgba(0, 100, 194, 1) 0%, rgba(56, 190, 147, 1) 50%, rgba(255, 240, 207, 1) 100%);
+            --gradient-logo: linear-gradient(135deg, var(--primary-blue), var(--secondary-green));
+            --gradient-button: linear-gradient(135deg, var(--primary-blue), var(--secondary-green));
+        }
 
-  /* === Card central === */
-  .login-container {
-    display: block;
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    width: 360px;
-    padding: 40px 32px;
-    text-align: center;
-    position: relative;
-  }
+        body {
+            height: 100vh;
+            background: var(--gradient-background);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+        }
 
-  .login-container input {
-    display: block; 
+        .container-custom {
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .back-btn {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-weight: 500;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .back-btn:hover {
+            opacity: 0.8;
+        }
+
+        .card-custom {
+            border-radius: 16px;
+        }
+
+        .logo-custom {
+            width: 64px;
+            height: 64px;
+            background: var(--gradient-logo);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: #fff;
+            margin: 0 auto 0.75rem;
+        }
+
+        .tabs {
+            background: #f3f4f6;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .tab-btn {
+            flex: 1;
+            border: none;
+            background: transparent;
+            padding: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s;
+            color: #495057;
+        }
+
+        .tab-btn.active {
+            background: #fff;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            color: #212529;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 0.25rem rgba(11, 132, 243, 0.25);
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: var(--gradient-button);
+            color: #fff;
+            font-weight: 600;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .submit-btn:hover {
+            opacity: 0.9;
+            color: #fff;
+        }
+
+        .form-custom {
+            display: none;
+        }
+
+        .form-custom.active {
+            display: block;
+        }
+
+        .social-btn {
+            background: #fff;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            font-weight: 500;
+            transition: all 0.25s ease;
+        }
+
+        .social-btn i {
+            font-size: 18px;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-2px);
+            background: #f7f7f7;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        #login-github {
+            width: 20%;
+            border-color: #333;
+            color: #333;
+        }
+
+        #login-github:hover {
+            background: #333;
+            color: #fff;
+        }
+
+        #login-facebook {
+            width: 20%;
+            border-color: #1877f2;
+            color: #1877f2;
+        }
+
+        #login-facebook:hover {
+            background: #1877f2;
+            color: #fff;
+        }
+
+        #login-google {
+            width: 20%;
+            border-color: #dd5d5d;
+        }
+
+        #login-google:hover {
+            background: #dd5d5d;
+            color: #fff;
+        }
+
+        /* -------- TOAST CUSTOM -------- */
+.custom-toast {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background: #ffffff;
+    color: #000;
+    padding: 12px 18px;
+    border-radius: 8px;
+    border-left: 5px solid #28a745;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    opacity: 0;
+    transform: translateX(-140%);
+    transition: transform 0.45s ease, opacity 0.45s ease;
+    z-index: 9999;
+    font-size: 14px;
+    max-width: 260px;
 }
 
-  /* === Botão voltar === */
-  .voltar {
-    position: absolute;
-    top: 16px;
-    left: 16px;
-    color: #0076ff;
-    font-size: 13px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
+.custom-toast.show {
+    opacity: 1;
+    transform: translateX(0);
+}
 
-  .voltar span {
-    font-size: 14px;
-  }
+.custom-toast.error {
+    border-left-color: #dc3545;
+}
 
-  /* === Ícone avião === */
-  .icon {
-    background: linear-gradient(135deg, #0076ff, #2ccf87);
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 16px;
-    color: white;
-    font-size: 22px;
-  }
-
-  /* === Títulos === */
-  h2 {
-    margin: 0;
-    font-size: 20px;
-    color: #222;
-  }
-
-  p {
-    color: #888;
-    font-size: 13px;
-    margin: 6px 0 24px;
-  }
-
-  /* === Abas (Entrar / Criar Conta) === */
-  .tabs {
-    display: flex;
-    background: #eef3f7;
-    border-radius: 8px;
-    margin-bottom: 24px;
-    overflow: hidden;
-  }
-
-  .tab {
-    flex: 1;
-    padding: 10px 0;
-    font-size: 14px;
-    cursor: pointer;
-    color: #666;
-    transition: 0.3s;
-  }
-
-  .tab.active {
-    background: #fff;
-    color: #222;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-
-  /* === Inputs === */
-  label {
-    display: block;
-    text-align: left;
-    font-size: 13px;
-    color: #444;
-    margin-bottom: 4px;
-  }
-
-  input {
-    width: 100%;
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    outline: none;
-    font-size: 14px;
-    margin-bottom: 16px;
-    transition: border-color 0.2s;
-  }
-
-  input:focus {
-    border-color: #0076ff;
-  }
-
-  /* === Botão principal === */
-  .btn {
-    width: 100%;
-    background: linear-gradient(90deg, #0076ff, #2ccf87);
-    color: white;
-    border: none;
-    padding: 10px 0;
-    font-size: 15px;
-    font-weight: 500;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: opacity 0.3s;
-  }
-
-  .btn:hover {
-    opacity: 0.9;
-  }
+/* SEU CSS AQUI (restante permanece igual) */

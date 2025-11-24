@@ -1,0 +1,128 @@
+body {
+          background: linear-gradient(158deg, rgba(0, 100, 194, 1) 0%, rgba(56, 190, 147, 1) 50%, rgba(255, 240, 207, 1) 100%);
+          min-height: 100vh;
+          font-family: "Inter", sans-serif;
+        }
+        
+        .top-section h1 {
+          font-weight: 700;
+          color: #ffffff;
+        }
+        
+        .top-section p {
+          font-weight: 500;
+          color: #f0f7ff;
+        }
+        
+        .badge-top {
+          background-color: #e5f2ff;
+          color: #0d6efd;
+          font-weight: 600;
+          border-radius: 20px;
+          padding: 8px 14px;
+          font-size: 0.9rem;
+          display: inline-block;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        
+        .form-card {
+          background: #ffffff;
+          border-radius: 18px;
+          max-width: 600px;
+          border: none;
+          box-shadow:
+                  0 10px 25px rgba(0, 0, 0, 0.15),
+                  0 0 10px rgba(255, 255, 255, 0.3) inset;
+          transition: transform .2s ease, box-shadow .3s ease;
+        }
+        
+        .form-card:hover {
+          transform: translateY(-3px);
+          box-shadow:
+                  0 15px 30px rgba(0, 0, 0, 0.25),
+                  0 0 12px rgba(255, 255, 255, 0.4) inset;
+        }
+        
+        .form-label {
+          font-weight: 600;
+          color: #333;
+        }
+        
+        .input-custom {
+          border: 2px solid #dfe7f3;
+          padding: 10px;
+          border-radius: 10px;
+          transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .input-custom:focus {
+          border-color: #1b85f7;
+          box-shadow: 0 0 5px rgba(27, 133, 247, 0.4);
+        }
+        
+        .btn-custom {
+          background: linear-gradient(90deg, #0064c2, #38be93);
+          border: none;
+          color: #fff;
+          font-size: 1.05rem;
+          font-weight: 600;
+          border-radius: 10px;
+        }
+        
+        .btn-custom:hover{
+          color: white;
+        }
+
+/* ---- Ajuste Select2 para parecer um input form-control ---- */
+
+/* Caixa principal */
+.select2-container .select2-selection--single {
+  height: calc(2.5rem + 2px) !important; /* mesma altura do .form-control */
+  border: 2px solid #dfe7f3 !important;
+  border-radius: 10px !important;
+  padding: 6px 10px !important;
+  display: flex !important;
+  align-items: center !important;
+  background-color: #fff !important;
+}
+
+/* Texto */
+.select2-container .select2-selection__rendered {
+  color: #333 !important;
+  line-height: normal !important;
+  padding-left: 4px !important;
+}
+
+/* Seta dropdown */
+.select2-container .select2-selection__arrow {
+  height: 100% !important;
+  right: 10px !important;
+}
+
+/* Hover */
+.select2-container--default .select2-selection--single:hover {
+  border-color: #1b85f7 !important;
+}
+
+/* Foco */
+.select2-container--default.select2-container--focus .select2-selection--single {
+  border-color: #1b85f7 !important;
+  box-shadow: 0 0 5px rgba(27,133,247,0.4) !important;
+}
+
+/* Dropdown */
+.select2-dropdown {
+  border-radius: 10px !important;
+  border: 2px solid #dfe7f3 !important;
+}
+
+/* Opções */
+.select2-results__option {
+  padding: 10px !important;
+  font-size: 1rem !important;
+}
+
+.select2-results__option--highlighted {
+  background: #e9f4ff !important;
+  color: #333 !important;
+}
