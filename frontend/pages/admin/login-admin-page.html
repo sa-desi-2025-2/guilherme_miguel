@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Admin - Planejador de Viagens</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/login.css">
+</head>
+
+<body>
+    <div class="container container-custom">
+        <a href="../index.html">
+            <button class="back-btn d-flex align-items-center mb-3">
+                <i class="bi bi-arrow-left me-1"></i> Voltar
+            </button>
+        </a>
+
+        <div class="card p-4 shadow-lg card-custom">
+
+            <div class="card-header border-0 bg-white pt-0 pb-3 text-center">
+                <div class="logo-custom mx-auto mb-3">
+                    <i class="bi bi-person-gear"></i> </div>
+                <h2 class="card-title h4 fw-bold mb-0">Área Administrativa</h2>
+                <p class="card-subtitle text-muted fs-6 mt-1">Acesso exclusivo para Administradores</p>
+            </div>
+
+            <div class="d-flex tabs mb-4">
+                <button class="tab-btn active" data-tab="login-admin">Entrar Admin</button>
+                <button class="tab-btn" data-tab="signup-admin">Criar Conta Admin</button>
+            </div>
+
+            <div id="mensagem" class="text-center text-danger mb-3"></div>
+
+            <form id="login-admin" class="form-custom active text-start">
+                <div class="mb-3">
+                    <label for="admin-email" class="form-label">E-mail Admin</label>
+                    <input type="email" id="admin-email" class="form-control" required>
+                </div>
+                <div class="mb-4">
+                    <label for="admin-senha" class="form-label">Senha Admin</label>
+                    <input type="password" id="admin-senha" class="form-control" required>
+                </div>
+
+                <button type="submit" class="submit-btn mb-2">Entrar</button>
+            </form>
+
+            <form id="signup-admin" class="form-custom text-start">
+                <div class="mb-3">
+                    <label for="admin-nome" class="form-label">Nome</label>
+                    <input type="text" id="admin-nome" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="signup-admin-email" class="form-label">E-mail Admin</label>
+                    <input type="email" id="signup-admin-email" class="form-control" required>
+                </div>
+                <div class="mb-2">
+                    <label for="signup-admin-password" class="form-label">Senha</label>
+                    <input type="password" id="signup-admin-password" class="form-control" minlength="8" required>
+                </div>
+                <div class="mb-3">
+                    <label for="confirm-admin-password" class="form-label">Confirmar Senha</label>
+                    <input type="password" id="confirm-admin-password" class="form-control" minlength="8" required>
+                </div>
+
+                <button type="submit" class="submit-btn mt-2">Criar Conta Admin</button>
+            </form>
+            
+            </div>
+    </div>
+
+    <div id="custom-toast" class="custom-toast">
+        <span id="toast-message"></span>
+    </div>
+
+    <script src="../../js/admin/login-admin.js"></script>
+
+</body>
+
+</html>
