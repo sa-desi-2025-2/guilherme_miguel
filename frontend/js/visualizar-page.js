@@ -1,6 +1,5 @@
 const API_BASE = "http://localhost:8081";
 
-// PEGAR TOKEN
 const params = new URLSearchParams(window.location.search);
 const token = params.get("token");
 
@@ -9,14 +8,11 @@ if (!token) {
     throw new Error("Token ausente");
 }
 
-// ======================
-// LEAFLET
-// ======================
 let map = null;
 let markersLayer = null;
 
 function initMap() {
-    map = L.map("map").setView([0, 0], 2); // inicial vazio
+    map = L.map("map").setView([0, 0], 2);
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: "&copy; OpenStreetMap"
@@ -48,9 +44,6 @@ function plotarPontos(pontos) {
     }
 }
 
-// ======================
-// CARREGAR ROTEIRO
-// ======================
 async function carregarCompartilhado() {
     try {
         const resRoteiro = await fetch(`${API_BASE}/roteiros/public/${token}`);
@@ -65,7 +58,6 @@ async function carregarCompartilhado() {
 
         preencherRoteiro(roteiro);
 
-        // Buscar pontos
         const resPontos = await fetch(`${API_BASE}/pontosInteresse?roteiroId=${roteiro.id}`);
         let pontos = [];
 
@@ -82,9 +74,7 @@ async function carregarCompartilhado() {
     }
 }
 
-// ======================
-// PREENCHER ROTEIRO
-// ======================
+
 function preencherRoteiro(roteiro) {
 
     document.getElementById("titulo-mapa").innerText = roteiro.destino;
@@ -104,9 +94,7 @@ function preencherRoteiro(roteiro) {
     document.getElementById("duracao-dias").innerText = `${dias} dias`;
 }
 
-// ======================
-// PREENCHER LISTA
-// ======================
+
 function preencherPontos(lista) {
     const container = document.getElementById("roteiro-container");
 

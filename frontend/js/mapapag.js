@@ -1,4 +1,3 @@
-// frontend/pages/mapa-page.js
 import { gerarRoteiroGemini } from "../js/apis/Gemini.js";
 import { buscarLocaisCidade } from "../js/apis/PlacesOSM.js";
 import { initMap, plotarPontos } from "../js/apis/leafLets.js";
@@ -8,7 +7,6 @@ import { converterMoeda, getMoedaPorPais } from "../js/apis/Currency.js";
 
 const API_BASE = "http://localhost:8081";
 
-// Pegar ID da URL
 const params = new URLSearchParams(window.location.search);
 const roteiroId = params.get("id");
 
@@ -19,7 +17,6 @@ if (!roteiroId || roteiroId === "{}" || isNaN(Number(roteiroId))) {
 
 console.log("ID do roteiro capturado:", roteiroId);
 
-// =================== HELPERS UI ===================
 function qs(id) { return document.getElementById(id); }
 function ensureElement(id, defaultTag = "div") {
   let el = qs(id);
@@ -45,7 +42,6 @@ const statusEl = (() => {
     return s;
 })();
 
-// =================== FUNÇÕES DE BACKEND ===================
 async function carregarRoteiroBackend() {
   const res = await fetch(`${API_BASE}/roteiros/${roteiroId}`);
   if(!res.ok) throw new Error(`Erro ao buscar roteiro: ${res.statusText}`);
@@ -68,7 +64,6 @@ async function buscarPontosDoBackend(roteiroIdParam) {
   return await res.json();
 }
 
-// =================== AUXILIARES ===================
 function showStatus(msg) { statusEl.textContent = msg; }
 function clearStatus() { statusEl.textContent = ""; }
 function formatCoord(v) { if(v==null) return "?"; return Number(v).toFixed(6); }
@@ -97,7 +92,6 @@ function renderizarRoteiroBanco(pontos){
   container.appendChild(wrapper);
 }
 
-// =================== EXECUÇÃO PRINCIPAL ===================
 document.addEventListener("DOMContentLoaded", main);
 
 async function main(){
@@ -106,25 +100,20 @@ async function main(){
     const roteiroBD = await carregarRoteiroBackend();
     console.log("Roteiro carregado:", roteiroBD);
 
-    // UI básico
     destinoEl.textContent = roteiroBD.destino;
     dataViagemEl.textContent = `${roteiroBD.dataInicio} / ${roteiroBD.dataFim}`;
     tituloMapaEl.textContent = `Roteiro ${roteiroBD.destino}`;
     orcamentoEl.textContent = `BRL ${roteiroBD.custoTotal ?? "—"}`;
     paisLocalidadeEl.innerHTML = `<i class="fas fa-map-marker-alt"></i> ${roteiroBD.pais}`;
 
-    // Atualiza orçamento convertido
     atualizarOrcamentoConvertido(roteiroBD.custoTotal ?? 0, roteiroBD.pais);
 
-    // ===== CLIMA =====
     const clima = await getWeather(roteiroBD.destino, roteiroBD.pais, roteiroBD.dataInicio, roteiroBD.dataFim);
     renderClima(clima, roteiroBD.destino, roteiroBD.dataInicio, roteiroBD.dataFim);
     localStorage.setItem("roteiro_clima", JSON.stringify(clima));
 
-    // Inicializa mapa
     initMap(-23.55052, -46.633308, 13);
 
-    // Buscar pontos no banco
     showStatus("Buscando pontos no banco...");
     const pontosExistentes = await buscarPontosDoBackend(Number(roteiroId));
 
@@ -135,7 +124,6 @@ async function main(){
       return;
     }
 
-    // Nenhum ponto existente → chamar IA
     showStatus("Buscando locais turísticos...");
     const locais = await buscarLocaisCidade(roteiroBD.destino, roteiroBD.pais, 50);
     if(!locais?.length){ clearStatus(); alert("Nenhum local turístico encontrado."); return; }
@@ -150,11 +138,9 @@ async function main(){
     const roteiroIA = await gerarRoteiroGemini(dadosGemini, locais);
     console.log("Roteiro IA:", roteiroIA);
 
-    // Atualiza orçamento convertido com o valor final
     atualizarOrcamentoConvertido(roteiroBD.custoTotal ?? 0, roteiroBD.pais);
     
     
-    // Salvar pontos no banco
     showStatus("Salvando atividades no banco...");
     const atividades = [];
     roteiroIA.dias.forEach(d=>{ d.atividades.forEach(a=>{
@@ -166,7 +152,6 @@ async function main(){
       try{ await salvarPontoBackend(pontoDB); }catch(err){ console.error("Falha ao salvar ponto:", pontoDB, err); }
     }
 
-    // Buscar e renderizar
     showStatus("Buscando pontos salvos...");
     const pontosSalvos = await buscarPontosDoBackend(Number(roteiroId));
     clearStatus();
@@ -182,10 +167,8 @@ async function main(){
 
 
 
-// Mapeamento de códigos de clima (WMO) para ícones e descrição (usando Bootstrap Icons)
 function getWeatherIconAndDescription(code) {
-    // Referência WMO: https://www.nodc.noaa.gov/archive/arc0021/0002199/1.1/data/0-data/HTML/WMO-CODE/WMO4677.HTM
-    let iconClass = 'bi-question-circle'; // Ícone padrão
+    let iconClass = 'bi-question-circle'; 
     let description = 'Desconhecido';
 
     switch (code) {
@@ -264,7 +247,6 @@ function renderClima(clima, destino, dataInicio, dataFim){
         weatherCode: clima.daily.weathercode[i]
     }));
 
-    // Obtém ícone e descrição do primeiro dia (dia atual/primeiro da viagem)
     const { iconClass: todayIcon, description: todayDescription } = getWeatherIconAndDescription(days[0].weatherCode);
 
     let html = `
@@ -324,15 +306,12 @@ async function atualizarOrcamentoConvertido(custoBRL, paisISO) {
 }
 
 
-document.addEventListener("DOMContentLoaded", async () => {  // <-- async aqui
-
-    // busca o roteiro do backend
+document.addEventListener("DOMContentLoaded", async () => {  
     const carregarBanco = await carregarRoteiroBackend();
 
     const duracaoD = document.getElementById("duracao-dias");
     if(!duracaoD) return;
 
-    // usa as datas do roteiro
     const inicio = new Date(carregarBanco.dataInicio);
     const fim = new Date(carregarBanco.dataFim);
 
@@ -364,7 +343,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             alert("Roteiro excluído com sucesso!");
-            window.location.href = "../pages/roteiro-page.html"; // Redireciona para dashboard
+            window.location.href = "../pages/roteiro-page.html";
 
         } catch (e) {
             console.error("Erro ao excluir:", e);
@@ -396,14 +375,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const urlPublica = `${window.location.origin}/frontend/pages/visualizar-page.html?token=${roteiro.shareToken}`;
 
-        // coloca o link no input
         inputLink.value = urlPublica;
 
-        // abre o modal
         modal.show();
     });
 
-    // botão copiar
     btnCopiar.addEventListener("click", () => {
         navigator.clipboard.writeText(inputLink.value)
             .then(() => {
@@ -420,12 +396,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const btnEditar = document.getElementById("btn-editar");
 
-    // Recupera ID do roteiro salvo no localStorage
     const roteiroId = localStorage.getItem("roteiro_id");
 
     if (btnEditar && roteiroId) {
         btnEditar.addEventListener("click", () => {
-            // Redireciona para página de edição
             window.location.href = `../pages/editar-roteiro.html?id=${roteiroId}`;
         });
     }

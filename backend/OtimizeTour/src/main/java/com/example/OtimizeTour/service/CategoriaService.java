@@ -14,7 +14,6 @@ public class CategoriaService {
         this.repository = repository;
     }
 
-    // parecido com o "cadastrarCategoria()" do UML
     public CategoriaModel cadastrarCategoria(CategoriaModel categoria) {
         return repository.save(categoria);
     }

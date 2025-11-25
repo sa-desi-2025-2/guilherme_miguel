@@ -25,7 +25,7 @@ public class RoteiroModel {
     private float custoTotal;
 
     @Column(unique = true)
-    private String shareToken;  // <--- NOVO
+    private String shareToken;  
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")

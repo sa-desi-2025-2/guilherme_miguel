@@ -6,9 +6,8 @@ public class PontoInteresseDTO {
     private Double lat;
     private Double lon;
     private Float avaliacaoMedia;
-    private Integer categoriaId; // opcional
+    private Integer categoriaId; 
 
-    // Getters e Setters
     public String getTitulo() { return titulo; }
     public void setTitulo(String titulo) { this.titulo = titulo; }
 

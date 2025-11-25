@@ -3,7 +3,6 @@ const API_BASE = "http://localhost:8081";
 const params = new URLSearchParams(window.location.search);
 const roteiroId = params.get("id");
 
-// Referências
 const destino = document.getElementById("destino");
 const pais = document.getElementById("pais");
 const dataInicio = document.getElementById("dataInicio");
@@ -15,12 +14,10 @@ const listaPOI = document.getElementById("lista-poi");
 let pontos = [];
 let poiEditando = null;
 
-// Modal
 const modalPOI = new bootstrap.Modal(document.getElementById("modalPOI"));
 
 async function carregarDados() {
 
-    // roteiro
     const r = await fetch(`${API_BASE}/roteiros/${roteiroId}`);
     const roteiro = await r.json();
 
@@ -30,7 +27,6 @@ async function carregarDados() {
     dataFim.value = roteiro.dataFim;
     custoTotal.value = roteiro.custoTotal;
 
-    // pontos
     const p = await fetch(`${API_BASE}/pontosInteresse?roteiroId=${roteiroId}`);
     pontos = await p.json();
 
@@ -58,7 +54,6 @@ function renderPOI() {
     `).join("");
 }
 
-// Tornar global
 window.editarPOI = (id) => {
     poiEditando = pontos.find(p => p.id === id);
 
@@ -82,7 +77,6 @@ window.removerPOI = async (id) => {
 };
 
 
-// Novo ponto
 document.getElementById("btn-add-poi").addEventListener("click", () => {
     poiEditando = null;
 
@@ -94,7 +88,6 @@ document.getElementById("btn-add-poi").addEventListener("click", () => {
     modalPOI.show();
 });
 
-// salvar ponto
 document.getElementById("btnSalvarPOI").addEventListener("click", async () => {
 
     const novo = {
@@ -105,7 +98,6 @@ document.getElementById("btnSalvarPOI").addEventListener("click", async () => {
         roteiroId: parseInt(roteiroId)
     };
 
-    // editar
     if (poiEditando) {
         novo.id = poiEditando.id;
 
@@ -134,7 +126,6 @@ document.getElementById("btnSalvarPOI").addEventListener("click", async () => {
     renderPOI();
 });
 
-// salvar roteiro inteiro
 document.getElementById("btn-salvar").addEventListener("click", async () => {
     const data = {
         destino: destino.value,

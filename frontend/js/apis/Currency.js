@@ -1,13 +1,6 @@
-/**
- * ⚠️ ATENÇÃO: Esta função AGORA REQUER uma chave API da APILayer/Currencylayer.
- * * Converte valor de uma moeda para outra usando a API do currencylayer/apilayer.
- * * @param {number} valor - valor a ser convertido
- * @param {string} de - moeda de origem (ex: "BRL")
- * @param {string} para - moeda destino (ex: "USD")
- * @returns {Promise<number | null>} valor convertido ou null em caso de erro
- */
+
 export async function converterMoeda(valor, de = "BRL", para = "USD") {
-    const API_KEY = "Qm8v1fI5a2qnpVrBflojOC4MAIbCNVy9"; // Chave de exemplo do seu texto
+    const API_KEY = "Qm8v1fI5a2qnpVrBflojOC4MAIbCNVy9"; 
 
     const valorNumerico = Number(valor);
     if (isNaN(valorNumerico) || valorNumerico <= 0) return null;
@@ -49,10 +42,6 @@ export async function converterMoeda(valor, de = "BRL", para = "USD") {
     }
 }
 
-/**
- * Retorna a moeda padrão de um país pelo código ISO2
- * (Mantida a função auxiliar, pois não depende da API)
- */
 export function getMoedaPorPais(iso2) {
     const map = {
         BR: "BRL",

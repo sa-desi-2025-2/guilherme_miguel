@@ -11,7 +11,6 @@ tabs.forEach(tab => {
   });
 });
 
-/* ------------ TOAST FUNCTIONS ------------ */
 function showToast(msg, isError = false) {
   const toast = document.getElementById('custom-toast');
   const message = document.getElementById('toast-message');
@@ -39,7 +38,6 @@ function showError(msg) {
   showToast(msg, true);
 }
 
-/* ------------ LOGIN NORMAL ------------ */
 document.getElementById("login").addEventListener("submit", async (event) => {
   event.preventDefault();
 
@@ -79,7 +77,6 @@ document.getElementById("login").addEventListener("submit", async (event) => {
   }
 });
 
-/* ------------ CADASTRO ------------ */
 document.getElementById("signup").addEventListener("submit", async (event) => {
   event.preventDefault();
 
@@ -114,7 +111,7 @@ document.getElementById("signup").addEventListener("submit", async (event) => {
   }
 });
 
-/* ------------ LOGIN SOCIAL (AUTH0) ------------ */
+
 (async function iniciarAuth0() {
   const API_DOMAIN = "dev-qkd234rcx7cfybfs.us.auth0.com";
   const CLIENT_ID = "GwZrceMoqNue4YSR5oVihfMgXqLwrEhw";

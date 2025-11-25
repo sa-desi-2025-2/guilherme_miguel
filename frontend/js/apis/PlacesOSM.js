@@ -7,7 +7,6 @@ export async function buscarLocaisCidade(cidade, pais = "", limit = 50, radius =
     const qCidade = encodeURIComponent(`${cidade}${pais ? ", " + pais : ""}`);
 
     try {
-        // 1) Geocodificação
         const nomUrl = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${qCidade}&addressdetails=0&accept-language=en`;
         const nomRes = await fetch(nomUrl);
         const nomJson = await nomRes.json();
@@ -15,10 +14,6 @@ export async function buscarLocaisCidade(cidade, pais = "", limit = 50, radius =
         if (!Array.isArray(nomJson) || nomJson.length === 0) return [];
 
         const { lat, lon } = nomJson[0];
-
-        // =============================
-        // 2) Overpass — APENAS TURISMO
-        // =============================
 
         const overpassQuery = `
 [out:json][timeout:25];

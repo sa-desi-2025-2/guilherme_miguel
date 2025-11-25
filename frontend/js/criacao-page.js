@@ -1,15 +1,9 @@
-// criacao-page.js (VERSÃO CORRIGIDA E OTIMIZADA)
-
 import { buscarUsuarioPorEmail } from "../js/conexao/usuario.js";
 import { salvarRoteiroBackend } from "../js/conexao/roteiro.js";
 import { getWeather } from "../js/apis/Weather.js";
 import { listarPaises } from "../js/apis/Country.js";
 import { buscarLocaisCidade } from "./apis/PlacesOSM.js";
 
-
-// ================================
-// 1) Carregar lista de países com Select2
-// ================================
 
 async function carregarPaises() {
     const select = $("#pais");
@@ -42,17 +36,11 @@ async function carregarPaises() {
 
 carregarPaises();
 
-
-// ================================
-// 2) Submissão do formulário
-// ================================
-
 const form = document.querySelector("form");
 
 form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    // --- Campos do formulário ---
     const destino = document.querySelector("#destino").value.trim();
     const inicio = document.querySelector("#inicio").value;
     const fim = document.querySelector("#fim").value;
@@ -67,9 +55,7 @@ form.addEventListener("submit", async (e) => {
         return;
     }
 
-    // ================================
-    // 3) Buscar locais com PlacesOSM/OpenTripMap
-    // ================================
+
     let locais = [];
     try {
         locais = await buscarLocaisCidade(destino, pais, 50);
@@ -82,13 +68,9 @@ form.addEventListener("submit", async (e) => {
         return;
     }
 
-    // Guardar no localStorage
     localStorage.setItem("roteiro_locais_otm", JSON.stringify(locais));
 
 
-    // ================================
-    // 4) Extrair coordenadas do primeiro local encontrado
-    // ================================
     const primeiroLocal = locais[0];
 
     const lat = primeiroLocal?.lat;
@@ -103,9 +85,6 @@ form.addEventListener("submit", async (e) => {
     console.log("Coordenadas detectadas:", lat, lon);
 
 
-    // ================================
-    // 5) Clima usando Weather.js (Open-Meteo)
-    // ================================
     let weatherData;
     try {
         weatherData = await getWeather(lat, lon, inicio, fim);
@@ -118,9 +97,6 @@ form.addEventListener("submit", async (e) => {
     localStorage.setItem("roteiro_clima", JSON.stringify(weatherData));
 
 
-    // ================================
-    // 6) Salvar informações básicas no localStorage
-    // ================================
     localStorage.setItem("roteiro_destino", destino);
     localStorage.setItem("roteiro_inicio", inicio);
     localStorage.setItem("roteiro_fim", fim);
@@ -130,10 +106,6 @@ form.addEventListener("submit", async (e) => {
     localStorage.setItem("roteiro_gastronomia", gastronomia);
     localStorage.setItem("roteiro_tipo", tipo);
 
-
-    // ================================
-    // 7) Verificar usuário logado
-    // ================================
     const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
 
     if (!usuarioLogado) {
@@ -148,10 +120,6 @@ form.addEventListener("submit", async (e) => {
         return;
     }
 
-
-    // ================================
-    // 8) Criar objeto do roteiro e salvar no backend
-    // ================================
     const roteiroBackend = {
         pais: pais,
         destino: destino,
@@ -170,9 +138,5 @@ form.addEventListener("submit", async (e) => {
 
     console.log("Roteiro salvo:", salvo);
 
-
-    // ================================
-    // 9) Redirecionar para a página do mapa
-    // ================================
     window.location.href = `/frontend/pages/mapa-page.html?id=${salvo.id}`;
 });
