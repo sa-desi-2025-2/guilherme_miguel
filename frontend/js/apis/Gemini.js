@@ -96,7 +96,6 @@ A prioridade nº2 é escolher apenas locais da lista REAL enviada acima.
 
     let texto = data.candidates[0].content.parts[0].text;
 
-    // Limpa markdown
     texto = texto.replace(/^```json/, "").replace(/```$/, "").trim();
 
     return JSON.parse(texto);

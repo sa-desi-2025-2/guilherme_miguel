@@ -6,7 +6,6 @@ import java.util.List;
 
 public interface PontoInteresseRepository extends JpaRepository<PontoInteresseModel, Integer> {
 
-    // 🔍 Buscar todos os pontos por ID do roteiro
     List<PontoInteresseModel> findByRoteiroId(Integer roteiroId);
 
 }

@@ -1,12 +1,6 @@
-// Weather.js
-// =================== CONFIG ===================
 const API_BASE = "http://localhost:8081";
 
-// =================== FUNÇÕES AUXILIARES ===================
-/**
- * Calcula número de dias entre dataInicio e dataFim (inclui último dia)
- * Limita a 7 dias (forecast gratuito Open-Meteo)
- */
+
 export function calcularDiasViagem(dataInicio, dataFim) {
     const inicio = new Date(dataInicio);
     const fim = new Date(dataFim);
@@ -15,9 +9,7 @@ export function calcularDiasViagem(dataInicio, dataFim) {
     return Math.min(diffDias, 7);
 }
 
-/**
- * Converte cidade + país em coordenadas via Nominatim (OpenStreetMap)
- */
+
 export async function getCoords(city, countryIso2) {
     const query = encodeURIComponent(`${city}, ${countryIso2}`);
     const url = `https://nominatim.openstreetmap.org/search?q=${query}&format=json&limit=1`;
@@ -28,13 +20,7 @@ export async function getCoords(city, countryIso2) {
     return { lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon) };
 }
 
-/**
- * Busca clima + forecast da cidade usando Open-Meteo para datas específicas
- * @param {string} city 
- * @param {string} countryIso2 
- * @param {string} dataInicio - "YYYY-MM-DD"
- * @param {string} dataFim - "YYYY-MM-DD"
- */
+
 export async function getWeather(city, countryIso2, dataInicio, dataFim) {
     try {
         const { lat, lon } = await getCoords(city, countryIso2);
@@ -52,9 +38,6 @@ export async function getWeather(city, countryIso2, dataInicio, dataFim) {
     }
 }
 
-/**
- * Busca roteiro no backend pelo ID e retorna o clima completo
- */
 export async function getWeatherDoRoteiro(roteiroId) {
     try {
         const res = await fetch(`${API_BASE}/roteiros/${roteiroId}`);

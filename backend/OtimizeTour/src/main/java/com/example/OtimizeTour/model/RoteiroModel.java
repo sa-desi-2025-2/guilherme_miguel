@@ -25,7 +25,7 @@ public class RoteiroModel {
     private float custoTotal;
 
     @Column(unique = true)
-    private String shareToken;  // <--- NOVO
+    private String shareToken;  
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
@@ -47,7 +47,6 @@ public class RoteiroModel {
         this.usuario = usuario;
     }
 
-    // getters e setters...
     public String getShareToken() { return shareToken; }
     public void setShareToken(String shareToken) { this.shareToken = shareToken; }
 

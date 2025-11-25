@@ -1,4 +1,3 @@
-// frontend/pages/mapa-page.js
 import { gerarRoteiroGemini } from "../js/apis/Gemini.js";
 import { buscarLocaisCidade } from "../js/apis/PlacesOSM.js";
 import { initMap, plotarPontos } from "../js/apis/leafLets.js";
@@ -8,7 +7,6 @@ import { converterMoeda, getMoedaPorPais } from "../js/apis/Currency.js";
 
 const API_BASE = "http://localhost:8081";
 
-// Pegar ID da URL
 const params = new URLSearchParams(window.location.search);
 const roteiroId = params.get("id");
 
@@ -19,8 +17,6 @@ if (!roteiroId || roteiroId === "{}" || isNaN(Number(roteiroId))) {
 
 console.log("ID do roteiro capturado:", roteiroId);
 
-// =================== HELPERS UI ===================
-// =================== HELPERS UI ===================
 function qs(id) { return document.getElementById(id); }
 function ensureElement(id, defaultTag = "div") {
   let el = qs(id);
@@ -42,12 +38,10 @@ const statusEl = (() => {
     const s = document.createElement("div");
     s.id = id;
     s.style.margin="10px 0";
-    // Adiciona o status antes do container de roteiro
     roteiroContainerEl.parentNode.insertBefore(s, roteiroContainerEl); 
     return s;
 })();
 
-// --- Controles de Loading e Erro ---
 const loadingOverlay = document.getElementById("loading-overlay-mapa");
 const errorOverlay = document.getElementById("error-overlay-mapa");
 const errorMessageEl = document.getElementById("error-message-mapa");
@@ -55,7 +49,7 @@ const errorMessageEl = document.getElementById("error-message-mapa");
 function showLoading() {
     if(loadingOverlay) loadingOverlay.classList.remove("d-none");
     if(errorOverlay) errorOverlay.classList.add("d-none");
-    document.body.style.overflow = "hidden"; // Evita scroll
+    document.body.style.overflow = "hidden"; 
 }
 
 function hideLoading() {
@@ -69,7 +63,6 @@ function showErrorScreen(message) {
     if(errorOverlay) errorOverlay.classList.remove("d-none");
     document.body.style.overflow = "hidden";
 }
-// =================== FUNÇÕES DE BACKEND ===================
 async function carregarRoteiroBackend() {
   const res = await fetch(`${API_BASE}/roteiros/${roteiroId}`);
   if(!res.ok) throw new Error(`Erro ao buscar roteiro: ${res.statusText}`);
@@ -92,7 +85,6 @@ async function buscarPontosDoBackend(roteiroIdParam) {
   return await res.json();
 }
 
-// =================== AUXILIARES ===================
 
 function showStatus(msg) { statusEl.textContent = msg; }
 function clearStatus() { statusEl.textContent = ""; }
@@ -122,7 +114,6 @@ function renderizarRoteiroBanco(pontos){
   container.appendChild(wrapper);
 }
 
-// =================== EXECUÇÃO PRINCIPAL ===================
 document.addEventListener("DOMContentLoaded", main);
 
 async function main(){
@@ -139,21 +130,19 @@ let currentPhraseIndex = 0;
 let phraseInterval;
 let iconInterval;
 
-// Função para atualizar a frase
 function updateLoadingText() {
     const textElement = document.getElementById("current-loading-text");
     if (textElement) {
-        textElement.style.opacity = 0; // Inicia a transição de saída
+        textElement.style.opacity = 0; 
 
         setTimeout(() => {
             currentPhraseIndex = (currentPhraseIndex + 1) % loadingPhrases.length;
             textElement.textContent = loadingPhrases[currentPhraseIndex];
-            textElement.style.opacity = 1; // Transição de entrada
-        }, 500); // Meio segundo para o fade
+            textElement.style.opacity = 1; 
+        }, 500); 
 }
 }
 
-// Função para animar os ícones
 function animateIcons() {
     const icons = [
         document.getElementById('loading-icon-1'),
@@ -164,7 +153,6 @@ function animateIcons() {
     let currentIconIndex = 0;
 
     function showNextIcon() {
-        // Esconde todos
         icons.forEach(icon => {
             if (icon) {
                 icon.style.opacity = 0;
@@ -172,7 +160,6 @@ function animateIcons() {
             }
         });
 
-        // Mostra o próximo
         const nextIcon = icons[currentIconIndex];
         if (nextIcon) {
             nextIcon.style.opacity = 1;
@@ -182,52 +169,41 @@ function animateIcons() {
         currentIconIndex = (currentIconIndex + 1) % icons.length;
     }
 
-    // Chama a animação imediatamente
     showNextIcon();
     
-    // Configura o intervalo para trocar de ícone
-    iconInterval = setInterval(showNextIcon, 2500); // Troca de ícone a cada 2.5 segundos
+    iconInterval = setInterval(showNextIcon, 2500); 
 }
 
 
-// Sobrescreve showLoading para iniciar animações
 function showLoading() {
-    // ... (Seu código original de showLoading) ...
     if(loadingOverlay) loadingOverlay.classList.remove("d-none");
     if(errorOverlay) errorOverlay.classList.add("d-none");
     document.body.style.overflow = "hidden";
     
-    // Inicia o carrossel de texto
     const textElement = document.getElementById("current-loading-text");
     if (textElement) {
         textElement.textContent = loadingPhrases[0];
     }
-    phraseInterval = setInterval(updateLoadingText, 10000); // Troca a cada 10 segundos
+    phraseInterval = setInterval(updateLoadingText, 10000); 
     
-    // Inicia a animação dos ícones
     animateIcons();
 }
 
-// Sobrescreve hideLoading para parar animações
 function hideLoading() {
-    // ... (Seu código original de hideLoading) ...
     if(loadingOverlay) loadingOverlay.classList.add("d-none");
     document.body.style.overflow = "";
 
-    // Para o carrossel de texto e ícones
     clearInterval(phraseInterval);
     clearInterval(iconInterval);
 }
 
-// Sobrescreve showErrorScreen para parar animações
 function showErrorScreen(message) {
-    hideLoading(); // Chamará hideLoading para parar os intervalos
+    hideLoading(); 
     if(errorMessageEl) errorMessageEl.textContent = message;
     if(errorOverlay) errorOverlay.classList.remove("d-none");
     document.body.style.overflow = "hidden";
 }
 
-  // 1. Mostrar loading imediatamente
   showLoading();
   let erroDetalhado = "Ocorreu um erro ao processar seu roteiro. Verifique sua conexão e tente novamente.";
 
@@ -237,28 +213,23 @@ function showErrorScreen(message) {
     console.log("Roteiro carregado:", roteiroBD);
     erroDetalhado = "Erro ao buscar locais turísticos.";
 
-    // UI básico (pode ser feito com o loading ativo)
     destinoEl.textContent = roteiroBD.destino;
     dataViagemEl.textContent = `${roteiroBD.dataInicio} / ${roteiroBD.dataFim}`;
     tituloMapaEl.textContent = `Roteiro ${roteiroBD.destino}`;
     orcamentoEl.textContent = `BRL ${roteiroBD.custoTotal ?? "—"}`;
     paisLocalidadeEl.innerHTML = `<i class="fas fa-map-marker-alt"></i> ${roteiroBD.pais}`;
 
-    // Atualiza orçamento convertido e duração
     atualizarOrcamentoConvertido(roteiroBD.custoTotal ?? 0, roteiroBD.pais);
     atualizarDuracao(roteiroBD.dataInicio, roteiroBD.dataFim);
 
     erroDetalhado = "Erro ao buscar clima do destino.";
-    // ===== CLIMA =====
     const clima = await getWeather(roteiroBD.destino, roteiroBD.pais, roteiroBD.dataInicio, roteiroBD.dataFim);
     renderClima(clima, roteiroBD.destino, roteiroBD.dataInicio, roteiroBD.dataFim);
     localStorage.setItem("roteiro_clima", JSON.stringify(clima));
 
-    // Inicializa mapa (no Brasil, pois a localização exata virá depois)
     initMap(-23.55052, -46.633308, 13);
     
     erroDetalhado = "Erro ao buscar pontos salvos no banco de dados.";
-    // Buscar pontos no banco
     showStatus("Buscando pontos no banco...");
     const pontosExistentes = await buscarPontosDoBackend(Number(roteiroId));
 
@@ -266,11 +237,10 @@ function showErrorScreen(message) {
       clearStatus();
       renderizarRoteiroBanco(pontosExistentes);
       plotarPontos(pontosExistentes);
-      hideLoading(); // Fim do carregamento
+      hideLoading(); 
       return;
     }
 
-    // Nenhum ponto existente → chamar IA
     erroDetalhado = "Nenhum local turístico encontrado. Tente outro destino.";
     showStatus("Buscando locais turísticos...");
     const locais = await buscarLocaisCidade(roteiroBD.destino, roteiroBD.pais, 50);
@@ -287,7 +257,6 @@ function showErrorScreen(message) {
     const roteiroIA = await gerarRoteiroGemini(dadosGemini, locais);
     console.log("Roteiro IA:", roteiroIA);
     
-    // Salvar pontos no banco
     erroDetalhado = "Erro ao salvar as atividades geradas pela IA.";
     showStatus("Salvando atividades no banco...");
     const atividades = [];
@@ -297,22 +266,19 @@ function showErrorScreen(message) {
 
     for(const atv of atividades){
       const pontoDB = { nome: atv.titulo, descricao: atv.descricao, avaliacaoMedia:null, latitude:atv.lat, longitude:atv.lon, categoria:null, roteiro:{id:Number(roteiroId)} };
-      // Usamos try/catch interno para não interromper se apenas um ponto falhar
       try{ await salvarPontoBackend(pontoDB); }catch(err){ console.error("Falha ao salvar ponto:", pontoDB, err); }
     }
 
-    // Buscar e renderizar
     showStatus("Buscando pontos salvos...");
     const pontosSalvos = await buscarPontosDoBackend(Number(roteiroId));
     clearStatus();
     renderizarRoteiroBanco(pontosSalvos);
     plotarPontos(pontosSalvos);
     
-    hideLoading(); // Fim do carregamento
+    hideLoading(); 
 
   }catch(err){
     console.error("Erro geral no MAIN:", err);
-    // 2. Esconder loading e mostrar tela de erro com a mensagem detalhada
     showErrorScreen(erroDetalhado);
   }
 }
@@ -327,12 +293,10 @@ function atualizarDuracao(dataInicioStr, dataFimStr) {
   const fim = new Date(dataFimStr);
 
   const diffMs = fim - inicio;
-  // O + 1 é para incluir o dia de chegada
   const duracaoDias = Math.ceil(diffMs / (1000*60*60*24)) + 1;
 
   duracaoD.textContent = `${duracaoDias} dia${duracaoDias > 1 ? "s" : ""}`;
   
-  // Se a duração for inválida (data início depois da data fim), aplica a classe de erro
   if (duracaoDias <= 0) {
       duracaoD.classList.add("duration-negative");
       duracaoD.textContent = "Data Inválida";
@@ -341,16 +305,12 @@ function atualizarDuracao(dataInicioStr, dataFimStr) {
   }
 }
 
-// Substituir o bloco DOMContentLoaded original da duração
 document.addEventListener("DOMContentLoaded", async () => {
-  // A duração agora é calculada dentro do main
 });
 
 
-// Mapeamento de códigos de clima (WMO) para ícones e descrição (usando Bootstrap Icons)
 function getWeatherIconAndDescription(code) {
-    // Referência WMO: https://www.nodc.noaa.gov/archive/arc0021/0002199/1.1/data/0-data/HTML/WMO-CODE/WMO4677.HTM
-    let iconClass = 'bi-question-circle'; // Ícone padrão
+    let iconClass = 'bi-question-circle'; 
     let description = 'Desconhecido';
 
     switch (code) {
@@ -429,7 +389,6 @@ function renderClima(clima, destino, dataInicio, dataFim){
         weatherCode: clima.daily.weathercode[i]
     }));
 
-    // Obtém ícone e descrição do primeiro dia (dia atual/primeiro da viagem)
     const { iconClass: todayIcon, description: todayDescription } = getWeatherIconAndDescription(days[0].weatherCode);
 
     let html = `
@@ -489,15 +448,13 @@ async function atualizarOrcamentoConvertido(custoBRL, paisISO) {
 }
 
 
-document.addEventListener("DOMContentLoaded", async () => {  // <-- async aqui
+document.addEventListener("DOMContentLoaded", async () => {  
 
-    // busca o roteiro do backend
     const carregarBanco = await carregarRoteiroBackend();
 
     const duracaoD = document.getElementById("duracao-dias");
     if(!duracaoD) return;
 
-    // usa as datas do roteiro
     const inicio = new Date(carregarBanco.dataInicio);
     const fim = new Date(carregarBanco.dataFim);
 
@@ -529,7 +486,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             alert("Roteiro excluído com sucesso!");
-            window.location.href = "../pages/roteiro-page.html"; // Redireciona para dashboard
+            window.location.href = "../pages/roteiro-page.html"; 
 
         } catch (e) {
             console.error("Erro ao excluir:", e);
@@ -561,14 +518,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const urlPublica = `${window.location.origin}/frontend/pages/visualizar-page.html?token=${roteiro.shareToken}`;
 
-        // coloca o link no input
         inputLink.value = urlPublica;
 
-        // abre o modal
         modal.show();
     });
 
-    // botão copiar
     btnCopiar.addEventListener("click", () => {
         navigator.clipboard.writeText(inputLink.value)
             .then(() => {
@@ -585,12 +539,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const btnEditar = document.getElementById("btn-editar");
 
-    // Recupera ID do roteiro salvo no localStorage
     const roteiroId = localStorage.getItem("roteiro_id");
 
     if (btnEditar && roteiroId) {
         btnEditar.addEventListener("click", () => {
-            // Redireciona para página de edição
             window.location.href = `../pages/editar-roteiro.html?id=${roteiroId}`;
         });
     }

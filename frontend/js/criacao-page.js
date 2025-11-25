@@ -1,4 +1,4 @@
-// criacao-page.js (VERSÃO COMPLETA E CORRIGIDA)
+
 
 import { buscarUsuarioPorEmail } from "../js/conexao/usuario.js";
 import { salvarRoteiroBackend } from "../js/conexao/roteiro.js";
@@ -6,10 +6,6 @@ import { getWeather } from "../js/apis/Weather.js";
 import { listarPaises } from "../js/apis/Country.js";
 import { buscarLocaisCidade } from "./apis/PlacesOSM.js";
 
-
-// =========================================================
-// 1) Carregar lista de países com Select2
-// =========================================================
 
 async function carregarPaises() {
     const select = $("#pais");
@@ -42,20 +38,13 @@ async function carregarPaises() {
 
 $(document).ready(carregarPaises);
 
-
-// =========================================================
-// 2) Submissão do formulário e Lógica de Loading/Animação
-// =========================================================
-
 document.addEventListener("DOMContentLoaded", () => {
     
-    // Variáveis DOM
     const loadingOverlay = document.getElementById("loading-overlay");
     const errorOverlay = document.getElementById("error-overlay");
     const errorMessageEl = document.getElementById("error-message");
     const form = document.querySelector("form");
 
-    // --- Configurações do Carrossel ---
     const loadingPhrases = [
         "Validando suas informações de viagem...",
         "Buscando coordenadas do destino...",
@@ -67,7 +56,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let iconInterval;
 
 
-    // Função para atualizar a frase
     function updateLoadingText() {
         const textElement = document.getElementById("current-loading-text");
         if (textElement) {
@@ -81,7 +69,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Função para animar os ícones
     function animateIconsCria() {
         const icons = [
             document.getElementById('loading-icon-cria-1'),
@@ -115,7 +102,6 @@ document.addEventListener("DOMContentLoaded", () => {
         iconInterval = setInterval(showNextIcon, 2500);
     }
 
-    // Função principal para mostrar o loading e iniciar animações
     function showLoading() {
         loadingOverlay.classList.remove("d-none");
         errorOverlay.classList.add("d-none");
@@ -130,7 +116,6 @@ document.addEventListener("DOMContentLoaded", () => {
         animateIconsCria();
     }
 
-    // Função principal para esconder o loading e parar animações
     function hideLoading() {
         loadingOverlay.classList.add("d-none");
         document.body.style.overflow = "";
@@ -139,7 +124,6 @@ document.addEventListener("DOMContentLoaded", () => {
         clearInterval(iconInterval);
     }
 
-    // Função para mostrar a tela de erro
     function showErrorScreen(message) {
         hideLoading();
         errorMessageEl.textContent = message;
@@ -147,16 +131,10 @@ document.addEventListener("DOMContentLoaded", () => {
         document.body.style.overflow = "hidden";
     }
 
-    // Função global para o botão 'Voltar ao Formulário'
     window.hideErrorScreen = function() {
         errorOverlay.classList.add("d-none");
         document.body.style.overflow = "";
     }
-
-
-    // =========================================================
-    // 3) Listener de Submissão
-    // =========================================================
 
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -165,7 +143,6 @@ document.addEventListener("DOMContentLoaded", () => {
         let erroDetalhado = "Erro desconhecido. Por favor, tente novamente.";
 
         try {
-            // --- Campos do formulário ---
             const destino = document.querySelector("#destino").value.trim();
             const inicio = document.querySelector("#inicio").value;
             const fim = document.querySelector("#fim").value;
@@ -180,7 +157,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 throw new Error(erroDetalhado);
             }
 
-            // Busca Locais
             let locais = [];
             try {
                 locais = await buscarLocaisCidade(destino, pais, 50);
@@ -195,7 +171,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             localStorage.setItem("roteiro_locais_otm", JSON.stringify(locais));
 
-            // Extrair Coordenadas
             const primeiroLocal = locais[0];
             const lat = primeiroLocal?.lat;
             const lon = primeiroLocal?.lon;
@@ -205,7 +180,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 throw new Error(erroDetalhado);
             }
 
-            // Busca Clima
             let weatherData;
             try {
                 weatherData = await getWeather(lat, lon, inicio, fim);
@@ -215,7 +189,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             localStorage.setItem("roteiro_clima", JSON.stringify(weatherData));
 
-            // Salvar no LocalStorage
             localStorage.setItem("roteiro_destino", destino);
             localStorage.setItem("roteiro_inicio", inicio);
             localStorage.setItem("roteiro_fim", fim);
@@ -225,8 +198,6 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.setItem("roteiro_gastronomia", gastronomia);
             localStorage.setItem("roteiro_tipo", tipo);
 
-
-            // Verifica Usuário
             const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
             if (!usuarioLogado) {
                 erroDetalhado = "Nenhum usuário logado. Faça login antes de criar um roteiro.";
@@ -239,8 +210,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 throw new Error(erroDetalhado);
             }
 
-
-            // Salvar no Backend
             const roteiroBackend = {
                 pais: pais,
                 destino: destino,
@@ -257,7 +226,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 throw new Error(erroDetalhado);
             }
 
-            // Redirecionar
             hideLoading();
             window.location.href = `/frontend/pages/mapa-page.html?id=${salvo.id}`;
 

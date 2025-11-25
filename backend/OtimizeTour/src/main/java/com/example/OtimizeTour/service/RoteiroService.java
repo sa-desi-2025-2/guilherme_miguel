@@ -16,20 +16,16 @@ public class RoteiroService {
         this.repository = repository;
     }
 
-    // -------- GERAR TOKEN -----------
     private String gerarToken() {
         return UUID.randomUUID().toString().replace("-", "").substring(0, 12);
     }
 
-    // -------- LISTAR TODOS ----------
     public List<RoteiroModel> listarTodos() {
         return repository.findAll();
     }
 
-    // -------- SALVAR ROTEIRO --------
     public RoteiroModel salvar(RoteiroModel roteiro) {
 
-        // Se for um novo cadastro, gera o token
         if (roteiro.getId() == null) {
             roteiro.setShareToken(gerarToken());
         }
@@ -37,17 +33,14 @@ public class RoteiroService {
         return repository.save(roteiro);
     }
 
-    // -------- BUSCAR POR ID ----------
     public RoteiroModel buscarPorId(Integer id) {
         return repository.findById(id).orElse(null);
     }
 
-    // -------- BUSCAR POR TOKEN --------
     public RoteiroModel buscarPorToken(String token) {
         return repository.findByShareToken(token).orElse(null);
     }
 
-    // -------- DELETAR -----------------
     public void deletar(Integer id) {
         repository.deleteById(id);
     }

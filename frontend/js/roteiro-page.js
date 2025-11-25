@@ -134,7 +134,6 @@ async function carregarRoteirosUsuario() {
         const res = await fetch("http://localhost:8081/roteiros");
         const roteiros = await res.json();
 
-        // FILTRO CORRETO AGORA:
         const meusRoteiros = roteiros.filter(r =>
             r.usuario && r.usuario.email === usuario.email
         );
@@ -183,7 +182,6 @@ async function carregarRoteirosUsuario() {
             lista.appendChild(card);
         });
 
-        // Abrir página do mapa
         document.querySelectorAll(".ver-roteiro").forEach(btn => {
             btn.addEventListener("click", () => {
                 const id = btn.getAttribute("data-id");
@@ -191,7 +189,6 @@ async function carregarRoteirosUsuario() {
             });
         });
 
-        // Excluir roteiro
         document.querySelectorAll(".btn-delete").forEach(btn => {
             btn.addEventListener("click", async () => {
                 const id = btn.getAttribute("data-id");

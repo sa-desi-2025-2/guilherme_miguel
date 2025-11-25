@@ -60,7 +60,6 @@ public class PontoInteresseService {
             p.setCategoria(novoPonto.getCategoria());
             p.setRoteiro(novoPonto.getRoteiro());
 
-            // 🔥 Adicionado agora:
             p.setLatitude(novoPonto.getLatitude());
             p.setLongitude(novoPonto.getLongitude());
 
@@ -85,9 +84,7 @@ public class PontoInteresseService {
         }).orElse(null);
     }
 
-    // ---------------------------
-    // 🔍 Validação de Coordenadas
-    // ---------------------------
+
     private void validarCoordenadas(PontoInteresseModel ponto) {
 
         if (ponto.getLatitude() < -90 || ponto.getLatitude() > 90) {

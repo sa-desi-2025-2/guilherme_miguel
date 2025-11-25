@@ -2,10 +2,7 @@ package com.example.OtimizeTour.model;
 
 import jakarta.persistence.*;
 
-/**
- * Entidade que representa um Administrador no sistema,
- * mapeada para a tabela 'admin' do banco de dados.
- */
+
 @Entity
 @Table(name = "admin")
 public class AdminModel {
@@ -18,13 +15,11 @@ public class AdminModel {
 
     private String email;
 
-    // Coluna para armazenar o hash SHA-512 da senha
     @Column(nullable = false)
     private String senhaHash;
 
     public AdminModel() {}
 
-    // Getters
     public Integer getId() {
         return id;
     }
@@ -41,7 +36,6 @@ public class AdminModel {
         return senhaHash;
     }
 
-    // Setters
     public void setId(Integer id) {
         this.id = id;
     }

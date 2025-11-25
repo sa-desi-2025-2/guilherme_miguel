@@ -59,7 +59,6 @@ public class UsuarioService {
         }
     }
 
-    // Tornado público para ser usado no login
     public String gerarHashSHA512(String senha) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-512");

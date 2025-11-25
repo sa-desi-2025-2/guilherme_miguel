@@ -1,13 +1,9 @@
-// frontend/js/apis/PlacesOSM.js
-// Busca locais TURÍSTICOS usando Nominatim + Overpass
-
 export async function buscarLocaisCidade(cidade, pais = "", limit = 50, radius = 8000) {
     if (!cidade) return [];
 
     const qCidade = encodeURIComponent(`${cidade}${pais ? ", " + pais : ""}`);
 
     try {
-        // 1) Geocodificação
         const nomUrl = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${qCidade}&addressdetails=0&accept-language=en`;
         const nomRes = await fetch(nomUrl);
         const nomJson = await nomRes.json();
@@ -15,10 +11,6 @@ export async function buscarLocaisCidade(cidade, pais = "", limit = 50, radius =
         if (!Array.isArray(nomJson) || nomJson.length === 0) return [];
 
         const { lat, lon } = nomJson[0];
-
-        // =============================
-        // 2) Overpass — APENAS TURISMO
-        // =============================
 
         const overpassQuery = `
 [out:json][timeout:25];
@@ -64,7 +56,6 @@ out center;
 
         if (!overJson.elements) return [];
 
-        // 3) Normalização — APENAS POIs turísticos reais
         const locais = overJson.elements
             .map(el => {
                 const tags = el.tags || {};

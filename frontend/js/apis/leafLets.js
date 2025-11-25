@@ -1,19 +1,11 @@
-// frontend/js/leaflet.js
-// Responsável por inicializar o mapa, adicionar marcadores e trajetos
-
 let map = null;
-let markersLayer = null; // camada para os marcadores
+let markersLayer = null; 
 let polyline = null;
 
-/**
- * Inicializa o mapa em um ponto central
- * @param {number} lat 
- * @param {number} lng 
- * @param {number} zoom 
- */
+
 export function initMap(lat = -23.55052, lng = -46.633308, zoom = 13) {
   if (map) {
-    map.remove(); // remove mapa antigo, se existir
+    map.remove(); 
   }
 
   map = L.map('map').setView([lat, lng], zoom);
@@ -25,10 +17,7 @@ export function initMap(lat = -23.55052, lng = -46.633308, zoom = 13) {
   markersLayer = L.layerGroup().addTo(map);
 }
 
-/**
- * Adiciona marcadores e desenha trajeto
- * @param {Array} pontos - array de objetos com latitude, longitude, nome e descricao
- */
+
 export function plotarPontos(pontos) {
   if (!map || !markersLayer) {
     console.error("Mapa não inicializado. Chame initMap() antes.");
@@ -39,7 +28,7 @@ export function plotarPontos(pontos) {
 
   const latlngs = [];
 
-  pontos.forEach((p, index) => { // <-- index indica a ordem
+  pontos.forEach((p, index) => { 
     if (p.latitude != null && p.longitude != null) {
       const marker = L.marker([p.latitude, p.longitude])
         .bindPopup(`<strong>${index+1}. ${escapeHtml(p.nome)}</strong><br>${escapeHtml(p.descricao || "-")}`);
@@ -62,7 +51,6 @@ export function plotarPontos(pontos) {
   }
 }
 
-// Função para escapar HTML
 function escapeHtml(s) {
   if (!s) return "";
   return String(s)
